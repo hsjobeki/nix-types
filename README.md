@@ -108,14 +108,14 @@ Format: Standard Notation - Name
         AttrsOf - attribute set of elements
         lazyAttrsOf - lazy attribute set of elements
 
-- package - derivations or attribute sets with an `outPath` or `__toString` or StorePath
+- Package - derivations or attribute sets with an `outPath` or `__toString` or StorePath
 
     Subtypes:
 
         shellPackage - a package with `shellPath` attribute
 
-- path - path to location (relative or absolute)
-- listOf - list of elements
+- Path - path to location (relative or absolute)
+- ListOf - list of elements
 
     Subtypes:
 
@@ -140,23 +140,45 @@ Format: Standard Notation - Name
 
 Operators
 
-1. Existing ones.
+__All Operators SHOULD be used with surrounding whitespaces.__
 
-- `::` - type-name seperator.
+__Existing ones.__
+
+- `::`  type-name seperator.
 
 e.g. `name :: Any`
 
 - `->` Function
+
+e.g. `function :: Any -> Any`
+
 - `()` Parenthesis (not a type itself, only for syntatic grouping)
+
+e.g. `( a -> b ) -> c`
+
+- `,` Seperator for subseqeuent entries (like in AttrSet)
+
+e.g. `{ a :: Any, b :: Any }`
+
 - `[]` List
+
+e.g. `[ Any ]`
+
 - `{}` AttrSet
 
-2. Missing / Introduced with this Idea.
+e.g. `{ key :: Any }`
 
-- `?` - optional arguments in an AttrSet 
+__Missing / Introduced with this Idea.__
 
-e.g.  `{ opt? :: Int }`
+- `?` optional arguments in an AttrSet.
 
-Note: The `name` side contains the `?` operator.
+e.g.  `{ opt :: ? Int }`
+
+- `|` syntactic `Or` can be used for: `Enum`, `OneOf`, `Either`
+
+e.g.  `{ opt :: Int | String | Path }`
+
+
+Note: The `type` side contains the `?` operator.
 
 :construction:
