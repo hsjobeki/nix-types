@@ -62,7 +62,7 @@ I'd like to have the same comfort beeing used in nixos modules, as automatic doc
 
 The goal: __Make all typings; outputs or doc-strings consistent__
 
-Which will allow for easier indexing and automated processing, such as documentation or linting.
+Which will allow for easier indexing and automated processing.
 
 ## Types
 
