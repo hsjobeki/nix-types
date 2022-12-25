@@ -47,6 +47,17 @@ evaluates to
 
 Which is inconsistent with the abstract type annotations, that i like more.
 
+Also writing type comments is very tideous and those comments can drift over time, and at one point they might describe not exctly what is going on.
+
+I'd like to have the same comfort beeing used in nixos modules, as automatic documentation. Plus the convention of abstract types, that can acutally be used in a lot of enhancing tools.
+
+- (Statically) Checking correctness of code
+- Linting
+- Documentation
+- Indexing
+- Safe usage of APIs
+- etc.
+
 ## Convention
 
 The goal: __Make all typings; outputs or doc-strings consistent__
