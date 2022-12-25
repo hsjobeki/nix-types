@@ -197,3 +197,17 @@ e.g.  `{ opt :: Int | String | Path }`
 Note: The `type` side contains the `?` operator.
 
 :construction:
+
+## What needs to change
+
+Until there are real types in nix. Some things need to change.
+
+1. There are different names describing the same type in those two worlds. (e.g. Package vs. StorePath vs Derivation)
+
+Clearify how those types work together and if they are the same, or subsets of each another.
+
+2. Replace duplicate types, with the same name with the 'real' type. (I would favor the exiting mkOption types) and remove all duplicates in type strings.
+
+Add `lint doc-types` to gh-actions. -> This requires some sort of parser, where everything it doesnt accept is an invalid doc-string
+
+3. Add missing types. (Maybe we need to compose or create new types)
