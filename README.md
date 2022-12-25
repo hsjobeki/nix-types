@@ -1,8 +1,12 @@
 # nix-types
 
-This project will induce some *convention* on the current typing system in nix.
+While `types` are great. This doesnt introduce any types into nix.
+
+This project aims to induce some *convention* on the current typing system in nix.
 
 Although nix doesn't have a type system, it has types. (See [here](https://nixos.org/manual/nix/stable/language/values.html))
+
+Because there are different ways for developers to express typings they are very inconsitent.
 
 There are multiple ways to document a type:
 
