@@ -95,12 +95,13 @@ Until there are real types in nix. Some things need to change.
 ## Conventions from the `Type:` doc-strings
 
 1. All notations are `PascalCase`, starting with capital letters.
-2. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
-3. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
-4. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional)
-5. Spaces between Operators (optional)
+2. Types MUST be choosen from the existing list. (see [below](##-List-of-Types) )
+3. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
+4. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
+5. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional)
+6. Spaces between Operators (optional)
 
-## (incomplete) List of Types.
+## List of Types
 
 > Types from lib/types.nix:
 
