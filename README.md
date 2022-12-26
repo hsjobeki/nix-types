@@ -20,13 +20,15 @@ There are multiple ways to document a type:
 
 ## Abstract
 
+![type-system](./Types.drawio.svg)
+
 Type systems are good:
 
 - A good type-system can proof correctness of code at compile time.
 - Additional benefits through linting, self-documenting, etc.
 
 Thats why I decided to give it a try. At least to clearify the conventions of the current type system.
-
+And introduce a really consistent and reliable `intermediate representation`  of types in nix
 In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments.
 
 e.g.
