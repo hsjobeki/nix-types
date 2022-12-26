@@ -18,6 +18,10 @@ There are multiple ways to document a type:
   - checked
   - only works for nixOS-Modules.
 
+:construction: :construction: Any help welcome! :construction: :construction: 
+
+
+
 ## Abstract
 
 ![type-system](./Types.drawio.svg)
@@ -66,11 +70,29 @@ The goal: __Make all typings; outputs or doc-strings consistent__
 
 Which will allow for easier indexing and automated processing.
 
-## Types
+## What needs to change
 
-1. All notations are `PascalCase`, starting with capital letters.
+Until there are real types in nix. Some things need to change.
 
-Format: Standard Notation - Name
+1. There are different names / aliases describing the same type in those two worlds. 
+
+ - `Package` vs. `StorePath` vs `Derivation` ?
+ - `a`,`b`,`c` vs `Any` ?
+ - `List` vs `[]`
+ - `AttrSet` vs `{}`
+
+> Clearify how those types work together and if they are the same, or subsets of each another.
+
+2. Replace duplicate types, with the same name with the 'real' type. (I would favor the exiting mkOption types) and remove all duplicates in type strings.
+
+> Add `lint doc-types` to gh-actions. 
+> Requires some sort of parser, where everything it doesnt accept is an invalid doc-string
+
+3. Add missing types. (Maybe we need to compose or create new types)
+
+- tbd. ?
+
+## (incomplete) List of Types.
 
 > Types from lib/types.nix:
 
@@ -198,26 +220,12 @@ e.g.  `{ opt :: Int | String | Path }`
 
 Note: The `type` side contains the `?` operator.
 
-:construction:
+## Conventions from the `Type:` doc-strings
 
-## What needs to change
+1. All notations are `PascalCase`, starting with capital letters.
+2. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
+3. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
+4. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional)
+5. Spaces between Operators (optional)
 
-Until there are real types in nix. Some things need to change.
 
-1. There are different names / aliases describing the same type in those two worlds. 
-
- - `Package` vs. `StorePath` vs `Derivation` ?
- - `a`,`b`,`c` vs `Any` ?
- - `List` vs `[]`
- - `AttrSet` vs `{}`
-
-> Clearify how those types work together and if they are the same, or subsets of each another.
-
-2. Replace duplicate types, with the same name with the 'real' type. (I would favor the exiting mkOption types) and remove all duplicates in type strings.
-
-> Add `lint doc-types` to gh-actions. 
-> Requires some sort of parser, where everything it doesnt accept is an invalid doc-string
-
-3. Add missing types. (Maybe we need to compose or create new types)
-
-- ?
