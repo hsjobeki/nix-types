@@ -95,11 +95,12 @@ Until there are real types in nix. Some things need to change.
 ## Conventions from the `Type:` doc-strings
 
 1. All notations are `PascalCase`, starting with capital letters.
-2. Types MUST be choosen from the existing list. (see [below](##-List-of-Types) )
-3. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
-4. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
-5. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional)
-6. Spaces between Operators (optional)
+2. Types MUST be choosen from the existing list. (see [below](#List-of-Types) )
+3. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
+4. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
+5. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
+6. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) `{ key :: Any }`
+7. Spaces between Operators (optional)
 
 ## List of Types
 
@@ -186,7 +187,7 @@ Until there are real types in nix. Some things need to change.
 - CoercedTo - Either value of type `coercedType` or `finalType`
 - Unique - Value of given type but with no merging  (i.e. `uniq list`s are not concatenated)
 
-Operators
+## List of Operators
 
 __All Operators SHOULD be used with surrounding whitespaces.__
 
