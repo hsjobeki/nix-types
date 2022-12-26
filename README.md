@@ -6,7 +6,7 @@ This project aims to induce some *convention* on the current typing system in ni
 
 Although nix doesn't have a type system, it has types. (See [here](https://nixos.org/manual/nix/stable/language/values.html))
 
-Because there are different ways for developers to express typings they are very inconsitent.
+Because there are different ways for developers to express typings they are very inconsistent.
 
 There are multiple ways to document a type:
 
