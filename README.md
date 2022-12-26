@@ -75,8 +75,6 @@ I'd like to have the same comfort beeing used in nixos modules, as automatic doc
 
 The goal: __Make all typings; outputs or doc-strings consistent__
 
-Which will allow for easier indexing and automated processing.
-
 ## What needs to change
 
 Until there are real types in nix. Some things need to change.
