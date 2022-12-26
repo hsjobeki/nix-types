@@ -53,7 +53,14 @@ evaluates to
 
 Which is inconsistent with the abstract type annotations, that i like more.
 
+Consitent format would be:
+
+``` [ String ] ```
+
+So I'd like to enhance the `mkOption` (more explizitly the underlying `types` and ``mkOptionType`).
+
 Also writing type comments is very tideous and those comments can drift over time, and at one point they might describe not exctly what is going on.
+So enhancing nixos modules and improving documentation system on that `self-documenting` system seems really beneficial to me. 
 
 I'd like to have the same comfort beeing used in nixos modules, as automatic documentation. Plus the convention of abstract types, that can acutally be used in a lot of enhancing tools.
 
