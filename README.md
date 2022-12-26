@@ -92,6 +92,14 @@ Until there are real types in nix. Some things need to change.
 
 - tbd. ?
 
+## Conventions from the `Type:` doc-strings
+
+1. All notations are `PascalCase`, starting with capital letters.
+2. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
+3. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
+4. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional)
+5. Spaces between Operators (optional)
+
 ## (incomplete) List of Types.
 
 > Types from lib/types.nix:
@@ -219,13 +227,5 @@ e.g.  `{ opt :: Int | String | Path }`
 
 
 Note: The `type` side contains the `?` operator.
-
-## Conventions from the `Type:` doc-strings
-
-1. All notations are `PascalCase`, starting with capital letters.
-2. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
-3. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
-4. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional)
-5. Spaces between Operators (optional)
 
 
