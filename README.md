@@ -86,8 +86,12 @@ Until there are real types in nix. Some things need to change.
 
 > Clearify how those types work together and if they are the same, or subsets of each another.
 
-### Replace duplicate types, with the same name with the 'real' type. (I would favor the exiting mkOption types) and remove all duplicates in type strings.
+### Replace duplicate types
 
+__I would favor the exiting mkOption types and create consistent outputs of them. Following the existing `convention`__
+
+- `types.str` vs `String`
+- `types.unspecified` vs `Any`
 - `a`,`b`,`c` vs `Any` ?
 - `List` vs `[]`
 - `AttrSet` vs `{}`
