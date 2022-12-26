@@ -1,6 +1,6 @@
 # nix-types
 
-While `types` are great. This doesnt introduce any types into nix.
+__Disclaimer: While `types` are great. This doesnt introduce any types into nix.__
 
 This project aims to induce some *convention* on the current typing system in nix.
 
