@@ -113,7 +113,7 @@ Maybe we need to compose or create new types
 1. All notations are `PascalCase`, starting with capital letters.
 2. Types MUST be choosen from the existing list. (see [below](#List-of-Types) )
 3. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
-4. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
+4. `AttrSet` is curently an alias for `{ Any }`, same for `List` -> `[ Any ]`, -> Deprecate the Keyword and force users to explicitly type what goes inside.
 5. Single letters `a`, `b`, `c` are an alias for `Any`, while they carry more informations. `# type: foo :: [a] -> (a -> b) -> [b]` (I'd like to deprectate the `Any` keyword) and use those letters instead.
 6. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
 7. Spaces between Operators (optional) 
