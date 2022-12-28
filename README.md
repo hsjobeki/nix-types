@@ -115,7 +115,7 @@ Maybe we need to compose or create new types
 3. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
 4. `AttrSet` is an alias for `{ Any }`, same for `List` -> `[ Any ]`
 5. Single letters `a`, `b`, `c` are an alias for `Any` (while they carry more informations)
-6. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } // type: { foo :: Any }`
+6. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
 7. Spaces between Operators (optional)
 
 ## List of Types
