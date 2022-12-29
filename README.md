@@ -20,7 +20,16 @@ There are multiple ways to document a type:
 
 :construction: :construction: Any help welcome! :construction: :construction: 
 
+Scope:
 
+- Clarify and unify typing annotations.
+- provide the same for nixos modules
+- compatibility and extensability by e.g. 'nil' for linting /  or documentation generators.
+
+__Not__ in scope:
+
+- real types 
+- type inference
 
 ## Abstract
 
