@@ -266,26 +266,15 @@ foo = inp:
 #...
 ```
 
-### `${}` Usage of Types on lhs of expressions
+### `${}` Usage of variables on lhs of expressions
 
-e.g.  `{ ${String} :: String }`
+sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` represent.
 
-nested set with name hints:
-
-```
-{ 
-  ${name :: String} :: {
-    ${version :: String} :: Derivation
-  }
-}
-
-```
+e.g.  `{ ${name} :: String }`
 
 As in AttrSets the lhs is always a `String`
 
-the user can omit the ``String` Keyword completely
-
-so the example above becomes
+the user can omit the `String` Keyword completely
 
 ```
 { 
@@ -293,7 +282,6 @@ so the example above becomes
     ${version} :: Derivation
   }
 }
-
 ```
 
 which is very close to plain nix
@@ -361,7 +349,7 @@ advanced:
 
 ```
 /*
-  Type: foo :: [ { bar :: <T>, baz :: String} ] -> { ${String} :: <T> }
+  Type: foo :: [ { bar :: <T>, baz :: String} ] -> { ${name} :: <T> }
 */
 foo = inp:
 #...
