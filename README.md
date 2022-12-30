@@ -244,27 +244,27 @@ e.g. `{ key :: Any }`
 
 __Missing / Introduced with this Idea.__
 
-- `?` optional arguments in an AttrSet.
+### `?` optional arguments in an AttrSet.
 
 e.g.  `{ opt :: ? Int }`
 
 Note: The `type` side contains the `?` operator.
 
-- `|` syntactic `Or` can be used for: `Enum`, `OneOf`, `Either`
+### `|` syntactic `Or` can be used for: `Enum`, `OneOf`, `Either`
 
 e.g.  `{ opt :: Int | String | Path }`
 
-- `${}` Usage of Types on lhs of expressions
+### `${}` Usage of Types on lhs of expressions
 
 e.g.  `{ ${String} :: String }`
 
-- `Self` new type that allows recursion in types
+### `Self` new type that allows recursion in types
 
 e.g. `{ name :: String, children :: Self | {} }`
 
 which will allow to specify recursive types.
 
-- alias bindings
+### alias bindings
 
 e.g. 
 
@@ -286,7 +286,7 @@ Those bindings should be scoped with an usefull mechanism, which could be:
 - Declaration block
 - Same scope as refenced function binding has
 
-- `...` - arbitrary input values
+### `...` - arbitrary input values
 
 e.g. 
 
