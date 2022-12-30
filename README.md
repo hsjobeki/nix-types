@@ -254,7 +254,7 @@ Note: The `type` side contains the `?` operator.
 
 e.g.  `{ opt :: Int | String | Path }`
 
-- ${} Usage of Types on lhs of expressions
+- `${}` Usage of Types on lhs of expressions
 
 e.g.  `{ ${String} :: String }`
 
