@@ -270,7 +270,19 @@ foo = inp:
 
 sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` represent.
 
-e.g.  `{ ${name} :: String }`
+
+```
+/*
+type: { ${name} :: String }
+*/
+{
+  "mike" = "foo";
+  "lilly" = "bar";
+  "andy" = "baz";
+  #...
+}
+```
+
 
 As in AttrSets the lhs is always a `String`
 
