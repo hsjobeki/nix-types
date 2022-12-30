@@ -298,6 +298,11 @@ so the example above becomes
 
 which is very close to plain nix
 
+### `{}` is an empty AttrSet explizitly
+
+e.g. `{ empty :: {} }`
+
+passing so is needed sometimes.
 
 ### `Self` new type that allows recursion in types
 
