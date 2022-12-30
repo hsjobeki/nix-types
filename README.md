@@ -270,6 +270,17 @@ foo = inp:
 
 e.g.  `{ ${String} :: String }`
 
+nested set with name hints:
+
+```
+{ 
+  ${name :: String} :: {
+    ${version :: String} :: Derivation
+  }
+}
+
+```
+
 ### `Self` new type that allows recursion in types
 
 e.g. `{ name :: String, children :: Self | {} }`
