@@ -252,7 +252,19 @@ Note: The `type` side contains the `?` operator.
 
 ### `|` syntactic `Or` can be used for: `Enum`, `OneOf`, `Either`
 
-e.g.  `{ opt :: Int | String | Path }`
+e.g.  
+
+`{ opt :: Int | String | Path }`
+
+or more advanced:
+
+```
+/*
+  Type: foo :: { pname :: String, version :: String} | { name :: String } -> Derivation
+*/
+foo = inp:
+#...
+```
 
 ### `${}` Usage of Types on lhs of expressions
 
@@ -297,4 +309,31 @@ e.g.
 foo = {bar, ...}@inp:
 #...
 ```
+
+### `<>` Parametrized 
+
+simple:
+
+```
+/*
+  Type: foo :: <T> -> <T>
+*/
+foo = inp: inp
+```
+
+Type generic to indicate that the return type depends on the input type.
+
+advanced:
+
+```
+/*
+  Type: foo :: [ { bar :: <T>, baz :: String} ] -> { ${String} :: <T> }
+*/
+foo = inp:
+#...
+```
+
+> I am not sure yet if this addition of complexity is a good idea
+
+
 
