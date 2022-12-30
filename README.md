@@ -248,11 +248,53 @@ __Missing / Introduced with this Idea.__
 
 e.g.  `{ opt :: ? Int }`
 
+Note: The `type` side contains the `?` operator.
+
 - `|` syntactic `Or` can be used for: `Enum`, `OneOf`, `Either`
 
 e.g.  `{ opt :: Int | String | Path }`
 
+- ${} Usage of Types on lhs of expressions
 
-Note: The `type` side contains the `?` operator.
+e.g.  `{ ${String} :: String }`
 
+- `Self` new type that allows recursion in types
+
+e.g. `{ name :: String, children :: Self | {} }`
+
+which will allow to specify recursive types.
+
+- alias bindings
+
+e.g. 
+
+```nix
+
+/*
+ Type: Car :: { wheels :: Number, color: String }
+ Type: foo :: { car :: Car } -> Any
+*/
+foo = {car}: 
+# ...
+
+```
+
+Those bindings should be scoped with an usefull mechanism, which could be:
+
+- File wide
+- Project wide
+- Declaration block
+- Same scope as refenced function binding has
+
+- `...` - arbitrary input values
+
+e.g. 
+
+```
+/*
+  Type: foo :: { bar:: Any, ...} -> Any
+*/
+foo = {bar, ...}@inp:
+#...
+```
 
