@@ -281,6 +281,24 @@ nested set with name hints:
 
 ```
 
+As in AttrSets the lhs is always a `String`
+
+the user can omit the ``String` Keyword completely
+
+so the example above becomes
+
+```
+{ 
+  ${name} :: {
+    ${version} :: Derivation
+  }
+}
+
+```
+
+which is very close to plain nix
+
+
 ### `Self` new type that allows recursion in types
 
 e.g. `{ name :: String, children :: Self | {} }`
