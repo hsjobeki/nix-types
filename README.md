@@ -62,7 +62,7 @@ evaluates to
 
 Which is inconsistent with the abstract type annotations, that i like more.
 
-Consitent format would be:
+Consistent format would be:
 
 ``` [ String ] ```
 
@@ -97,7 +97,7 @@ Until there are real types in nix. Some things need to change.
 
 ### Replace duplicate types
 
-__I would favor the exiting mkOption types and create consistent outputs of them. Following the existing `convention`__
+__I would favor the existing mkOption types and create consistent outputs of them. Following the here proposed `convention`__
 
 - `types.str` vs `String`
 - `types.unspecified` vs `Any`
