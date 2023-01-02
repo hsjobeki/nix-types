@@ -46,7 +46,10 @@ __Not__ in scope:
 
 - real types 
 - type inference
-- backwards compatibility (Better system, less errors)
+- backwards compatibility 
+  - There is no existing system on static typings, so we can and should break toolchains that rely on the current system.
+  - We should provide alternatives and arguments for a change.
+  - Better system, less errors
 - dynamic types (e.g failures in mkOptions, like `types.package` )
 
 ## Abstract
