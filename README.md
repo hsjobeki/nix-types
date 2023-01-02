@@ -298,15 +298,18 @@ e.g. `{ name :: String, children :: Self | {} }`
 
 which will allow to specify recursive types.
 
-### alias bindings
+### Type bindings:
+
+Convention: As types always start with Capital letters; Type bindings also start with capital letters.
 
 e.g. 
 
 ```nix
 
 /*
- Type: Car :: { wheels :: Number, color: String }
- Type: foo :: { car :: Car } -> Any
+ Type: 
+   foo :: { car :: Car } -> Any
+   Car :: { wheels :: Number, color: String }
 */
 foo = {car}: 
 # ...
