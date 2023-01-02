@@ -8,17 +8,27 @@ Although nix doesn't have a type system, it has types. (See [here](https://nixos
 
 Because there are different ways for developers to express typings they are very inconsistent.
 
+Generally there are two possible type systems:
+
+- __Static__
+  checked during 'compile' time (development time)
+  
+  
+- __Dynamic__
+  checked at runtime (when the child is already dead you will detect it)
+
+
 There are multiple ways to document a type:
 
 - With `Type:` comments.
   - unchecked ❎
-  - could be source for static analysis, but LANGUAGE RULES are missing
+  - could be source for __static__ analysis, but LANGUAGE RULES are missing
   - parsed by custom tooling to generate documentation.
 
 - With `nixos modules`. (`mkOption`)
   - checked ✔️
   - dynamic type checking. (another world, leave it for now please ;) )
-  - has no outputs for static analysis at all.
+  - __has no outputs for static analysis at all.__
   - automatic documentation (possible, could be better)
   - only works for nixOS-Modules.
 
