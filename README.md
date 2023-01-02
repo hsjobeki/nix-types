@@ -40,6 +40,12 @@ Type systems are good:
 - A good type-system can proof correctness of code at compile time.
 - Additional benefits through linting, self-documenting, etc.
 
+__`doc-strings` are the last possible solution in my opinion. Because they dont alter the nix language itself, but allow for static type checking from external tools. (like `nil`)__
+
+Typing in docstrings has been done in `javascript` and is currently under construction in the newest version, to be fully compatible with typescript.
+Also Python has made the same approach, with type annotations, but they are one, or more steps further than the current nix ecosystem is.
+No nix developer want to compare himself with javascript, but the truth is, that the typing system in untyped javascript is nowadays way better than in nix.
+
 Thats why I decided to give it a try. At least to clearify the conventions of the current type system.
 And introduce a really consistent and reliable `intermediate representation`  of types in nix
 In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments.
