@@ -46,6 +46,7 @@ __Not__ in scope:
 
 - real types 
 - type inference
+- backwards compatibility (Better system, less errors)
 - dynamic types (e.g failures in mkOptions, like `types.package` )
 
 ## Abstract
