@@ -11,11 +11,15 @@ Because there are different ways for developers to express typings they are very
 There are multiple ways to document a type:
 
 - With `Type:` comments.
-  - unchecked
+  - unchecked ❎
+  - could be source for static analysis, but LANGUAGE RULES are missing
   - parsed by custom tooling to generate documentation.
 
-- With `mkOption`.
-  - checked
+- With `nixos modules`. (`mkOption`)
+  - checked ✔️
+  - dynamic type checking. (another world, leave it for now please ;) )
+  - has no outputs for static analysis at all.
+  - automatic documentation (possible, could be better)
   - only works for nixOS-Modules.
 
 :construction: :construction: Any help welcome! :construction: :construction: 
