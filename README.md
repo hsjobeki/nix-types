@@ -50,42 +50,6 @@ Thats why I decided to give it a try. At least to clearify the conventions of th
 And introduce a really consistent and reliable `intermediate representation`  of types in nix
 In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments.
 
-e.g.
-
-`assertMsg :: Bool -> String -> Bool`
-
-This is a very good, abstract, haskell inspired `type annotation`.
-
-However with `mkOption` there is `nixosOptionsDoc`. Which can be used to generate self describing types from `mkOption` generated `options`
-
-In that world
-
-```listOf str```
-
-evaluates to
-
-``` "list of string" ```
-
-Which is inconsistent with the abstract type annotations, that i like more.
-
-Consistent format would be:
-
-``` [ String ] ```
-
-So I'd like to enhance the `mkOption` (more explizitly the underlying `types` and `mkOptionType`).
-
-Also writing type comments is very tideous and those comments can drift over time, and at one point they might describe not exctly what is going on.
-So enhancing nixos modules and improving documentation system on that `self-documenting` system seems really beneficial to me. 
-
-I'd like to have the same comfort beeing used in nixos modules, as automatic documentation. Plus the convention of abstract types, that can acutally be used in a lot of enhancing tools.
-
-- (Statically) Checking correctness of code
-- Linting
-- Documentation
-- Indexing
-- Safe usage of APIs
-- etc.
-
 ## Convention
 
 The goals:
@@ -408,5 +372,46 @@ foo = inp:
 
 > I am not sure yet if this addition of complexity is a good idea
 
+## About the modules (nixos modules)
+
+nixos modules typing system is dynamically evaluated. It misses (like everyting else) __static__ analysis possibilities.
+
+With the power of both worlds, static & dynamic, nix developers should be able to get high quality code up and running more reliable, faster and with less brainload. So developers can focus on more important parts of their nix applications.
+
+The module system can provide both type checking, automated documentation (via `nixosOptionsDoc`) and potentially with this project; __Static type checking__ 
+
+### Potential Impact
+
+Writing type comments is very tideous and those comments can drift over time, and at one point they might describe not exctly what is going on.
+So enhancing nixos modules and improving documentation system on that `self-documenting` system seems really beneficial to me. 
+
+I'd like to have the same comfort beeing used in nixos modules, as automatic documentation. Plus the convention of abstract types, that can acutally be used in a lot of enhancing tools.
+
+Writing a nixos module, should yield the same abtract `intermediate format` described in the previous chapters.
+
+So the same tools can process nixos modules, without great additions, or the need for a second parser.
+
+
+### Consistency
+
+`assertMsg :: Bool -> String -> Bool`
+
+This is a very good, abstract, haskell inspired `type annotation`.
+
+However with `mkOption` there is `nixosOptionsDoc`. Which can be used to generate self describing types from `mkOption` generated `options`
+
+In that world
+
+```listOf str```
+
+evaluates to
+
+``` "list of string" ```
+
+Which is inconsistent with the abstract type annotations, that i like more.
+
+Consistent format would be:
+
+``` [ String ] ```
 
 
