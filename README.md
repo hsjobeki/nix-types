@@ -17,7 +17,7 @@ Generally there are two possible type systems:
 - __Dynamic__
   checked at runtime. 
   While the programm runs and fails, errors will abort execution, until handled specifically.
-  In other words: The child is already dead and will be detected.
+  In other words: The code is already wrong and will be detected, by the user who runs the programm.
 
 
 There are multiple ways to document a type:
