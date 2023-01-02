@@ -268,25 +268,13 @@ foo = inp:
 
 ### `${}` Usage of variables on lhs of expressions
 
-sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` represent.
-
-
-```
-/*
-type: { ${name} :: String }
-*/
-{
-  "mike" = "foo";
-  "lilly" = "bar";
-  "andy" = "baz";
-  #...
-}
-```
-
-
 As in AttrSets the lhs is always a `String`
 
-the user can omit the `String` Keyword completely
+the user can omit the `String` Keyword completely, and instead give context on the meaning.
+
+sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` represent.
+
+e.g.
 
 ```
 { 
