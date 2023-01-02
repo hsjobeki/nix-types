@@ -322,11 +322,48 @@ Those bindings should be scoped with an usefull mechanism, which could be:
 
 ### `...` - arbitrary input values
 
+> What typings do we need `for {...}@inp:` ?
+
+Proposal 1:
+
+add `...` to the __Operators__
 e.g. 
 
 ```
 /*
   Type: foo :: { bar:: Any, ...} -> Any
+*/
+foo = {bar, ...}@inp:
+#...
+```
+
+Proposal 2:
+
+use existing techniques
+
+```
+/*
+  Type: foo :: { bar:: Any, ${rest} :: Any } -> Any
+*/
+foo = {bar, ...}@inp:
+#...
+```
+
+Proposal 3:
+
+like proposal 2, but with a type alias for `${rest} :: Any`
+
+with 
+
+```
+  Rest :: ${rest} :: Any 
+```
+
+becomes 
+
+```
+/*
+  Type: foo :: { bar:: Any, Rest } -> Any
 */
 foo = {bar, ...}@inp:
 #...
