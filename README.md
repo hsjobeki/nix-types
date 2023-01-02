@@ -11,11 +11,13 @@ Because there are different ways for developers to express typings they are very
 Generally there are two possible type systems:
 
 - __Static__
-  checked during 'compile' time (development time)
-  
+  checked during 'compile' time or development time. 
+  So errors can be caught while writing code.
   
 - __Dynamic__
-  checked at runtime (when the child is already dead you will detect it)
+  checked at runtime. 
+  While the programm runs and fails, errors will abort execution, until handled specifically.
+  In other words: The child is already dead and will be detected.
 
 
 There are multiple ways to document a type:
