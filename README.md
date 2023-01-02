@@ -88,7 +88,12 @@ I'd like to have the same comfort beeing used in nixos modules, as automatic doc
 
 ## Convention
 
-The goal: __Make all typings; outputs or doc-strings consistent__
+The goals:
+
+- __Make all typings (doc-strings) consistent__.
+- all docstrings can be parsed and add value to developers day to day experience.
+- nixos modules follow the convention and can be used within that system.
+- some first tools adopt and use the convention. (nixpkgs, nil, statix, documentation, etc.)
 
 ## What needs to change
 
