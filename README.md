@@ -1,5 +1,7 @@
 # nix-types
 
+## :construction: :construction: Any help welcome! :construction: :construction: 
+
 __Disclaimer: While `types` are great. This doesnt introduce any types into nix.__
 
 This project aims to induce some *convention* on the current typing system in nix.
@@ -34,18 +36,17 @@ There are multiple ways to document a type:
   - automatic documentation (possible, could be better)
   - only works for nixOS-Modules.
 
-:construction: :construction: Any help welcome! :construction: :construction: 
+Scope: (__Static__ typings via `doc-strings`)
 
-Scope:
-
-- Clarify and unify typing annotations.
+- Clarify and unify typing annotations. 
 - provide the same for nixos modules
-- compatibility and extensability by e.g. 'nil' for linting /  or documentation generators.
+- compatibility and extendability by e.g. 'nil' for linting /  or documentation generators.
 
 __Not__ in scope:
 
 - real types 
 - type inference
+- dynamic types (e.g failures in mkOptions, like `types.package` )
 
 ## Abstract
 
