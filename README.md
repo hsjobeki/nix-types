@@ -412,6 +412,24 @@ Writing a nixos module, should yield the same abtract `intermediate format` desc
 
 So the same tools can process nixos modules, without great additions, or the need for a second parser.
 
+### Connect dynamic and static typings
+
+As the __dynamic types__ and __static types__ are very different the need to be connected somehow.
+
+I propose the following:
+
+#### Mapping of Dynamic types into Static types.
+
+As the dynamic types already exist, that initial mapping should be done. In the dynamic world the same type may have a different name.
+
+e.g. `Derivation` vs `Package` (they are not the same ?!)
+
+#### Deal with leftovers
+
+As both worlds are joined, there might be __leftovers__ which cannot be mapped from one world into the other.
+
+We need a solution for them or just let them unhandled.
+
 
 ### Consistency
 
