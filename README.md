@@ -288,15 +288,25 @@ e.g. `{ empty :: {} }`
 
 passing so is needed sometimes.
 
-### `Self` new type that allows recursion in types
+### `"` Literal type
 
-e.g. `{ name :: String, children :: Self | {} }`
+Literals are strings, of specififc values.
 
-which will allow to specify recursive types.
+e.g. `{ foo :: "bar" }` specifies the name `foo` to be only of value "bar"
+
+```
+{
+  foo = "bar";
+}
+```
+
+This can be usefull for constant fields, which are always the same across specififc types.
 
 ### Type bindings:
 
 Convention: As types always start with Capital letters; Type bindings also start with capital letters.
+
+Binding types to names will allow to specify recursive types, which is required for many structures in nix.
 
 e.g. 
 
