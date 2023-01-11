@@ -1,4 +1,4 @@
-meet us on matrix: https://matrix.to/#/#nix-types:matrix.org
+discuss with us on matrix: https://matrix.to/#/#nix-types:matrix.org
 
 # nix-types
 
