@@ -1,3 +1,5 @@
+meet us on matrix: https://matrix.to/#/#nix-types:matrix.org
+
 # nix-types
 
 ## :construction: :construction: Any help welcome! :construction: :construction: 
