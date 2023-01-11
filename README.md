@@ -314,10 +314,9 @@ e.g.
 
 /*
  Type: 
-   foo :: { car :: Car } -> Any
-   Car :: { wheels :: Number, color: String }
+   DerivationType ::= { buildInputs :: [ Derivation ] }
+   MkDerivationType ::= DerivationType // { foo :: String, ... } -> Derivation
 */
-foo = {car}: 
 # ...
 
 ```
@@ -340,7 +339,7 @@ e.g.
 
 ```
 /*
-  Type: foo :: { bar:: Any, ...} -> Any
+  Type: foo :: { bar :: Any, ...} -> Any
 */
 foo = {bar, ...}@inp:
 #...
