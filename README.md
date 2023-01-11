@@ -68,7 +68,7 @@ As i am not a type theorist but from my perspective few static types can represe
 
 e.g
 
-| static  	|  dynamic 	|   	
+| static  	|  option types 	|   	
 |---	|---	|	
 | String  	|  String 	|
 | String  	|  CommaSeperatedString 	|
