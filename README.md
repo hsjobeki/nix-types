@@ -140,19 +140,25 @@ Maybe we need to compose or create new types
 
 - tbd. ?
 
-## Conventions from the `Type:` doc-strings
+## basic rules for writing `type:` comments
 
-1. All notations are `PascalCase`, starting with capital letters.
-2. Types MUST be choosen from the existing list. (see [below](#List-of-Types) )
-3. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
-4. `AttrSet` is curently an alias for `{ Any }`, same for `List` -> `[ Any ]`, -> Deprecate the Keyword and force users to explicitly type what goes inside.
-5. Single letters `a`, `b`, `c` are an alias for `Any`, while they carry more informations. `# type: foo :: [a] -> (a -> b) -> [b]` (should we deprectate the `Any` keyword) and use those letters instead.
-6. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
-7. Spaces between Operators (optional) 
+1. `type:` starts the type block. 
 
-## List of Static Types
+The type block is never terminated and expands till to the bottom of the `/* multiline comment */`
 
-## Basic
+This is actually how comments are parsed today.
+
+3. All notations are `PascalCase`, starting with capital letters.
+4. Types MUST be choosen from the existing list. (see [below](#List-of-static-Types) )
+5. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
+6. `AttrSet` is curently an alias for `{ Any }`, same for `List` -> `[ Any ]`, -> Deprecate the Keyword and force users to explicitly type what goes inside.
+7. Single letters `a`, `b`, `c` are an alias for `Any`, while they carry more informations. `# type: foo :: [a] -> (a -> b) -> [b]` (should we deprectate the `Any` keyword) and use those letters instead.
+8. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
+9. Spaces between Operators (optional) 
+
+## List of static Types
+
+### Basic
 
 Bool
 Int
@@ -162,17 +168,17 @@ Path
 Null
 Any
 
-## Nested
+### Nested
 
 - AttrSet `{}`
 - List `[]`
 - Lambda `->`
 
-## Composed Types
+### Composed Types
 
 Number `::= Int | Float`
 
-## Common Aliases
+### Common Aliases
 
 StorePath `::= Path`
 Derivation `::= { # TODO... }`
@@ -190,13 +196,21 @@ __All Operators SHOULD be used with surrounding whitespaces.__
 
 __Existing ones.__
 
-- `::`  type-name seperator.
+- `=` equality operator. Allows for type bindings explained later.
+
+e.g. 
+```
+  type:
+    foo = Any
+```
+
+- `::`  name-type seperator.
 
 e.g. `name :: Any`
 
 - `->` Function
 
-e.g. `function :: Any -> Any`
+e.g. `foo = Any -> Any`
 
 - `()` Parenthesis (not a type itself, only for syntatic grouping)
 
@@ -317,7 +331,7 @@ e.g.
 /*
   Type: foo :: { bar :: Any, ...} -> Any
 */
-foo = {bar, ...}@inp:
+Foo = {bar, ...}@inp:
 #...
 ```
 
@@ -377,6 +391,27 @@ foo = inp:
 ```
 
 > I am not sure yet if this addition of complexity is a good idea
+
+## Some Best practices
+
+- Use the `Type` postfix for creating typing aliases
+- Start with the most abstracted declaration first. 
+- Linebreaks and trailing commas in AttrSets and Lists.
+- Create aliases to reduce complexity if needed.
+- Use type comments wherever possible to increase maintainabilty and discoverabilty for others 
+
+e.g.
+
+```
+
+/*
+  Type:
+    packageSetInfo = {...} -> InfoType
+    InfoType = {foo :: Any, ...}
+*/
+packageSetInfo = attrs: getInfo { inherit attrs; };
+
+```
 
 ## About the modules (nixos modules)
 
