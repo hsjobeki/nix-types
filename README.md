@@ -32,7 +32,7 @@ Generally there are two type systems:
   In other words: The code is already wrong and will be detected, by the user who runs the programm.
 
 The nixos modules system has option types which are dynamic types. In fact nix doesnt have a static type system.
-The scope of this project is to build a static type system, that allows writing doc-strings, that can __1. produce good documentation__ and __2. Parseable type strings__ and later we might refine the type system so it can be used as __3. source for static code analysis__.
+The scope of this project is to build a static type system, that allows writing doc-strings, that can __1. produce good documentation__ and __2. Parseable type strings__ and later we might refine the type system so it can be used as __3. source for static code analysis__, which could allow for linting, and autocompletion through a language server like `nil`.
 
 Currently there are multiple ways to document a type:
 
@@ -150,90 +150,39 @@ Maybe we need to compose or create new types
 6. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
 7. Spaces between Operators (optional) 
 
-## List of Types
+## List of Static Types
 
-> Types from lib/types.nix:
+## Basic
 
-- Any - anything
-- Raw - raw
-- Unspecified - Unspecified
-- Bool - boolean
-- Number - A number (alias int | float)
+Bool
+Int
+Float
+String
+Path
+Null
+Any
 
-    Subtypes:
+## Nested
 
-        between
-        nonnegative
-        positive
+- AttrSet `{}`
+- List `[]`
+- Lambda `->`
 
-        Float - floating point number
+## Composed Types
 
-        Int - signed integer
-            Subtypes:
+Number `::= Int | Float`
 
-                u8
-                u16
-                u32
-                s8
-                s16
-                s32
-                between
-                ign
-                unsign
-                sign
-                port - u16 for a port number
+## Common Aliases
 
-- String - string
-  
-    Subtypes:
-  
-        NonEmptyStr - non-empty string
-        SingleLineStr - single-line string
-        StrMatching - string matching a pattern
+StorePath `::= Path`
+Derivation `::= { # TODO... }`
+Package `::= # TODO..`
 
-        SeparatedString - strings concatenated with a seperator
-            Subtypes:
-                lines - string seperated by `\n`
-                commas - string seperated by `,`
-                envVar - string seperated by `:` 
-        PasswdEntry - subclass of `String` not containing newlines or colons.
 
-- AttrSet - attribute set
-  
-    Subtypes:
+Basically thats all static types that i could find in all `nixpkgs/lib/*` files and i read through all the `type:` annotations.
+Where i spoted many weird nonsense-types and inconsistencies.
 
-        AttrsOf - attribute set of elements
-        lazyAttrsOf - lazy attribute set of elements
-
-- Package - derivations or attribute sets with an `outPath` or `__toString` or StorePath
-
-    Subtypes:
-
-        shellPackage - a package with `shellPath` attribute
-
-- Path - path to location (relative or absolute)
-- ListOf - list of elements
-
-    Subtypes:
-
-        NonEmptyListOf - list containing at least one element
-
-- Null - null
-- Function - function that evaluates to a specific result
-- Submodule - A nixos submodule
-
-    Subtypes:
-
-        DeferredModule - A module to be imported in some other part of the configuration
-        DeferredModuleWith - A module to be imported in some other part of the configuration
-        SubmoduleWith -  A module with specific attributes
-
-- Enum - A value from a set of allowed ones
-- OneOf - Any of the types in the given list
-- Either - Either value of type `t1` or `t2`
-- OptionType - Type of an option type
-- CoercedTo - Either value of type `coercedType` or `finalType`
-- Unique - Value of given type but with no merging  (i.e. `uniq list`s are not concatenated)
+Also the naming of `lib/types.nix` is confusing as that file doesnt contain any usefull types.
 
 ## List of Operators
 
