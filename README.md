@@ -2,6 +2,8 @@ discuss with us on matrix: https://matrix.to/#/#nix-types:matrix.org
 
 # nix-types RFC (draft)
 
+This Draft of an RFC could be the first step to improve how nix is used as a language.
+
 ## :construction: :construction: Any help welcome! :construction: :construction: 
 
 __Disclaimer: While `types` are great. This doesnt introduce any types into nix.__
