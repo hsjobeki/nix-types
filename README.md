@@ -18,7 +18,7 @@ Although nix doesn't have a type system, it has types. (See [here](https://nixos
 
 Because there are different ways for developers to express typings they are very inconsistent.
 
-Generally there are two possible type systems:
+Generally there are two type systems:
 
 - __Static__
   checked during 'compile' time or development time. 
@@ -29,8 +29,10 @@ Generally there are two possible type systems:
   While the programm runs and fails, errors will abort execution, until handled specifically.
   In other words: The code is already wrong and will be detected, by the user who runs the programm.
 
+The nixos modules system has option types which are dynamic types. In fact nix doesnt have a static type system.
+The scope of this project is to build a static type system, that allows writing doc-strings, that can __1. produce good documentation__ and __2. Parseable type strings__ and later we might refine the type system so it can be used as __3. source for static code analysis__.
 
-There are multiple ways to document a type:
+Currently there are multiple ways to document a type:
 
 - With `Type:` comments.
   - unchecked ❎
@@ -44,11 +46,10 @@ There are multiple ways to document a type:
   - automatic documentation (possible, could be better)
   - only works for nixOS-Modules.
 
-Scope: (__Static__ typings via `doc-strings`)
-
+So the necessary steps:
 - Clarify and unify typing annotations. 
-- provide the same for nixos modules
-- compatibility and extendability by e.g. 'nil' for linting /  or documentation generators.
+- provide a mapping of nixos modules option types to the static types.
+- compatibility and extendability by e.g. 'nil' for linting /  or documentation generators. (via AST)
 
 __Not__ in scope:
 
@@ -59,6 +60,22 @@ __Not__ in scope:
   - We should provide alternatives and arguments for a change.
   - Better system, less errors
 - dynamic types (e.g failures in mkOptions, like `types.package` )
+
+## Static types
+
+I propose to build a set of simple yet effective `static types` instead of following the dynamic types from the `option types`.
+As i am not a type theorist but from my perspective few static types can represent a lot of dynamic ones. 
+
+e.g
+
+| static  	|  dynamic 	|   	
+|---	|---	|	
+| String  	|  String 	|
+| String  	|  CommaSeperatedString 	|
+| String  	|  EmptyString 	|
+| String  	|  NonEmptyString 	|
+
+Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma seperated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc` it doesnt matter. Those are only dynamic checks and not real types.
 
 ## Abstract
 
