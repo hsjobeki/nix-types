@@ -1,12 +1,18 @@
 discuss with us on matrix: https://matrix.to/#/#nix-types:matrix.org
 
-# nix-types
+# nix-types RFC (draft)
 
 ## :construction: :construction: Any help welcome! :construction: :construction: 
 
 __Disclaimer: While `types` are great. This doesnt introduce any types into nix.__
 
 This project aims to induce some *convention* on the current typing system in nix.
+
+## Scope
+
+Introduce a convention on how to write doc-strings that have type information in them.
+Currently there is the `type:` pattern which can be parsed from nixdoc. Which is a good start but not enough.
+The goal is to build more accurate type comments and have a consistent convention on what is actually allowed and what is not.  
 
 Although nix doesn't have a type system, it has types. (See [here](https://nixos.org/manual/nix/stable/language/values.html))
 
