@@ -64,34 +64,19 @@ In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are so
 
 The goals:
 
-- __Make all typings (doc-strings) consistent__.
-- all docstrings can be parsed and add value to developers day to day experience.
-- nixos modules follow the convention and can be used within that system.
-- some first tools adopt and use the convention. (nixpkgs, nil, statix, documentation, etc.)
+- __Make all typings (doc-strings) consistent & parseable__.
+- all docstrings can be parsed into an `AST`, which can then be used from external tools.
+- nixos modules follow the convention and can be used within that system. (either provide the same AST directly or doc-strings)
+- some first tools adopt and use the convention. (nil, noogle, documentation, auto-completion in ide's ? , etc.)
 
-## What needs to change
 
-Until there are real types in nix. Some things need to change.
-
-### There are different names / aliases describing the same type in those two worlds. 
-
-- `Package` vs. `StorePath` vs `Derivation` ?
-- `Path` vs `String` (representing a Path)
-
-> Clearify how those types work together and if they are the same, or subsets of each another.
-
-### Add `lint doc-types` to gh-actions. 
+### Parser 
 
 Requires some sort of parser, where everything it doesnt accept is an invalid doc-string
 
 > The Parser could then implement and proof the ruleset and vice versa.
+> 
 > outputs an AST, also described within this Project
-
-### Add missing types
-
-Maybe we need to compose or create new types
-
-- tbd. ?
 
 ## basic rules for writing `type:` comments
 
