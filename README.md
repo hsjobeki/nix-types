@@ -118,21 +118,12 @@ Until there are real types in nix. Some things need to change.
 
 > Clearify how those types work together and if they are the same, or subsets of each another.
 
-### Replace duplicate types
-
-__I would favor the existing mkOption types and create consistent outputs of them. Following the here proposed `convention`__
-
-- `types.str` vs `String`
-- `types.unspecified` vs `Any`
-- `a`,`b`,`c` vs `Any` ?
-- `List` vs `[]`
-- `AttrSet` vs `{}`
-
 ### Add `lint doc-types` to gh-actions. 
 
 Requires some sort of parser, where everything it doesnt accept is an invalid doc-string
 
 > The Parser could then implement and proof the ruleset and vice versa.
+> outputs an AST, also described within this Project
 
 ### Add missing types
 
@@ -142,13 +133,14 @@ Maybe we need to compose or create new types
 
 ## basic rules for writing `type:` comments
 
-1. `type:` starts the type block. 
+1. `type:` starts the type block. Followed by at least one line-break
 
 The type block is never terminated and expands till to the bottom of the `/* multiline comment */`
 
 This is actually how comments are parsed today.
 
-3. All notations are `PascalCase`, starting with capital letters.
+2. Within one block multiple declarations are allowed.
+3. All declarations are `PascalCase`, starting with capital letters.
 4. Types MUST be choosen from the existing list. (see [below](#List-of-static-Types) )
 5. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
 6. `AttrSet` is curently an alias for `{ Any }`, same for `List` -> `[ Any ]`, -> Deprecate the Keyword and force users to explicitly type what goes inside.
@@ -196,14 +188,6 @@ __All Operators SHOULD be used with surrounding whitespaces.__
 
 __Existing ones.__
 
-- `=` equality operator. Allows for type bindings explained later.
-
-e.g. 
-```
-  type:
-    foo = Any
-```
-
 - `::`  name-type seperator.
 
 e.g. `name :: Any`
@@ -229,6 +213,42 @@ e.g. `[ Any ]`
 e.g. `{ key :: Any }`
 
 __Missing / Introduced with this Idea.__
+
+### `=` equality operator. Allows for __type bindings__
+
+Convention: As types always start with Capital letters; Type bindings also start with capital letters.
+
+Binding types to names will allow to specify recursive types, which is required for many structures in nix.
+
+Binding types to intermediate variables makes it harder to see which declaration is related to the actual code.
+
+e.g. 
+
+```nix
+
+/*
+ Type: 
+   DerivationType = { buildInputs :: [ Derivation ], ... }
+   mkDerivation :: DerivationType // { foo :: String, ... } -> Derivation
+*/
+mkDerivation = {pname, version, foo, ...}@args: let
+# ...
+
+```
+
+Those bindings should be scoped with an usefull mechanism, which could be:
+
+- File wide
+- Project wide
+- Declaration block
+- Same scope as refenced function binding has
+
+
+e.g. 
+```
+  type:
+    foo = Any
+```
 
 ### `?` optional arguments in an AttrSet.
 
@@ -292,39 +312,10 @@ e.g. `{ foo :: "bar" }` specifies the name `foo` to be only of value "bar"
 
 This can be usefull for constant fields, which are always the same across specififc types.
 
-### Type bindings:
-
-Convention: As types always start with Capital letters; Type bindings also start with capital letters.
-
-Binding types to names will allow to specify recursive types, which is required for many structures in nix.
-
-e.g. 
-
-```nix
-
-/*
- Type: 
-   DerivationType ::= { buildInputs :: [ Derivation ] }
-   MkDerivationType ::= DerivationType // { foo :: String, ... } -> Derivation
-*/
-# ...
-
-```
-
-Those bindings should be scoped with an usefull mechanism, which could be:
-
-- File wide
-- Project wide
-- Declaration block
-- Same scope as refenced function binding has
-
 ### `...` - arbitrary input values
 
 > What typings do we need `for {...}@inp:` ?
 
-Proposal 1:
-
-add `...` to the __Operators__
 e.g. 
 
 ```
@@ -332,38 +323,6 @@ e.g.
   Type: foo :: { bar :: Any, ...} -> Any
 */
 Foo = {bar, ...}@inp:
-#...
-```
-
-Proposal 2:
-
-use existing techniques
-
-```
-/*
-  Type: foo :: { bar:: Any, ${rest} :: Any } -> Any
-*/
-foo = {bar, ...}@inp:
-#...
-```
-
-Proposal 3:
-
-like proposal 2, but with a type alias for `${rest} :: Any`
-
-with 
-
-```
-  Rest :: ${rest} :: Any 
-```
-
-becomes 
-
-```
-/*
-  Type: foo :: { bar:: Any, Rest } -> Any
-*/
-foo = {bar, ...}@inp:
 #...
 ```
 
