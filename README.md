@@ -173,7 +173,7 @@ A `Number` can be either an `Int` or a `Float` type
 
 - Any `::= [ Any ] | { ... } | Bool | Int | Float | String | Path | Null`
 
-An `Any` can be either of the basic types or a nested type `List` or `AttrSet` of `Any`.
+An `Any` can be either a basic type or a nested type of `Any`
 
 ### Common Aliases
 
