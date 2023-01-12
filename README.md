@@ -168,7 +168,12 @@ This is actually how comments are parsed today.
 ### Composed Types
 
 - Number `::= Int | Float`
+
+A `Number` can be either an `Int` or a `Float` type
+
 - Any `::= [ Any ] | { ... } | Bool | Int | Float | String | Path | Null`
+
+An `Any` can be either of the basic types or a nested type `List` or `AttrSet` of `Any`.
 
 ### Common Aliases
 
