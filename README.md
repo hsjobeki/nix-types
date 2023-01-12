@@ -168,7 +168,7 @@ This is actually how comments are parsed today.
 ### Composed Types
 
 - Number `::= Int | Float`
-- Any `::= [Any] | { ... } | Bool | Int | Float | String | Path | Null`
+- Any `::= [ Any ] | { ... } | Bool | Int | Float | String | Path | Null`
 
 ### Common Aliases
 
