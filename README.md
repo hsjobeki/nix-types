@@ -160,13 +160,13 @@ This is actually how comments are parsed today.
 
 ### Basic
 
-Bool
-Int
-Float
-String
-Path
-Null
-Any
+- Bool
+- Int
+- Float
+- String
+- Path
+- Null
+- Any
 
 ### Nested
 
