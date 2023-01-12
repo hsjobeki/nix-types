@@ -143,7 +143,7 @@ This is actually how comments are parsed today.
 3. All declarations are `PascalCase`, starting with capital letters.
 4. Types MUST be choosen from the existing list. (see [below](#List-of-static-Types) )
 5. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
-6. `AttrSet` is curently an alias for `{ Any }`, same for `List` -> `[ Any ]`, -> Deprecate the Keyword and force users to explicitly type what goes inside.
+6. `AttrSet` is curently an alias for `{ ... }` (explained below), same for `List` -> `[ Any ]`, -> Deprecate the Keyword and force users to explicitly type what goes inside.
 7. Single letters `a`, `b`, `c` are an alias for `Any`, while they carry more informations. `# type: foo :: [a] -> (a -> b) -> [b]` (should we deprectate the `Any` keyword) and use those letters instead.
 8. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
 9. Spaces between Operators (optional) 
