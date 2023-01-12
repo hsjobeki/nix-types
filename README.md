@@ -26,42 +26,7 @@ Generally there are two type systems:
   checked during 'compile' time or development time. 
   So errors can be caught while writing code.
   
-- __Dynamic__
-  checked at runtime. 
-  While the programm runs and fails, errors will abort execution, until handled specifically.
-  In other words: The code is already wrong and will be detected, by the user who runs the programm.
-
-The nixos modules system has option types which are dynamic types. In fact nix doesnt have a static type system.
-The scope of this project is to build a static type system, that allows writing doc-strings, that can __1. produce good documentation__ and __2. Parseable type strings__ and later we might refine the type system so it can be used as __3. source for static code analysis__, which could allow for linting, and autocompletion through a language server like `nil`.
-
-Currently there are multiple ways to document a type:
-
-- With `Type:` comments.
-  - unchecked ❎
-  - could be source for __static__ analysis, but LANGUAGE RULES are missing
-  - parsed by custom tooling to generate documentation.
-
-- With `nixos modules`. (`mkOption`)
-  - checked ✔️
-  - dynamic type checking. (another world, leave it for now please ;) )
-  - __has no outputs for static analysis at all.__
-  - automatic documentation (possible, could be better)
-  - only works for nixOS-Modules.
-
-So the necessary steps:
-- Clarify and unify typing annotations. 
-- provide a mapping of nixos modules option types to the static types.
-- compatibility and extendability by e.g. 'nil' for linting /  or documentation generators. (via AST)
-
-__Not__ in scope:
-
-- real types 
-- type inference
-- backwards compatibility 
-  - There is no existing system on static typings, so we can and should break toolchains that rely on the current system.
-  - We should provide alternatives and arguments for a change.
-  - Better system, less errors
-- dynamic types (e.g failures in mkOptions, like `types.package` )
+  __Does not exist in nix__  
 
 ## Static types
 
@@ -86,17 +51,14 @@ Mainly those are the same `types` from a static perspective because it makes no 
 Type systems are good:
 
 - A good type-system can proof correctness of code at compile time.
-- Additional benefits through linting, self-documenting, etc.
 
-__`doc-strings` are the last possible solution in my opinion. Because they dont alter the nix language itself, but allow for static type checking from external tools. (like `nil`)__
+__`doc-strings` are the best possible solution in my opinion. Because they dont alter the nix language itself, but allow for static type checking from external tools. (like `nil`)__
 
-Typing in docstrings has been done in `javascript` and is currently under construction in the newest version, to be fully compatible with typescript.
-Also Python has made the same approach, with type annotations, but they are one, or more steps further than the current nix ecosystem is.
-No nix developer want to compare himself with javascript, but the truth is, that the typing system in untyped javascript is nowadays way better than in nix.
+With doc-strings we can give first shot, which might not be 100% perfect and doesn't alter the nix language. Building on top of that we can evaluate the type system and show if it represents the code close enough for a second proposal. Then that second proposal could integrate the types into the nix language itself.
 
-Thats why I decided to give it a try. At least to clearify the conventions of the current type system.
+Thats why I decided to give it a try. At least to clearify the conventions of the current type-comment-system.
 And introduce a really consistent and reliable `intermediate representation`  of types in nix
-In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments.
+In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments. And this approach aims to reach high compatibilty with that but also to be intuitive and consistent with the existing language paradigms.
 
 ## Convention
 
