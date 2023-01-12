@@ -174,7 +174,7 @@ The superset of all possible Lists with all possible elements is the following:
 
 `[ Any ]`
 
-A List of a specific Type `T` is that sub-set of the `[ Any ]`-set` that contains only elements of the exact type `T`
+A List of a specific Type `T` is that sub-set of the `[ Any ]`-set that contains only elements of the exact type `T`.
 
 A list can contain no, one or multiple elements of that given type `T`.
 
@@ -245,19 +245,50 @@ packageMap = {
 
 #### Lambda
 
-### Composed Types
+let Lambda `= Any -> Any` the set of all possible lambdas.
+Let the `LHS` of `->` be the `Argument type` of that `lambda` and the `RHS` the return value type.
+
+Then a lambda that takes type `T` and returns type `U` can be declared as the subset of all possible lambdas with both `T` on the `LHS` and type `U` on the RHS.
+
+Let `()` be a semantic group to encapsulate either the LHS or the RHS of a lambda.
+
+then the following lambda notations are possible.
+
+```
+Number -> Number
+
+[ String ] -> ( String -> Number ) -> [ Number ]
+
+(Path -> String) -> { ${name} :: Path } -> { ${name} :: String }
+```
+
+### `|` syntactic `Or` can be used for composition or enums
+
+Let `T` and `U` be different Types.
+Then the `|` operator evaluates to either `T` or `U`.
+
+e.g.  
+
+`{ opt :: Int | String }`
+
+> The evaluation of the `|` operator would happen at compile time in a static type system, but this is not a real static type system therefore the evaluator never actually picks one type.
+
+### Composed Types`
+
+Now with the base defined we can define composed types.
 
 - Number `= Int | Float`
 
 A `Number` can be either an `Int` or a `Float` type.
 
-- Any `= [ Any ] | { ... } | Bool | Int | Float | String | Path | Null` 
-
-{ ${name} :: Bool | Int }
+- Any `= [ Any ] | { ... } | (Any -> Any) | Bool | Int | Float | String | Path | Null` 
 
 An `Any` can be either a basic type or a nested type of `Any`
 
-### Common Aliases
+### more Global Types
+
+Some Types are commonly used within nix and nixpkgs therefore it makes sense to have some more Global Types.
+Those are types defined globally within nix as they are almost always needed.
 
 StorePath `::= Path`
 Derivation `::= { # TODO... }`
@@ -273,33 +304,25 @@ Also the naming of `lib/types.nix` is confusing as that file doesnt contain any 
 
 __All Operators SHOULD be used with surrounding whitespaces.__
 
-__Existing ones.__
+### `::`  declares the type.
 
-- `::`  name-type seperator.
+The variable name on the LHS is declared to have the `type` on the RHS
 
 e.g. `name :: Any`
 
-- `->` Function
+Those declarations can appear only once AND only at the root level of a type block.
 
-e.g. `foo = Any -> Any`
+### `()` Parenthesis (not a type itself, only for syntatic grouping)
 
-- `()` Parenthesis (not a type itself, only for syntatic grouping)
+e.g. `( a -> b ) | Bool`
 
-e.g. `( a -> b ) -> c`
+### `,` Seperator for subseqeuent entries (like in AttrSet)
 
-- `,` Seperator for subseqeuent entries (like in AttrSet)
+e.g. `{ foo :: Any, bar :: Any }`
 
-e.g. `{ a :: Any, b :: Any }`
+### `//` operator to syntactically `merge` Types of AttrSets
 
-- `[]` List
-
-e.g. `[ Any ]`
-
-- `{}` AttrSet
-
-e.g. `{ key :: Any }`
-
-__Missing / Introduced with this Idea.__
+e.g. `{ foo :: String } // { bar :: Any }` => `{ foo :: String, bar :: Any }`
 
 ### `=` equality operator. Allows for __type bindings__
 
@@ -316,7 +339,7 @@ e.g.
 /*
  Type: 
    DerivationAttrs = { buildInputs :: [ Derivation ], ... }
-   MkDerivationAttrs = DerivationAttrs & { buildInputs :: String }
+   MkDerivationAttrs = DerivationAttrs // { buildInputs :: String }
    mkDerivation :: MkDerivationAttrs -> Derivation
 */
 mkDerivation = {pname, version, foo, ...}@args: let
@@ -344,22 +367,6 @@ e.g.  `{ opt :: ? Int }`
 
 Note: The `type` side contains the `?` operator.
 
-### `|` syntactic `Or` can be used for: `Enum`, `OneOf`, `Either`
-
-e.g.  
-
-`{ opt :: Int | String | Path }`
-
-or more advanced:
-
-```
-/*
-  Type: foo :: { pname :: String, version :: String} | { name :: String } -> Derivation
-*/
-foo = inp:
-#...
-```
-
 ### `"` Literal type
 
 Literals are strings, of specififc values.
@@ -376,7 +383,9 @@ This can be usefull for constant fields, which are always the same across specif
 
 ### `...` - arbitrary input values
 
-> What typings do we need `for {...}@inp:` ?
+can only be used within an AttrSet
+
+`...` = `[ String ] :: Any` within in an AttrSet context
 
 e.g. 
 
@@ -387,31 +396,6 @@ e.g.
 Foo = {bar, ...}@inp:
 #...
 ```
-
-### `<>` Parametrized 
-
-simple:
-
-```
-/*
-  Type: foo :: <T> -> <T>
-*/
-foo = inp: inp
-```
-
-Type generic to indicate that the return type depends on the input type.
-
-advanced:
-
-```
-/*
-  Type: foo :: [ { bar :: <T>, baz :: String} ] -> { ${name} :: <T> }
-*/
-foo = inp:
-#...
-```
-
-> I am not sure yet if this addition of complexity is a good idea
 
 ## Some Best practices
 
