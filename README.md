@@ -144,9 +144,8 @@ This is actually how comments are parsed today.
 4. Types MUST be choosen from the existing list. (see [below](#List-of-static-Types) )
 5. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
 6. `AttrSet` and `List` keywords are PROHIBITED. Writers must express explizitly if they want to allow arbitrary values. e.g. `AttrSet` is an alias for `{ ... }` (explained below), same for `List` -> `[ Any ]`
-8. Single letters `a`, `b`, `c` ... `z` are alias for the `Any` type, while they carry more informations the Any keyword SHOULD be avoided. `e.g # type: foo :: [a] -> (a -> b) -> [b]`
-9. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
-10. Spaces between Operators (optional) 
+7. AttrSets definitions should include their keys if they dont accept arbitrary values. `{ foo = bar; } # type: { foo :: Any }`
+8. Spaces between Operators (optional) 
 
 ## List of static Types
 
@@ -161,17 +160,100 @@ This is actually how comments are parsed today.
 
 ### Nested
 
-- AttrSet `{}`
-- List `[]`
-- Lambda `->`
+Nested types MUST always specify their content type.
+
+- AttrSet represented as `{}`
+- List represented as `[]`
+- Lambda represented as `->`
+
+### Usage of nested types
+
+#### List
+
+The superset of all possible Lists with all possible elements is the following: 
+
+`[ Any ]`
+
+A List of a specific Type `T` is that sub-set of the `[ Any ]`-set` that contains only elements of the exact type `T`
+
+A list can contain no, one or multiple elements of that given type `T`.
+
+e.g.
+
+`[ String ]`
+
+`[ Number | Bool ]`
+
+#### AttrSet
+
+declaration of an AttrSet
+
+1. ${ name :: String } `= [ String ]`
+
+or in short form `${name} = [ String ]`
+where `name` is a freely chosable variable to represent the context that the `String` type represents.
+
+2. `::`-operator within `AttrSet` 
+
+The `::`-operator maps every Type of its `left-hand-side` `Iterable` to the `Type` on its `right-hand-side`.
+By doing so it is always assured that an AttrSet has the same amount of `name types` as `value types`.
+
+an Attrset can also be represented as
+
+```nix
+  { [ String ] :: Any } 
+```
+
+__`{}` represents an empty AttrSet explizitly__ 
+
+`{} = { [ String ] :: Any }` where the `[String]` is an empty list
+
+passing empty `AttrSets` is needed sometimes.
+
+__`{ foo :: String }` maps the name of `foo` to value of type `String`
+
+{ [String Number] } `= [Tuple(String, String) Tuple(String, Number)]`
+
+__`${}` Usage of variables on lhs of expressions__
+
+As in AttrSets the lhs is always a `String`
+
+the user can omit the `String` Keyword completely, and instead give context on the meaning.
+
+`${context} = [ String ]`
+
+sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` in that `context` represents.
+
+e.g.
+
+```nix
+/*
+type:
+  packageMap :: { 
+    ${name} :: {
+      ${version} :: Derivation
+    }
+  }
+*/
+packageMap = {
+  "gcc-utils" = {
+    "1.2.3" = builtins.Derivation {...};
+    };
+  # ...
+  };
+```
+
+#### Lambda
 
 ### Composed Types
 
-- Number `::= Int | Float`
+- Number `= Int | Float`
 
-A `Number` can be either an `Int` or a `Float` type
+A `Number` can be either an `Int` or a `Float` type.
 
-- Any `::= [ Any ] | { ... } | Bool | Int | Float | String | Path | Null`
+- Any `= [ Any ] | { ... } | Bool | Int | Float | String | Path | Null` 
+
+{ ${name} :: Bool | Int }
 
 An `Any` can be either a basic type or a nested type of `Any`
 
@@ -233,8 +315,9 @@ e.g.
 
 /*
  Type: 
-   DerivationType = { buildInputs :: [ Derivation ], ... }
-   mkDerivation :: DerivationType // { foo :: String, ... } -> Derivation
+   DerivationAttrs = { buildInputs :: [ Derivation ], ... }
+   MkDerivationAttrs = DerivationAttrs & { buildInputs :: String }
+   mkDerivation :: MkDerivationAttrs -> Derivation
 */
 mkDerivation = {pname, version, foo, ...}@args: let
 # ...
@@ -276,32 +359,6 @@ or more advanced:
 foo = inp:
 #...
 ```
-
-### `${}` Usage of variables on lhs of expressions
-
-As in AttrSets the lhs is always a `String`
-
-the user can omit the `String` Keyword completely, and instead give context on the meaning.
-
-sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` represent.
-
-e.g.
-
-```
-{ 
-  ${name} :: {
-    ${version} :: Derivation
-  }
-}
-```
-
-which is very close to plain nix
-
-### `{}` is an empty AttrSet explizitly
-
-e.g. `{ empty :: {} }`
-
-passing so is needed sometimes.
 
 ### `"` Literal type
 
