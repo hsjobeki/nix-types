@@ -123,9 +123,7 @@ A `LHS` and `RHS`
 Let `U :: T` be a valid usage of the operator.
 Then `U` is the `LHS` parameter and `T` is the `RHS` parameter.
 
-A set `S(T)` contain all elements of the given type `T`.
-
-Then the `::` operator declares a property name called `U` and guarantees `U ∈ S(T)`.
+The `::` operator declares a property name called `U` and declares the type of `U` to be `T`
 It returns an expression of Type `T` that can be used as an input to other operators again.
 
 #### The `()` Operator 
