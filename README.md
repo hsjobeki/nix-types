@@ -180,9 +180,9 @@ Introducing: `[ N :: T ]`-operator, which can only be used within `AttrSet` in `
 
 The `[ N :: T ]`-operator maps over all `member names` of an AttrSet `[N]` and applies the type `T` to each member name `N` if not already done by __explizit member__ declaration (see above).
 
-When there are members with __dynamic names__ it is possible to declare all those entries at once with the `[ N::T ]` and `::` operator.
+When there are AttrSets with __dynamic members__ it is possible to declare all those members at once with the `[ N :: T ]` and `::` operator.
 
-Then an AttrSet with list of __dynamic Name types__ where each name `N` references a __value of type__ `V` can be written as.
+Then an AttrSet with list of __dynamic members__ where each member-name `N` references a __value of type__ `V` can be written as.
 
 ```
   { 
