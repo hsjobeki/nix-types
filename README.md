@@ -201,7 +201,7 @@ __Examples__
 ```
 
 ```
-   {} = { [ name :: String ] :: Any }` 
+   {} 
 ```
 
 where the member names `[ N :: T ] are an empty list.
