@@ -1,18 +1,27 @@
-#️⃣ discuss with us on matrix: https://matrix.to/#/#nix-types:matrix.org #️⃣
-
 # nix-types RFC (draft)
 
 This Draft of an RFC could be the first step to improve how nix is used as a language.
 
 ## :construction: :construction: Any help welcome! :construction: :construction: 
 
+#️⃣ discuss with us on matrix: https://matrix.to/#/#nix-types:matrix.org #️⃣
+
 __Disclaimer: While `types` are great. This doesnt introduce any types into nix.__
 
-This project aims to induce some *convention* on the current typing system in nix.
+My Targets:
+
+- Write down *convention* of the current typing system in nix. (`Type:` doc-stings) 
+
+- Enhance the system so it is possible to type everything in nix using that new system.
+
+- Provide a type-system that could proof correctness of code before runtime.
+
+- Provide a Parser and AST Specification for that type system.
 
 ## Scope
 
-Introduce a convention on how to write doc-strings that have type information in them.
+- Let the convention be so good, that we can parse the `Type:` into an usefull `AST`.
+
 Currently there is the `type:` pattern which can be parsed from nixdoc. Which is a good start but not enough.
 The goal is to build more accurate type comments and have a consistent convention on what is actually allowed and what is not.  
 
@@ -26,46 +35,17 @@ Generally there are two type systems:
   checked during 'compile' time or development time. 
   So errors can be caught while writing code.
   
+  __Does not exist in nix__  
+  
 - __Dynamic__
-  checked at runtime. 
-  While the programm runs and fails, errors will abort execution, until handled specifically.
-  In other words: The code is already wrong and will be detected, by the user who runs the programm.
-
-The nixos modules system has option types which are dynamic types. In fact nix doesnt have a static type system.
-The scope of this project is to build a static type system, that allows writing doc-strings, that can __1. produce good documentation__ and __2. Parseable type strings__ and later we might refine the type system so it can be used as __3. source for static code analysis__, which could allow for linting, and autocompletion through a language server like `nil`.
-
-Currently there are multiple ways to document a type:
-
-- With `Type:` comments.
-  - unchecked ❎
-  - could be source for __static__ analysis, but LANGUAGE RULES are missing
-  - parsed by custom tooling to generate documentation.
-
-- With `nixos modules`. (`mkOption`)
-  - checked ✔️
-  - dynamic type checking. (another world, leave it for now please ;) )
-  - __has no outputs for static analysis at all.__
-  - automatic documentation (possible, could be better)
-  - only works for nixOS-Modules.
-
-So the necessary steps:
-- Clarify and unify typing annotations. 
-- provide a mapping of nixos modules option types to the static types.
-- compatibility and extendability by e.g. 'nil' for linting /  or documentation generators. (via AST)
-
-__Not__ in scope:
-
-- real types 
-- type inference
-- backwards compatibility 
-  - There is no existing system on static typings, so we can and should break toolchains that rely on the current system.
-  - We should provide alternatives and arguments for a change.
-  - Better system, less errors
-- dynamic types (e.g failures in mkOptions, like `types.package` )
+  - Fails execution of code based on conditionals.
+  - Used in `lib/types.nix`
+  - Used in `YANTS`
 
 ## Static types
 
 I propose to build a set of simple yet effective `static types` instead of following the dynamic types from the `option types`.
+
 As i am not a type theorist but from my perspective few static types can represent a lot of dynamic ones. 
 
 e.g
@@ -77,7 +57,7 @@ e.g
 | String  	|  EmptyString 	|
 | String  	|  NonEmptyString 	|
 
-Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma seperated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc` it doesnt matter. Those are only dynamic checks and not real types.
+Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma seperated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc`. Option-Types are only dynamic checks and not real types.
 
 ## Abstract
 
@@ -86,50 +66,32 @@ Mainly those are the same `types` from a static perspective because it makes no 
 Type systems are good:
 
 - A good type-system can proof correctness of code at compile time.
-- Additional benefits through linting, self-documenting, etc.
 
-__`doc-strings` are the last possible solution in my opinion. Because they dont alter the nix language itself, but allow for static type checking from external tools. (like `nil`)__
+__`doc-strings` are the best possible solution in my opinion. Because they dont alter the nix language itself, but allow for static type checking from external tools. (like `nil`)__
 
-Typing in docstrings has been done in `javascript` and is currently under construction in the newest version, to be fully compatible with typescript.
-Also Python has made the same approach, with type annotations, but they are one, or more steps further than the current nix ecosystem is.
-No nix developer want to compare himself with javascript, but the truth is, that the typing system in untyped javascript is nowadays way better than in nix.
+With doc-strings we can give first shot, which might not be 100% perfect and doesn't alter the nix language. Building on top of that we can evaluate the type system and show if it represents the code close enough for a second proposal. Then that second proposal could integrate the types into the nix language itself.
 
-Thats why I decided to give it a try. At least to clearify the conventions of the current type system.
+Thats why I decided to give it a try. At least to clearify the conventions of the current type-comment-system.
 And introduce a really consistent and reliable `intermediate representation`  of types in nix
-In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments.
+In [nipkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments. And this approach aims to reach high compatibilty with that but also to be intuitive and consistent with the existing language paradigms.
 
 ## Convention
 
 The goals:
 
-- __Make all typings (doc-strings) consistent__.
-- all docstrings can be parsed and add value to developers day to day experience.
-- nixos modules follow the convention and can be used within that system.
-- some first tools adopt and use the convention. (nixpkgs, nil, statix, documentation, etc.)
+- __Make all typings (doc-strings) consistent & parseable__.
+- all docstrings can be parsed into an `AST`, which can then be used from external tools.
+- nixos modules follow the convention and can be used within that system. (either provide the same AST directly or doc-strings)
+- some first tools adopt and use the convention. (nil, noogle, documentation, auto-completion in ide's ? , etc.)
 
-## What needs to change
 
-Until there are real types in nix. Some things need to change.
-
-### There are different names / aliases describing the same type in those two worlds. 
-
-- `Package` vs. `StorePath` vs `Derivation` ?
-- `Path` vs `String` (representing a Path)
-
-> Clearify how those types work together and if they are the same, or subsets of each another.
-
-### Add `lint doc-types` to gh-actions. 
+### Parser 
 
 Requires some sort of parser, where everything it doesnt accept is an invalid doc-string
 
 > The Parser could then implement and proof the ruleset and vice versa.
+> 
 > outputs an AST, also described within this Project
-
-### Add missing types
-
-Maybe we need to compose or create new types
-
-- tbd. ?
 
 ## basic rules for writing `type:` comments
 
@@ -143,9 +105,9 @@ This is actually how comments are parsed today.
 3. All declarations are `PascalCase`, starting with capital letters.
 4. Types MUST be choosen from the existing list. (see [below](#List-of-static-Types) )
 5. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
-6. `AttrSet` is curently an alias for `{ Any }`, same for `List` -> `[ Any ]`, -> Deprecate the Keyword and force users to explicitly type what goes inside.
-7. Single letters `a`, `b`, `c` are an alias for `Any`, while they carry more informations. `# type: foo :: [a] -> (a -> b) -> [b]` (should we deprectate the `Any` keyword) and use those letters instead.
-8. AttrSets definitions should include their keys if they dont accept arbitrary values. (optional) ` { foo = bar; } # type: { foo :: Any }`
+6. `AttrSet` and `List` keywords are PROHIBITED. Writers must express explizitly if they want to allow arbitrary values. e.g. `AttrSet` is an alias for `{ ... }` (explained below), same for `List` -> `[ Any ]`
+7. AttrSets definitions should include their keys if they dont accept arbitrary values. `{ foo = bar; } # type: { foo :: Any }`
+8. Type bindings (explained below) are PROHIBITED to choose names from the reserved list (see [below](#List-of-static-Types) )
 9. Spaces between Operators (optional) 
 
 ## List of static Types
@@ -158,61 +120,210 @@ This is actually how comments are parsed today.
 - String
 - Path
 - Null
-- Any
+
+#### The `::` operator
+
+
+The `::` accepts two arguments:
+A `LHS` and `RHS`
+
+Let `U :: T` be a valid usage of the operator.
+Then `U` is the `LHS` parameter and `T` is the `RHS` parameter.
+
+The `::` operator takes a property name called `U` and declares the type of `U` to be `T`
+
+It returns an type-expression that can be used as an input to other operators again.
+
+#### The `()` Operator 
+
+Let `(t)` be a semantic group to give precedence to encapsulated term `t`
+
+When the evaluation of a type happens, the term inside `()` gets evaluated first.
 
 ### Nested
 
-- AttrSet `{}`
-- List `[]`
-- Lambda `->`
+Nested types MUST always specify their content type.
 
-### Composed Types
+- AttrSet represented as `{}`
+- List represented as `[]`
+- Lambda represented as `->`
 
-Number `::= Int | Float`
+#### List
 
-### Common Aliases
+__Definition__
 
-StorePath `::= Path`
-Derivation `::= { # TODO... }`
-Package `::= # TODO..`
+Let `[ Any ]` be a list where the elements of that list do not have any type constraints.
 
+Then a List of a specific Type `[ T ]` is a list where all elements fullfill the type constaint `T`.
 
-Basically thats all static types that i could find in all `nixpkgs/lib/*` files and i read through all the `type:` annotations.
-Where i spoted many weird nonsense-types and inconsistencies.
+A list can contain no, one or multiple elements.`
 
-Also the naming of `lib/types.nix` is confusing as that file doesnt contain any usefull types.
+__Examples__
+
+`[ String ]`
+
+`[ Number | Bool ]`
+
+`[ ]`
+
+#### AttrSet
+
+`::`-operator within `AttrSet` 
+
+The `::`-operator maps the Type of its `RHS` over the `Type` on its `LHS`. It can take an `Iterable` or a `single element` on its LHS.
+
+Within Type-declarations for AttrSets it is possible to declare explizit members of an AttrSet like this.
+
+```
+  {
+    N :: T
+  }
+```
+
+Then `N` is of type `String` and `N` becomes an __explizit member__ of that AttrSet which references a value of type `T`.
+The value of `N` is called the `member name`
+
+Introducing: `[ N :: T ]`-operator, which can only be used within `AttrSet` in `member name` fields.
+
+The `[ N :: T ]`-operator maps over all `member names` of an AttrSet `[N]` and applies the type `T` to each member name `N` if not already done by __explizit member__ declaration (see above).
+
+When there are AttrSets with __dynamic members__ it is possible to declare all those members at once with the `[ N :: T ]` and `::` operator.
+
+Then an AttrSet with list of __dynamic members__ where each member-name `N` references a __value of type__ `V` can be written as.
+
+```
+  { 
+    [ N :: T ] :: V 
+  }
+```
+
+__Examples__
+
+```
+  { [ name :: String ] :: Any, foo :: String }
+```
+
+```
+  { foo :: Any } 
+```
+
+```
+   {} 
+```
+
+where the member names `[ N :: T ] are an empty list.
+
+__useful `${}` Shortcut__
+
+`${N} = [ N :: String ]`
+
+If we take into account that in AttrSets `names` (`N`) are always of type `String` the user can omit the `String` Keyword completely, and instead give only the names. `N`
+
+That rule allows for intuitive usage of names within type definitions of an AttrSet
+
+```
+/*
+type:
+  packageMap :: { 
+    ${pname} :: {
+      ${version} :: Derivation
+    }
+  }
+*/
+packageMap = {
+  "gcc-utils" = {
+    "1.2.3" = builtins.Derivation {...};
+    };
+  # ...
+  };
+```
+
+#### Lambda
+
+__Definition__
+
+let Lambda `= Any -> Any` the set of all possible lambdas.
+Let the `LHS` of `->` be the `Argument type` `T` of a `lambda` and the `RHS` the return value type `U`
+
+Then a lambda that takes type `T` and returns type `U` can be declared as the subset of all possible lambdas with both `T` on the `LHS` and type `U` on the RHS.
+
+__Examples__
+
+```
+Number -> Number
+
+[ String ] -> ( String -> Number ) -> [ Number ]
+
+(Path -> String) -> { ${name} :: Path } -> { ${name} :: String }
+```
+
+### `|` syntactic `Or` can be used for composition or enums
+
+Let `T` and `U` be different Types.
+Then the `|` operator evaluates to either `T` or `U`.
+
+__Examples__
+
+`Float | Int`
+
+`( Number | Bool ) | Int`
+
+`{ opt :: Int | String }`
+
+### Composed Types`
+
+Now with the basics clearified we can finally define composed types.
+
+- Number `= Int | Float`
+
+A `Number` can be either an `Int` or a `Float` type.
+
+- Any `= [ Any ] | { [ name :: String ] :: Any } | (Any -> Any) | Bool | Int | Float | String | Path | Null` 
+
+An `Any` can be either a basic type or a nested type of `Any`
+
+__Global Types__
+
+Some types are commonly used within nix and nixpkgs therefore it makes sense to have some more Types that are always availabe.
+
+Those are types defined globally within nix as they are almost always needed.
+
+- StorePath `::= Path`
+
+- Derivation `::= { # TODO... }`
+
+- Package `::= # TODO..`
+
 
 ## List of Operators
 
 __All Operators SHOULD be used with surrounding whitespaces.__
 
-__Existing ones.__
+### `::`  declares the type.
 
-- `::`  name-type seperator.
+The variable name on the LHS is declared to have the `type` on the RHS
 
 e.g. `name :: Any`
 
-- `->` Function
+### `()` Parenthesis 
 
-e.g. `foo = Any -> Any`
+Paranthesis to clearify order of type evaluation
 
-- `()` Parenthesis (not a type itself, only for syntatic grouping)
+e.g. `( a -> b ) | Bool`
 
-e.g. `( a -> b ) -> c`
+### `,` Seperator for subseqeuent entries (like in AttrSet)
 
-- `,` Seperator for subseqeuent entries (like in AttrSet)
+e.g. `{ foo :: Any, bar :: Any }`
 
-e.g. `{ a :: Any, b :: Any }`
+### `//` syntactically `merges` Types of AttrSets
 
-- `[]` List
+`{ foo :: String } // { bar :: Any }` => `{ foo :: String, bar :: Any }`
 
-e.g. `[ Any ]`
+`{ foo :: String } // { ${names} :: Any }` => `{ foo :: String, ${names} :: Any  }`
 
-- `{}` AttrSet
+Overwrites occur like in the nix language itself
 
-e.g. `{ key :: Any }`
-
-__Missing / Introduced with this Idea.__
+`{ foo :: String } // { foo :: Any }` => `{ foo :: Any }`
 
 ### `=` equality operator. Allows for __type bindings__
 
@@ -228,8 +339,9 @@ e.g.
 
 /*
  Type: 
-   DerivationType = { buildInputs :: [ Derivation ], ... }
-   mkDerivation :: DerivationType // { foo :: String, ... } -> Derivation
+   DerivationAttrs = { buildInputs :: [ Derivation ], ... }
+   MkDerivationAttrs = DerivationAttrs // { buildInputs :: String }
+   mkDerivation :: MkDerivationAttrs -> Derivation
 */
 mkDerivation = {pname, version, foo, ...}@args: let
 # ...
@@ -256,48 +368,6 @@ e.g.  `{ opt :: ? Int }`
 
 Note: The `type` side contains the `?` operator.
 
-### `|` syntactic `Or` can be used for: `Enum`, `OneOf`, `Either`
-
-e.g.  
-
-`{ opt :: Int | String | Path }`
-
-or more advanced:
-
-```
-/*
-  Type: foo :: { pname :: String, version :: String} | { name :: String } -> Derivation
-*/
-foo = inp:
-#...
-```
-
-### `${}` Usage of variables on lhs of expressions
-
-As in AttrSets the lhs is always a `String`
-
-the user can omit the `String` Keyword completely, and instead give context on the meaning.
-
-sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` represent.
-
-e.g.
-
-```
-{ 
-  ${name} :: {
-    ${version} :: Derivation
-  }
-}
-```
-
-which is very close to plain nix
-
-### `{}` is an empty AttrSet explizitly
-
-e.g. `{ empty :: {} }`
-
-passing so is needed sometimes.
-
 ### `"` Literal type
 
 Literals are strings, of specififc values.
@@ -314,7 +384,9 @@ This can be usefull for constant fields, which are always the same across specif
 
 ### `...` - arbitrary input values
 
-> What typings do we need `for {...}@inp:` ?
+can only be used within an AttrSet
+
+`...` = `[ String ] :: Any` within an AttrSet context
 
 e.g. 
 
@@ -325,31 +397,6 @@ e.g.
 Foo = {bar, ...}@inp:
 #...
 ```
-
-### `<>` Parametrized 
-
-simple:
-
-```
-/*
-  Type: foo :: <T> -> <T>
-*/
-foo = inp: inp
-```
-
-Type generic to indicate that the return type depends on the input type.
-
-advanced:
-
-```
-/*
-  Type: foo :: [ { bar :: <T>, baz :: String} ] -> { ${name} :: <T> }
-*/
-foo = inp:
-#...
-```
-
-> I am not sure yet if this addition of complexity is a good idea
 
 ## Some Best practices
 
@@ -378,18 +425,40 @@ nixos modules typing system is dynamically evaluated. It misses (like everyting 
 
 With the power of both worlds, static & dynamic, nix developers should be able to get high quality code up and running more reliable, faster and with less brainload. So developers can focus on more important parts of their nix applications.
 
-The module system can provide both type checking, automated documentation (via `nixosOptionsDoc`) and potentially with this project; __Static type checking__ 
+The proposed change for `option types` provide an `AST` attribute that implements the `AST` described in this project.
+
+__Example_
+
+```nix
+
+listOf = elemType: mkOptionType rec {
+    name = "listOf";
+    description = "list of ${optionDescriptionPhrase (class: class == "noun" || class == "composite") elemType}";
+    # new ------------------
+    documentation = {
+      outputType = {
+        type = "List";
+        # ... See AST spec.
+      };
+    };
+  
+    # ------------------
+
+    descriptionClass = "composite";
+    check = isList;
+    merge = loc: defs:
+    #...
+      
+```
+
+> The in don't care about exact name, its is more important to have access to the AST than what it is called.
 
 ### Potential Impact
 
 Writing type comments is very tideous and those comments can drift over time, and at one point they might describe not exctly what is going on.
 So enhancing nixos modules and improving documentation system on that `self-documenting` system seems really beneficial to me. 
 
-I'd like to have the same comfort beeing used in nixos modules, as automatic documentation. Plus the convention of abstract types, that can acutally be used in a lot of enhancing tools.
-
-Writing a nixos module, should yield the same abtract `intermediate format` described in the previous chapters.
-
-So the same tools can process nixos modules, without great additions, or the need for a second parser.
+__So the same tools can process nixos modules, without great additions, or the need for a second parser__
 
 ### Connect dynamic and static typings
 
@@ -401,35 +470,6 @@ I propose the following:
 
 As the dynamic types already exist, that initial mapping should be done. In the dynamic world the same type may have a different name.
 
-e.g. `Derivation` vs `Package` (they are not the same ?!)
+e.g. `Derivation` vs `Package`
 
-#### Deal with leftovers
-
-As both worlds are joined, there might be __leftovers__ which cannot be mapped from one world into the other.
-
-We need a solution for them or just let them unhandled.
-
-
-### Consistency
-
-`assertMsg :: Bool -> String -> Bool`
-
-This is a very good, abstract, haskell inspired `type annotation`.
-
-However with `mkOption` there is `nixosOptionsDoc`. Which can be used to generate self describing types from `mkOption` generated `options`
-
-In that world
-
-```listOf str```
-
-evaluates to
-
-``` "list of string" ```
-
-Which is inconsistent with the abstract type annotations, that i like more.
-
-Consistent format would be:
-
-``` [ String ] ```
-
-
+__every option type from lib/types.nix must be mapped to a declaration from this paper.__
