@@ -14,13 +14,12 @@ My Targets:
 
 - Enhance the system so it is possible to type everything in nix using that new system.
 
-- Provide a type-system that could proof correctness of code before runtime. 
+- Provide a type-system that could proof correctness of code before runtime.
 
 - Provide a Parser and AST Specification for that type system.
 
 ## Scope
 
-- Introduce a convention on how to write doc-strings that have type information in them.
 - Let the convention be so good, that we can parse the `Type:` into an usefull `AST`.
 
 Currently there is the `type:` pattern which can be parsed from nixdoc. Which is a good start but not enough.
