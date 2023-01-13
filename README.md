@@ -105,10 +105,11 @@ This is actually how comments are parsed today.
 3. All declarations are `PascalCase`, starting with capital letters.
 4. Types MUST be choosen from the existing list. (see [below](#List-of-static-Types) )
 5. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
-6. `AttrSet` and `List` keywords are PROHIBITED. Writers must express explizitly if they want to allow arbitrary values. e.g. `AttrSet` is an alias for `{ ... }` (explained below), same for `List` -> `[ Any ]`
-7. AttrSets definitions should include their keys if they dont accept arbitrary values. `{ foo = bar; } # type: { foo :: Any }`
-8. Type bindings (explained below) are PROHIBITED to choose names from the reserved list (see [below](#List-of-static-Types) )
-9. Spaces between Operators (optional) 
+6. The Language rules MUST be followed (described in this paper)
+7. `AttrSet` and `List` keywords are PROHIBITED. Writers must express explizitly if they want to allow arbitrary values. e.g. `AttrSet` is an alias for `{ ... }` (explained below), same for `List` -> `[ Any ]`
+8. AttrSets definitions should include their keys if they dont accept arbitrary values. `{ foo = bar; } # type: { foo :: Any }`
+9. Type bindings (explained below) are PROHIBITED to choose names from the reserved list (see [below](#List-of-static-Types) )
+10. Spaces between Operators (optional) 
 
 ## List of static Types
 
