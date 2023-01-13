@@ -8,7 +8,7 @@ This Draft of an RFC could be the first step to improve how nix is used as a lan
 
 __Disclaimer: While `types` are great. This doesnt introduce any types into nix.__
 
-This project aims to induce some *convention* on the current typing system in nix.
+This project aims to find *convention* on the current typing system in nix. (`Type:` doc-stings) And Enhances them so it is possible to express every nix type within that system.
 
 ## Scope
 
