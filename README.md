@@ -130,7 +130,7 @@ It returns an expression of Type `T` that can be used as an input to other opera
 
 #### The `()` Operator 
 
-Let `(t)` be a semantic group to give precendece to encapsulated term `t`
+Let `(t)` be a semantic group to give precedence to encapsulated term `t`
 
 When the evaluation of a type happens, the term inside `()` gets evaluated first.
 
@@ -146,15 +146,11 @@ Nested types MUST always specify their content type.
 
 __Definition__
 
-Let The superset of all possible Lists with all possible elements be the following: 
+Let `[ Any ]` be a list where the elements of that list do not have any type constraints.
 
-`[ Any ]`
+Then a List of a specific Type `[ T ]` is a list where all elements fullfill the type constaint.
 
-And let a set of a set `S(T)` contain all elements of the given type `T`.
-
-Then a List of a specific Type `[ T ]` is that sub-set of the `[ Any ]` with `T` ∈ `S(T)`.
-
-A list can contain `n` elements where `n ∈ ℕ₀` 
+A list can contain no, one or multiple elements.
 
 __Examples__
 
@@ -166,34 +162,39 @@ __Examples__
 
 #### AttrSet
 
-__Definition__
+`::`-operator within `AttrSet` 
 
-1. let `${ name :: String }` = `[ String ]`
+The `::`-operator maps the Type of its `RHS` over the `Type` on its `LHS`. It can take an `Iterable` or a `single element` on its LHS.
 
-or in short form `${name}` = `${ name :: String }` 
+Within Type-declarations for AttrSets it is possible to declare explizit members of an AttrSet like this.
 
-(because in nix AttrSets can have only String names)
+```
+  {
+    N :: T
+  }
+```
 
-where `name` is a freely chosable variable to represent the context that the `String` type represents.
+Then `N` is of type `String` and `N` becomes an __explizit member__ of that AttrSet which references a value of type `T`.
+The value of `N` is called the `member name`
 
-2. `::`-operator within `AttrSet` 
+`[ N :: T ]`-operator can only be used within `AttrSet` in `member name` fields.
 
-The `::`-operator maps the Type of its `RHS` to the `Type` on its `LHS`. It can take `Iterable` or `Single Argument` on its LHS.
-By doing so it is always assured that an AttrSet has the same amount of `name types` as `value types`.
+The `[ N :: T ]`-operator maps over all `member names` of an AttrSet `[N]` and applies the type `T` to each member name `N` if not already done by __explizit member__ declaration (see above).
 
-If the `LHS`is an Iterable with `n ∈ ℕ₀` elements:
-And RHS is a valid type `T` with set `S(T)`
+When there are members with __dynamic names__ it is possible to declare all those entries at once with the `[ N::T ]` and `::` operator.
 
-every entry `e_n ∈ S(T)`
+Then an AttrSet with list of __dynamic Name types__ where each name `N` references a __value of type__ `V` can be written as.
 
-If the `LHS`is a `single Argument` with `n = 1` elements:
-
-the entry `e_1 ∈ S(T)`
+```
+  { 
+    [ N :: T ] :: V 
+  }
+```
 
 __Examples__
 
 ```nix
-  { [ name :: String ] :: Any } 
+  { [ name :: String ] :: Any, foo :: String }
 ```
 
 ```nix
@@ -204,15 +205,13 @@ __Examples__
    {} = { [ name :: String ] :: Any }` 
 ```
 
-where the entries of names `[ name :: String ] ∈ ∅` (is the empty set).
+where the member names `[ N :: T ] are an empty list.
 
 __useful `${}` Shortcut__
 
-`${context} = [ context :: String ]`
+`${N} = [ N :: String ]`
 
-If we take into account that in AttrSets `names` are always of type `String` the user can omit the `String` Keyword completely, and instead give only the names.
-
-sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` in that `context` represents.
+If we take into account that in AttrSets `names` (`N`) are always of type `String` the user can omit the `String` Keyword completely, and instead give only the names. `N`
 
 That rule allows for intuitive usage of names within type definitions of an AttrSet
 
@@ -220,7 +219,7 @@ That rule allows for intuitive usage of names within type definitions of an Attr
 /*
 type:
   packageMap :: { 
-    ${name} :: {
+    ${pname} :: {
       ${version} :: Derivation
     }
   }
