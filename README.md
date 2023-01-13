@@ -192,15 +192,15 @@ Then an AttrSet with list of __dynamic members__ where each member-name `N` refe
 
 __Examples__
 
-```nix
+```
   { [ name :: String ] :: Any, foo :: String }
 ```
 
-```nix
+```
   { foo :: Any } 
 ```
 
-```nix
+```
    {} = { [ name :: String ] :: Any }` 
 ```
 
@@ -214,7 +214,7 @@ If we take into account that in AttrSets `names` (`N`) are always of type `Strin
 
 That rule allows for intuitive usage of names within type definitions of an AttrSet
 
-```nix
+```
 /*
 type:
   packageMap :: { 
