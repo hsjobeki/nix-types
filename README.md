@@ -8,9 +8,13 @@ This Draft of an RFC could be the first step to improve how nix is used as a lan
 
 __Disclaimer: While `types` are great. This doesnt introduce any types into nix.__
 
+My Targets:
+
 - Write down *convention* of the current typing system in nix. (`Type:` doc-stings) 
 
 - Enhance the system so it is possible to type everything in nix using that new system.
+
+- Provide a type-system that could proof correctness of code before runtime. 
 
 - Provide a Parser and AST Specification for that type system.
 
