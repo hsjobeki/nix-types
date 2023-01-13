@@ -38,7 +38,7 @@ Generally there are two type systems:
   __Does not exist in nix__  
   
 - __Dynamic__
-  - Fails execution of code based on contionals.
+  - Fails execution of code based on conditionals.
   - Used in `lib/types.nix`
   - Used in `YANTS`
 
@@ -57,7 +57,7 @@ e.g
 | String  	|  EmptyString 	|
 | String  	|  NonEmptyString 	|
 
-Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma seperated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc`. Option Types are only dynamic checks and not real types.
+Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma seperated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc`. Option-Types are only dynamic checks and not real types.
 
 ## Abstract
 
