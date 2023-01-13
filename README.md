@@ -12,7 +12,9 @@ This project aims to induce some *convention* on the current typing system in ni
 
 ## Scope
 
-Introduce a convention on how to write doc-strings that have type information in them.
+- Introduce a convention on how to write doc-strings that have type information in them.
+- Let the convention be so good, that we can parse the `Type:` into an usefull `AST`.
+
 Currently there is the `type:` pattern which can be parsed from nixdoc. Which is a good start but not enough.
 The goal is to build more accurate type comments and have a consistent convention on what is actually allowed and what is not.  
 
@@ -27,10 +29,16 @@ Generally there are two type systems:
   So errors can be caught while writing code.
   
   __Does not exist in nix__  
+  
+- __Dynamic__
+  - Fails execution of code based on contionals.
+  - Used in `lib/types.nix`
+  - Used in `YANTS`
 
 ## Static types
 
 I propose to build a set of simple yet effective `static types` instead of following the dynamic types from the `option types`.
+
 As i am not a type theorist but from my perspective few static types can represent a lot of dynamic ones. 
 
 e.g
@@ -42,7 +50,7 @@ e.g
 | String  	|  EmptyString 	|
 | String  	|  NonEmptyString 	|
 
-Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma seperated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc` it doesnt matter. Those are only dynamic checks and not real types.
+Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma seperated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc`. Option Types are only dynamic checks and not real types.
 
 ## Abstract
 
