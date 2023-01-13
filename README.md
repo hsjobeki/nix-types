@@ -92,7 +92,8 @@ This is actually how comments are parsed today.
 5. Operators MUST be choosen from the existing list. (see [below](#List-of-Operators) )
 6. `AttrSet` and `List` keywords are PROHIBITED. Writers must express explizitly if they want to allow arbitrary values. e.g. `AttrSet` is an alias for `{ ... }` (explained below), same for `List` -> `[ Any ]`
 7. AttrSets definitions should include their keys if they dont accept arbitrary values. `{ foo = bar; } # type: { foo :: Any }`
-8. Spaces between Operators (optional) 
+8. Type bindings (explained below) are PROHIBITED to choose names from the reserved list (see [below](#List-of-static-Types) )
+9. Spaces between Operators (optional) 
 
 ## List of static Types
 
@@ -105,6 +106,26 @@ This is actually how comments are parsed today.
 - Path
 - Null
 
+#### The `::` operator
+
+
+The `::` accepts two arguments:
+A `LHS` and `RHS`
+
+Let `U :: T` be a valid usage of the operator.
+Then `U` is the `LHS` parameter and `T` is the `RHS` parameter.
+
+A set `S(T)` contain all elements of the given type `T`.
+
+Then the `::` operator declares a property name called `U` and guarantees `U ∈ S(T)`.
+It returns an expression of Type `T` that can be used as an input to other operators again.
+
+#### The `()` Operator 
+
+Let `(t)` be a semantic group to give precendece to encapsulated term `t`
+
+When the evaluation of a type happens, the term inside `()` gets evaluated first.
+
 ### Nested
 
 Nested types MUST always specify their content type.
@@ -113,65 +134,79 @@ Nested types MUST always specify their content type.
 - List represented as `[]`
 - Lambda represented as `->`
 
-### Usage of nested types
-
 #### List
 
-The superset of all possible Lists with all possible elements is the following: 
+__Definition__
+
+Let The superset of all possible Lists with all possible elements be the following: 
 
 `[ Any ]`
 
-A List of a specific Type `T` is that sub-set of the `[ Any ]`-set that contains only elements of the exact type `T`.
+And let a set of a set `S(T)` contain all elements of the given type `T`.
 
-A list can contain no, one or multiple elements of that given type `T`.
+Then a List of a specific Type `[ T ]` is that sub-set of the `[ Any ]` with `T` ∈ `S(T)`.
 
-e.g.
+A list can contain `n` elements where `n ∈ ℕ₀` 
+
+__Examples__
 
 `[ String ]`
 
 `[ Number | Bool ]`
 
+`[ ]`
+
 #### AttrSet
 
-declaration of an AttrSet
+__Definition__
 
-1. ${ name :: String } `= [ String ]`
+1. let `${ name :: String }` = `[ String ]`
 
-or in short form `${name} = [ String ]`
+or in short form `${name}` = `${ name :: String }` 
+
+(because in nix AttrSets can have only String names)
+
 where `name` is a freely chosable variable to represent the context that the `String` type represents.
 
 2. `::`-operator within `AttrSet` 
 
-The `::`-operator maps every Type of its `left-hand-side` `Iterable` to the `Type` on its `right-hand-side`.
+The `::`-operator maps the Type of its `RHS` to the `Type` on its `LHS`. It can take `Iterable` or `Single Argument` on its LHS.
 By doing so it is always assured that an AttrSet has the same amount of `name types` as `value types`.
 
-an Attrset can also be represented as
+If the `LHS`is an Iterable with `n ∈ ℕ₀` elements:
+And RHS is a valid type `T` with set `S(T)`
+
+every entry `e_n ∈ S(T)`
+
+If the `LHS`is a `single Argument` with `n = 1` elements:
+
+the entry `e_1 ∈ S(T)`
+
+__Examples__
 
 ```nix
-  { [ String ] :: Any } 
+  { [ name :: String ] :: Any } 
 ```
 
-__`{}` represents an empty AttrSet explizitly__ 
+```nix
+  { foo :: Any } 
+```
 
-`{} = { [ String ] :: Any }` where the `[String]` is an empty list
+```nix
+   {} = { [ name :: String ] :: Any }` 
+```
 
-passing empty `AttrSets` is needed sometimes.
+where the entries of names `[ name :: String ] ∈ ∅` (is the empty set).
 
-__`{ foo :: String }` maps the name of `foo` to value of type `String`
+__useful `${}` Shortcut__
 
-{ [String Number] } `= [Tuple(String, String) Tuple(String, Number)]`
+`${context} = [ context :: String ]`
 
-__`${}` Usage of variables on lhs of expressions__
-
-As in AttrSets the lhs is always a `String`
-
-the user can omit the `String` Keyword completely, and instead give context on the meaning.
-
-`${context} = [ String ]`
+If we take into account that in AttrSets `names` are always of type `String` the user can omit the `String` Keyword completely, and instead give only the names.
 
 sometimes we dont know the exact entries of an AttrSet, but we can give some context what the `names` in that `context` represents.
 
-e.g.
+That rule allows for intuitive usage of names within type definitions of an AttrSet
 
 ```nix
 /*
@@ -192,14 +227,14 @@ packageMap = {
 
 #### Lambda
 
+__Definition__
+
 let Lambda `= Any -> Any` the set of all possible lambdas.
-Let the `LHS` of `->` be the `Argument type` of that `lambda` and the `RHS` the return value type.
+Let the `LHS` of `->` be the `Argument type` `T` of a `lambda` and the `RHS` the return value type `U`
 
 Then a lambda that takes type `T` and returns type `U` can be declared as the subset of all possible lambdas with both `T` on the `LHS` and type `U` on the RHS.
 
-Let `()` be a semantic group to encapsulate either the LHS or the RHS of a lambda.
-
-then the following lambda notations are possible.
+__Examples__
 
 ```
 Number -> Number
@@ -214,38 +249,38 @@ Number -> Number
 Let `T` and `U` be different Types.
 Then the `|` operator evaluates to either `T` or `U`.
 
-e.g.  
+__Examples__
+
+`Float | Int`
+
+`( Number | Bool ) | Int`
 
 `{ opt :: Int | String }`
 
-> The evaluation of the `|` operator would happen at compile time in a static type system, but this is not a real static type system therefore the evaluator never actually picks one type.
-
 ### Composed Types`
 
-Now with the base defined we can define composed types.
+Now with the basics clearified we can finally define composed types.
 
 - Number `= Int | Float`
 
 A `Number` can be either an `Int` or a `Float` type.
 
-- Any `= [ Any ] | { ... } | (Any -> Any) | Bool | Int | Float | String | Path | Null` 
+- Any `= [ Any ] | { [ name :: String ] :: Any } | (Any -> Any) | Bool | Int | Float | String | Path | Null` 
 
 An `Any` can be either a basic type or a nested type of `Any`
 
-### more Global Types
+__Global Types__
 
-Some Types are commonly used within nix and nixpkgs therefore it makes sense to have some more Global Types.
+Some types are commonly used within nix and nixpkgs therefore it makes sense to have some more Types that are always availabe.
+
 Those are types defined globally within nix as they are almost always needed.
 
-StorePath `::= Path`
-Derivation `::= { # TODO... }`
-Package `::= # TODO..`
+- StorePath `::= Path`
 
+- Derivation `::= { # TODO... }`
 
-Basically thats all static types that i could find in all `nixpkgs/lib/*` files and i read through all the `type:` annotations.
-Where i spoted many weird nonsense-types and inconsistencies.
+- Package `::= # TODO..`
 
-Also the naming of `lib/types.nix` is confusing as that file doesnt contain any usefull types.
 
 ## List of Operators
 
@@ -257,9 +292,9 @@ The variable name on the LHS is declared to have the `type` on the RHS
 
 e.g. `name :: Any`
 
-Those declarations can appear only once AND only at the root level of a type block.
+### `()` Parenthesis 
 
-### `()` Parenthesis (not a type itself, only for syntatic grouping)
+Paranthesis to clearify order of type evaluation
 
 e.g. `( a -> b ) | Bool`
 
@@ -267,9 +302,15 @@ e.g. `( a -> b ) | Bool`
 
 e.g. `{ foo :: Any, bar :: Any }`
 
-### `//` operator to syntactically `merge` Types of AttrSets
+### `//` syntactically `merges` Types of AttrSets
 
-e.g. `{ foo :: String } // { bar :: Any }` => `{ foo :: String, bar :: Any }`
+`{ foo :: String } // { bar :: Any }` => `{ foo :: String, bar :: Any }`
+
+`{ foo :: String } // { ${names} :: Any }` => `{ foo :: String, ${names} :: Any  }`
+
+Overwrites occur like in the nix language itself
+
+`{ foo :: String } // { foo :: Any }` => `{ foo :: Any }`
 
 ### `=` equality operator. Allows for __type bindings__
 
@@ -332,7 +373,7 @@ This can be usefull for constant fields, which are always the same across specif
 
 can only be used within an AttrSet
 
-`...` = `[ String ] :: Any` within in an AttrSet context
+`...` = `[ String ] :: Any` within an AttrSet context
 
 e.g. 
 
