@@ -147,9 +147,9 @@ __Definition__
 
 Let `[ Any ]` be a list where the elements of that list do not have any type constraints.
 
-Then a List of a specific Type `[ T ]` is a list where all elements fullfill the type constaint.
+Then a List of a specific Type `[ T ]` is a list where all elements fullfill the type constaint `T`.
 
-A list can contain no, one or multiple elements.
+A list can contain no, one or multiple elements.`
 
 __Examples__
 
