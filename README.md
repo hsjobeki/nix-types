@@ -176,7 +176,7 @@ Within Type-declarations for AttrSets it is possible to declare explizit members
 Then `N` is of type `String` and `N` becomes an __explizit member__ of that AttrSet which references a value of type `T`.
 The value of `N` is called the `member name`
 
-`[ N :: T ]`-operator can only be used within `AttrSet` in `member name` fields.
+Introducing: `[ N :: T ]`-operator, which can only be used within `AttrSet` in `member name` fields.
 
 The `[ N :: T ]`-operator maps over all `member names` of an AttrSet `[N]` and applies the type `T` to each member name `N` if not already done by __explizit member__ declaration (see above).
 
