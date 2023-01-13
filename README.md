@@ -412,18 +412,40 @@ nixos modules typing system is dynamically evaluated. It misses (like everyting 
 
 With the power of both worlds, static & dynamic, nix developers should be able to get high quality code up and running more reliable, faster and with less brainload. So developers can focus on more important parts of their nix applications.
 
-The module system can provide both type checking, automated documentation (via `nixosOptionsDoc`) and potentially with this project; __Static type checking__ 
+The proposed change for `option types` provide an `AST` attribute that implements the `AST` described in this project.
+
+__Example_
+
+```nix
+
+listOf = elemType: mkOptionType rec {
+    name = "listOf";
+    description = "list of ${optionDescriptionPhrase (class: class == "noun" || class == "composite") elemType}";
+    # new ------------------
+    documentation = {
+      outputType = {
+        type = "List";
+        # ... See AST spec.
+      };
+    };
+  
+    # ------------------
+
+    descriptionClass = "composite";
+    check = isList;
+    merge = loc: defs:
+    #...
+      
+```
+
+> The in don't care about exact name, its is more important to have access to the AST than what it is called.
 
 ### Potential Impact
 
 Writing type comments is very tideous and those comments can drift over time, and at one point they might describe not exctly what is going on.
 So enhancing nixos modules and improving documentation system on that `self-documenting` system seems really beneficial to me. 
 
-I'd like to have the same comfort beeing used in nixos modules, as automatic documentation. Plus the convention of abstract types, that can acutally be used in a lot of enhancing tools.
-
-Writing a nixos module, should yield the same abtract `intermediate format` described in the previous chapters.
-
-So the same tools can process nixos modules, without great additions, or the need for a second parser.
+__So the same tools can process nixos modules, without great additions, or the need for a second parser__
 
 ### Connect dynamic and static typings
 
@@ -435,35 +457,6 @@ I propose the following:
 
 As the dynamic types already exist, that initial mapping should be done. In the dynamic world the same type may have a different name.
 
-e.g. `Derivation` vs `Package` (they are not the same ?!)
+e.g. `Derivation` vs `Package`
 
-#### Deal with leftovers
-
-As both worlds are joined, there might be __leftovers__ which cannot be mapped from one world into the other.
-
-We need a solution for them or just let them unhandled.
-
-
-### Consistency
-
-`assertMsg :: Bool -> String -> Bool`
-
-This is a very good, abstract, haskell inspired `type annotation`.
-
-However with `mkOption` there is `nixosOptionsDoc`. Which can be used to generate self describing types from `mkOption` generated `options`
-
-In that world
-
-```listOf str```
-
-evaluates to
-
-``` "list of string" ```
-
-Which is inconsistent with the abstract type annotations, that i like more.
-
-Consistent format would be:
-
-``` [ String ] ```
-
-
+__every option type from lib/types.nix must be mapped to a declaration from this paper.__
