@@ -201,7 +201,12 @@ Then an AttrSet with list of __dynamic members__ where each member-name `N` refe
 __Examples__
 
 ```
-  { [ name :: String ] :: Any, foo :: String }
+  # member '.foo' references a value of type string
+  # all other members `*` are of type string and each member reference value of type Any.
+  { 
+    [ name :: String ] :: Any, 
+    foo :: String 
+  }
 ```
 
 ```
