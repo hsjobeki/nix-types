@@ -119,7 +119,6 @@ This is actually how comments are parsed today.
 - Int
 - Float
 - String
-- Path
 - Null
 
 #### The `::` operator
@@ -293,6 +292,8 @@ __Global Types__
 Some types are commonly used within nix and nixpkgs therefore it makes sense to have some more Types that are always availabe.
 
 Those are types defined globally within nix as they are almost always needed.
+
+- Path `::= String`
 
 - StorePath `::= Path`
 
