@@ -1,4 +1,4 @@
-{ 
+{
   description = "";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
@@ -15,20 +15,22 @@
         pkgs = import nixpkgs {
           inherit system;
         };
+        l = builtins // pkgs.lib;
+        inverseInclude = list: (l.filter (fileName: l.any (e: e != fileName) list) (l.attrNames (l.readDir ./.)));
       in
       {
         devShells.default = pkgs.mkShell {
-        inputsFrom = [ self.packages.${system}.default ];
-        packages = with pkgs; [
-          statix
-          nodePackages.cspell
-          nodePackages.markdownlint-cli
-        ];
-        shellHook = ''
-          ${self.checks.${system}.pre-commit-check.shellHook}
-        '';
-      };
-      checks = {
+          inputsFrom = [ self.packages.${system}.default ];
+          packages = with pkgs; [
+            statix
+            nodePackages.cspell
+            nodePackages.markdownlint-cli
+          ];
+          shellHook = ''
+            ${self.checks.${system}.pre-commit-check.shellHook}
+          '';
+        };
+        checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
             src = ./.;
             hooks = {
@@ -41,6 +43,10 @@
               statix.enable = true;
               markdownlint.enable = true;
             };
+            settings = {
+              statix.ignore = inverseInclude [ "flake.nix" ];
+            };
+
           };
         };
         packages = {
@@ -48,7 +54,7 @@
             pname = "nix-types";
             version = "0.1.0";
             src = ./parser;
-            
+
             cargoLock = {
               lockFile = ./parser/Cargo.lock;
               outputHashes = {
@@ -62,7 +68,7 @@
           parsed = pkgs.stdenv.mkDerivation {
             name = "test-data";
             src = nixpkgs;
-            nativeBuildInputs = [self.packages.${system}.nix-types];
+            nativeBuildInputs = [ self.packages.${system}.nix-types ];
             buildPhase = ''
               echo "running nix metadata collect in nixpkgs/lib"
               ${self.packages.${system}.nix-types}/bin/nix-types --dir ./lib
@@ -71,7 +77,7 @@
               cat data.json > $out  
             '';
           };
-        default = self.packages.${system}.parsed;
+          default = self.packages.${system}.parsed;
         };
       });
 }

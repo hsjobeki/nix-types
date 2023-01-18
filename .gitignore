@@ -3,6 +3,9 @@
 target/
 result
 
+# pre-commit
+.pre-commit-config.yaml
+
 # ast outputs
 data.json
 

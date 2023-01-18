@@ -3,21 +3,22 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     flake-utils.follows = "rust-overlay/flake-utils";
   };
-  outputs = {self, flake-utils, nixpkgs, ...}@inp:
+  outputs = { self, flake-utils, nixpkgs, ... }@inp:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs {inherit system;};   
-      in rec {
+        pkgs = import nixpkgs { inherit system; };
+      in
+      rec {
         devShell = pkgs.mkShell {
-           inputsFrom = [packages.nix-types];
-           
+          inputsFrom = [ packages.nix-types ];
+
         };
         packages = {
           nix-types = pkgs.rustPlatform.buildRustPackage {
             pname = "nix-types";
             version = "0.1.0";
             src = ./.;
-            
+
             cargoLock = {
               lockFile = ./Cargo.lock;
               outputHashes = {
@@ -31,7 +32,7 @@
           parsed = pkgs.stdenv.mkDerivation {
             name = "test-data";
             src = nixpkgs;
-            nativeBuildInputs = [packages.nix-types];
+            nativeBuildInputs = [ packages.nix-types ];
             buildPhase = ''
               echo "running nix metadata collect in nixpkgs/lib"
               ${packages.nix-types}/bin/nix-types --dir ./lib
@@ -40,7 +41,7 @@
               cat data.json > $out  
             '';
           };
-        default = packages.parsed;
+          default = packages.parsed;
         };
       }
     );

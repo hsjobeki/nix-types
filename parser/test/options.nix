@@ -3,7 +3,7 @@
 , options
 , transformOptions ? lib.id  # function for additional transformations of the options
 , documentType ? "appendix" # TODO deprecate "appendix" in favor of "none"
-                            #      and/or rename function to moduleOptionDoc for clean slate
+  #      and/or rename function to moduleOptionDoc for clean slate
 
   # If you include more than one option list into a document, you need to
   # provide different ids.
@@ -11,25 +11,25 @@
   # String to prefix to the option XML/HTML id attributes.
 , optionIdPrefix ? "opt-"
 , revision ? "" # Specify revision for the options
-# a set of options the docs we are generating will be merged into, as if by recursiveUpdate.
-# used to split the options doc build into a static part (nixos/modules) and a dynamic part
-# (non-nixos modules imported via configuration.nix, other module sources).
+  # a set of options the docs we are generating will be merged into, as if by recursiveUpdate.
+  # used to split the options doc build into a static part (nixos/modules) and a dynamic part
+  # (non-nixos modules imported via configuration.nix, other module sources).
 , baseOptionsJSON ? null
-# instead of printing warnings for eg options with missing descriptions (which may be lost
-# by nix build unless -L is given), emit errors instead and fail the build
+  # instead of printing warnings for eg options with missing descriptions (which may be lost
+  # by nix build unless -L is given), emit errors instead and fail the build
 , warningsAreErrors ? true
-# allow docbook option docs if `true`. only markdown documentation is allowed when set to
-# `false`, and a different renderer may be used with different bugs and performance
-# characteristics but (hopefully) indistinguishable output.
+  # allow docbook option docs if `true`. only markdown documentation is allowed when set to
+  # `false`, and a different renderer may be used with different bugs and performance
+  # characteristics but (hopefully) indistinguishable output.
 , allowDocBook ? true
-# whether lib.mdDoc is required for descriptions to be read as markdown.
+  # whether lib.mdDoc is required for descriptions to be read as markdown.
 , markdownByDefault ? false
 }:
 
 let
   /* Generate JSON, XML and DocBook documentation for given NixOS options.
 
-   Example:
+     Example:
 
     { pkgs,  }:
 
@@ -44,7 +44,7 @@ let
       options = eval.options;
     }
 
-  Type:
+    Type:
     nixosOptionsDoc :: {
       pkgs :: AttrSet,
       lib :: AttrSet,
@@ -66,14 +66,14 @@ let
       optionsDocBook :: Derivation,
     }
 
-*/
+  */
   rawOpts = lib.optionAttrSetToDocList options;
   transformedOpts = map transformOptions rawOpts;
   filteredOpts = lib.filter (opt: opt.visible && !opt.internal) transformedOpts;
   optionsList = lib.flip map filteredOpts
-   (opt: opt
-    // lib.optionalAttrs (opt ? relatedPackages && opt.relatedPackages != []) { relatedPackages = genRelatedPackages opt.relatedPackages opt.name; }
-   );
+    (opt: opt
+      // lib.optionalAttrs (opt ? relatedPackages && opt.relatedPackages != [ ]) { relatedPackages = genRelatedPackages opt.relatedPackages opt.name; }
+    );
 
   # Generate DocBook documentation for a list of packages. This is
   # what `relatedPackages` option of `mkOption` from
@@ -91,14 +91,16 @@ let
   # Such checks are not compatible with option docs caching.
   genRelatedPackages = packages: optName:
     let
-      unpack = p: if lib.isString p then { name = p; }
-                  else if lib.isList p then { path = p; }
-                  else p;
+      unpack = p:
+        if lib.isString p then { name = p; }
+        else if lib.isList p then { path = p; }
+        else p;
       describe = args:
         let
           title = args.title or null;
           name = args.name or (lib.concatStringsSep "." args.path);
-        in ''
+        in
+        ''
           <listitem>
             <para>
               <link xlink:href="https://search.nixos.org/packages?show=${name}&amp;sort=relevance&amp;query=${name}">
@@ -108,21 +110,23 @@ let
             ${lib.optionalString (args ? comment) "<para>${args.comment}</para>"}
           </listitem>
         '';
-    in "<itemizedlist>${lib.concatStringsSep "\n" (map (p: describe (unpack p)) packages)}</itemizedlist>";
+    in
+    "<itemizedlist>${lib.concatStringsSep "\n" (map (p: describe (unpack p)) packages)}</itemizedlist>";
 
-  optionsNix = builtins.listToAttrs (map (o: { name = o.name; value = removeAttrs o ["name" "visible" "internal"]; }) optionsList);
+  optionsNix = builtins.listToAttrs (map (o: { name = o.name; value = removeAttrs o [ "name" "visible" "internal" ]; }) optionsList);
 
-in rec {
+in
+rec {
   inherit optionsNix;
 
-  optionsAsciiDoc = pkgs.runCommand "options.adoc" {} ''
+  optionsAsciiDoc = pkgs.runCommand "options.adoc" { } ''
     ${pkgs.python3Minimal}/bin/python ${./generateDoc.py} \
       --format asciidoc \
       ${optionsJSON}/share/doc/nixos/options.json \
       > $out
   '';
 
-  optionsCommonMark = pkgs.runCommand "options.md" {} ''
+  optionsCommonMark = pkgs.runCommand "options.md" { } ''
     ${pkgs.python3Minimal}/bin/python ${./generateDoc.py} \
       --format commonmark \
       ${optionsJSON}/share/doc/nixos/options.json \
@@ -130,19 +134,23 @@ in rec {
   '';
 
   optionsJSON = pkgs.runCommand "options.json"
-    { meta.description = "List of NixOS options in JSON format";
+    {
+      meta.description = "List of NixOS options in JSON format";
       nativeBuildInputs = [
         pkgs.brotli
-        (let
-          # python3Minimal can't be overridden with packages on Darwin, due to a missing framework.
-          # Instead of modifying stdenv, we take the easy way out, since most people on Darwin will
-          # just be hacking on the Nixpkgs manual (which also uses make-options-doc).
-          python = if pkgs.stdenv.isDarwin then pkgs.python3 else pkgs.python3Minimal;
-          self = (python.override {
-            inherit self;
-            includeSiteCustomize = true;
-           });
-         in self.withPackages (p: [ p.mistune ]))
+        (
+          let
+            # python3Minimal can't be overridden with packages on Darwin, due to a missing framework.
+            # Instead of modifying stdenv, we take the easy way out, since most people on Darwin will
+            # just be hacking on the Nixpkgs manual (which also uses make-options-doc).
+            python = if pkgs.stdenv.isDarwin then pkgs.python3 else pkgs.python3Minimal;
+            self = (python.override {
+              inherit self;
+              includeSiteCustomize = true;
+            });
+          in
+          self.withPackages (p: [ p.mistune ])
+        )
       ];
       options = builtins.toFile "options.json"
         (builtins.unsafeDiscardStringContext (builtins.toJSON optionsNix));
@@ -175,7 +183,7 @@ in rec {
   # Convert options.json into an XML file.
   # The actual generation of the xml file is done in nix purely for the convenience
   # of not having to generate the xml some other way
-  optionsXML = pkgs.runCommand "options.xml" {} ''
+  optionsXML = pkgs.runCommand "options.xml" { } ''
     export NIX_STORE_DIR=$TMPDIR/store
     export NIX_STATE_DIR=$TMPDIR/state
     ${pkgs.nix}/bin/nix-instantiate \
@@ -184,7 +192,7 @@ in rec {
       > "$out"
   '';
 
-  optionsDocBook = pkgs.runCommand "options-docbook.xml" {} ''
+  optionsDocBook = pkgs.runCommand "options-docbook.xml" { } ''
     optionsXML=${optionsXML}
     if grep /nixpkgs/nixos/modules $optionsXML; then
       echo "The manual appears to depend on the location of Nixpkgs, which is bad"

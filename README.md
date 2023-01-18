@@ -4,42 +4,43 @@ This Draft of an RFC could be the first step to improve how nix is used as a lan
 
 __:construction: :construction: Any help welcome! :construction: :construction:__
 
-#️⃣ discuss with us on matrix: [https://matrix.to/#/#nix-types:matrix.org](https://matrix.to/#/#nix-types:matrix.org) #️⃣
+#️⃣ discuss with us on matrix:[https://matrix.to/#/#nix-types:matrix.org](https://matrix.to/#/#nix-types:matrix.org) #️⃣
 
 - [nix-types RFC (draft)](#nix-types-rfc-draft)
-  - [Abstract](#abstract)
-    - [Scope](#scope)
-    - [Why static types](#why-static-types)
-  - [Type system](#type-system)
-  - [Convention](#convention)
-    - [Parser](#parser)
-  - [Language](#language)
-    - [The Rules](#the-rules)
-    - [List of static Types](#list-of-static-types)
-    - [Basic](#basic)
-      - [The `::` operator](#the--operator)
-      - [The `()` Operator](#the--operator-1)
-    - [Nested](#nested)
-      - [List](#list)
-      - [AttrSet](#attrset)
-      - [Lambda](#lambda)
-    - [`|` syntactic or](#-syntactic-or)
-    - [Composed Types](#composed-types)
-    - [Global Types](#global-types)
-  - [List of Operators](#list-of-operators)
-    - [`::`  declares the type](#--declares-the-type)
-    - [`()` Parenthesis](#-parenthesis)
-    - [`,` Separator for subsequent entries (like in AttrSet)](#-separator-for-subsequent-entries-like-in-attrset)
-    - [`//` syntactically `merges` Types of AttrSets](#-syntactically-merges-types-of-attrsets)
-    - [`=` equality operator. Allows for __type bindings__](#-equality-operator-allows-for-type-bindings)
-    - [`?` optional arguments in an AttrSet](#-optional-arguments-in-an-attrset)
-    - [`"` Literal type](#-literal-type)
-    - [`...` - arbitrary input values](#---arbitrary-input-values)
-  - [Some Best practices](#some-best-practices)
-  - [About the modules (nixos modules)](#about-the-modules-nixos-modules)
-    - [Potential Impact](#potential-impact)
-    - [Connect dynamic and static typings](#connect-dynamic-and-static-typings)
-      - [Mapping of Dynamic types into Static types](#mapping-of-dynamic-types-into-static-types)
+    - [Abstract](#abstract)
+        - [Scope](#scope)
+        - [Why static types](#why-static-types)
+    - [Type system](#type-system)
+    - [Convention](#convention)
+        - [Parser](#parser)
+    - [Language](#language)
+        - [The Rules](#the-rules)
+        - [List of static Types](#list-of-static-types)
+        - [Basic](#basic)
+            - [The `::` operator](#the--operator)
+            - [The `()` Operator](#the--operator-1)
+        - [Nested](#nested)
+            - [List](#list)
+            - [AttrSet](#attrset)
+            - [Lambda](#lambda)
+        - [`|` syntactic or](#-syntactic-or)
+        - [Composed Types](#composed-types)
+        - [Global Types](#global-types)
+    - [List of Operators](#list-of-operators)
+        - [`::`  declares the type](#--declares-the-type)
+        - [`()` Parenthesis](#-parenthesis)
+        - [`,` Separator for subsequent entries (like in AttrSet)](#-separator-for-subsequent-entries-like-in-attrset)
+        - [`//` syntactically `merges` Types of AttrSets](#-syntactically-merges-types-of-attrsets)
+        - [`=` equality operator. Allows for __type bindings__](#-equality-operator-allows-for-type-bindings)
+            - [prohibited bindings](#prohibited-bindings)
+        - [`?` optional arguments in an AttrSet](#-optional-arguments-in-an-attrset)
+        - [`"` Literal type](#-literal-type)
+        - [`...` - arbitrary input values](#---arbitrary-input-values)
+    - [Some Best practices](#some-best-practices)
+    - [About the modules (nixos modules)](#about-the-modules-nixos-modules)
+        - [Potential Impact](#potential-impact)
+        - [Connect dynamic and static typings](#connect-dynamic-and-static-typings)
+            - [Mapping of Dynamic types into Static types](#mapping-of-dynamic-types-into-static-types)
 
 __Disclaimer: While `types` are great. This doesn't introduce any types into nix.__
 
@@ -73,9 +74,9 @@ Generally there are two type systems:
   __Does not exist in nix__  
   
 - __Dynamic__
-  - Fails execution of code based on conditionals.
-  - Used in `lib/types.nix`
-  - Used in `YANTS`
+    - Fails execution of code based on conditionals.
+    - Used in `lib/types.nix`
+    - Used in `YANTS`
 
 ### Why static types
 
@@ -92,7 +93,9 @@ e.g
 | String   |  EmptyString  |
 | String   |  NonEmptyString  |
 
-Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string, or a comma separated one, you can always perform the same operations on them. like `split` `indexOf` `optionalString` `etc`. Option-Types are only dynamic checks and not real types.
+Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string,
+or a comma separated one, you can always perform the same operations on them.
+like `split` `indexOf` `optionalString` `etc`. Option-Types are only dynamic checks and not real types.
 
 ## Type system
 
@@ -104,11 +107,20 @@ Type systems are good:
 
 __`doc-strings` are the best possible solution in my opinion. Because they don't alter the nix language itself, but allow for static type checking from external tools. (like `nil`)__
 
-With doc-strings we can give first shot, which might not be 100% perfect and doesn't alter the nix language. Building on top of that we can evaluate the type system and show if it represents the code close enough for a second proposal. Then that second proposal could integrate the types into the nix language itself.
+With doc-strings we can give first shot, which might not be 100% perfect
+and doesn't alter the nix language.
+
+Building on top of that we can evaluate the type system and show if it represents the code
+close enough for a second proposal.
+
+Then that second proposal could integrate the types into the nix language itself.
 
 Thats why I decided to give it a try. At least to clarify the conventions of the current type-comment-system.
-And introduce a really consistent and reliable `intermediate representation`  of types in nix
-In [nixpkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib) there are some files that contain descriptive type comments. And this approach aims to reach high compatibility with that but also to be intuitive and consistent with the existing language paradigms.
+And introduce a really consistent and reliable `intermediate representation` of types in nix
+In [nixpkgs/lib/*](https://github.com/NixOS/nixpkgs/tree/master/lib)
+there are some files that contain descriptive type comments.
+And this approach aims to reach high compatibility with that
+but also to be intuitive and consistent with the existing language paradigms.
 
 ## Convention
 
@@ -133,16 +145,17 @@ Requires some sort of parser, where everything it doesn't accept is an invalid d
 
 for writing `type:` comments
 
-1. `type:` starts the type block. Followed by at least one line-break
-2. Within one block multiple declarations are allowed.
-3. All declarations are `PascalCase`, starting with capital letters.
-4. Types MUST be chosen from the existing list. [below](#list-of-static-types)
-5. Operators MUST be chosen from the existing list. (see [below](#list-of-operators) )
-6. The Language rules MUST be followed (described in this paper)
-7. `AttrSet` and `List` keywords are PROHIBITED. Writers must express explicitly if they want to allow arbitrary values. e.g. `AttrSet` is an alias for `{ ... }` (explained below), same for `List` -> `[ Any ]`
-8. AttrSets definitions should include their keys if they don't accept arbitrary values. `{ foo = bar; } # type: { foo :: Any }`
-9. Type bindings (explained below) are PROHIBITED to choose names from the reserved list (see [below](#list-of-static-types) )
-10. Spaces between Operators (optional)
+1. The Language rules MUST be followed (described in this paper)
+2. `type:` starts the type block. Followed by at least one line-break
+3. Within one block multiple declarations are allowed.
+4. All declarations are `PascalCase`, starting with capital letters.
+5. Types MUST be chosen from the existing list. see [below](#list-of-static-types)
+6. Operators MUST be chosen from the existing list. see [below](#list-of-operators)
+7. `AttrSet` and `List` keywords are PROHIBITED.
+8. Using [nested-types](#composed-types) MUST include their member types. `{ foo = bar; } # type: { foo :: Any }`
+9. Allowing arbitrary values within [nested-types](#composed-types) is possible but requires explicit statements.
+10. When using [Type bindings](#-equality-operator-allows-for-type-bindings) it is PROHIBITED to choose names from the [reserved list](#prohibited-bindings)
+11. Spaces between Operators (optional)
 
 Hint: The type block is never terminated and expands till to the bottom of the `/* multiline comment */`. This is actually how comments are parsed today.
 
@@ -394,7 +407,7 @@ Overwrites occur like in the nix language itself
 
 `{ foo :: String } // { foo :: Any }` => `{ foo :: Any }`
 
-### `=` equality operator. Allows for __type bindings__
+### [`=` equality operator. Allows for __type bindings__](type-bindings)
 
 Convention: As types always start with Capital letters; Type bindings also start with capital letters.
 
@@ -430,6 +443,14 @@ e.g.
   type:
     foo = Any
 ```
+
+#### [prohibited bindings](prohibited-bindings)
+
+To prevent conflicts and confusion.
+__It is strictly prohibited to choose a name your custom type to be the same as:__
+
+- One of the [basic types](#basic)
+- One of the Globally available types.
 
 ### `?` optional arguments in an AttrSet
 
@@ -490,7 +511,10 @@ packageSetInfo = attrs: getInfo { inherit attrs; };
 
 nixos modules typing system is dynamically evaluated. It misses (like everything else) __static__ analysis possibilities.
 
-With the power of both worlds, static & dynamic, nix developers should be able to get high quality code up and running more reliable, faster and with less brainwork. So developers can focus on more important parts of their nix applications.
+With the power of both worlds, static & dynamic, nix developers should be able to get high quality code up
+and running more reliable, faster and with less brainwork.
+
+So developers can focus on more important parts of their nix applications.
 
 The proposed change for `option types` provide an `AST` attribute that implements the `AST` described in this project.
 

@@ -2,7 +2,7 @@
 { lib }:
 let
 
-inherit (builtins) length;
+  inherit (builtins) length;
 
 in
 
@@ -77,9 +77,9 @@ rec {
     separator:
     # Input list
     list:
-    if list == [] || length list == 1
+    if list == [ ] || length list == 1
     then list
-    else tail (lib.concatMap (x: [separator x]) list);
+    else tail (lib.concatMap (x: [ separator x ]) list);
 
   /* Concatenate a list of strings with a separator between each element
 
@@ -193,7 +193,7 @@ rec {
        normalizePath "/a//b///c/"
        => "/a/b/c/"
   */
-  normalizePath = s: (builtins.foldl' (x: y: if y == "/" && hasSuffix "/" x then x else x+y) "" (stringToCharacters s));
+  normalizePath = s: (builtins.foldl' (x: y: if y == "/" && hasSuffix "/" x then x else x + y) "" (stringToCharacters s));
 
   /* Depending on the boolean `cond', return either the given string
      or the empty string. Useful to concatenate against a bigger string.
@@ -246,8 +246,9 @@ rec {
     let
       lenContent = stringLength content;
       lenSuffix = stringLength suffix;
-    in lenContent >= lenSuffix &&
-       substring (lenContent - lenSuffix) lenContent content == suffix;
+    in
+    lenContent >= lenSuffix &&
+    substring (lenContent - lenSuffix) lenContent content == suffix;
 
   /* Determine whether a string contains the given infix
 
@@ -315,9 +316,11 @@ rec {
        => 40
 
   */
-  charToInt = let
-    table = import ./ascii-table.nix;
-  in c: builtins.getAttr c table;
+  charToInt =
+    let
+      table = import ./ascii-table.nix;
+    in
+    c: builtins.getAttr c table;
 
   /* Escape occurrence of the elements of `list` in `string` by
      prefixing it with a backslash.
@@ -395,16 +398,16 @@ rec {
   */
   toShellVar = name: value:
     lib.throwIfNot (isValidPosixName name) "toShellVar: ${name} is not a valid shell variable name" (
-    if isAttrs value && ! isCoercibleToString value then
-      "declare -A ${name}=(${
+      if isAttrs value && ! isCoercibleToString value then
+        "declare -A ${name}=(${
         concatStringsSep " " (lib.mapAttrsToList (n: v:
           "[${escapeShellArg n}]=${escapeShellArg v}"
         ) value)
       })"
-    else if isList value then
-      "declare -a ${name}=(${escapeShellArgs value})"
-    else
-      "${name}=${escapeShellArg value}"
+      else if isList value then
+        "declare -a ${name}=(${escapeShellArgs value})"
+      else
+        "${name}=${escapeShellArg value}"
     );
 
   /* Translate an attribute set into corresponding shell variable declarations
@@ -431,7 +434,7 @@ rec {
        escapeNixString "hello\${}\n"
        => "\"hello\\\${}\\n\""
   */
-  escapeNixString = s: escape ["$"] (toJSON s);
+  escapeNixString = s: escape [ "$" ] (toJSON s);
 
   /* Turn a string into an exact regular expression
 
@@ -468,22 +471,23 @@ rec {
        => "&quot;test&quot; &apos;test&apos; &lt; &amp; &gt;"
   */
   escapeXML = builtins.replaceStrings
-    ["\"" "'" "<" ">" "&"]
-    ["&quot;" "&apos;" "&lt;" "&gt;" "&amp;"];
+    [ "\"" "'" "<" ">" "&" ]
+    [ "&quot;" "&apos;" "&lt;" "&gt;" "&amp;" ];
 
   # Obsolete - use replaceStrings instead.
   replaceChars = builtins.replaceStrings or (
     del: new: s:
-    let
-      substList = lib.zipLists del new;
-      subst = c:
-        let found = lib.findFirst (sub: sub.fst == c) null substList; in
-        if found == null then
-          c
-        else
-          found.snd;
-    in
-      stringAsChars subst s);
+      let
+        substList = lib.zipLists del new;
+        subst = c:
+          let found = lib.findFirst (sub: sub.fst == c) null substList; in
+          if found == null then
+            c
+          else
+            found.snd;
+      in
+      stringAsChars subst s
+  );
 
   # Case conversion utilities.
   lowerChars = stringToCharacters "abcdefghijklmnopqrstuvwxyz";
@@ -539,7 +543,7 @@ rec {
       s = builtins.unsafeDiscardStringContext _s;
       splits = builtins.filter builtins.isString (builtins.split (escapeRegex sep) s);
     in
-      map (v: addContextFrom _sep (addContextFrom _s v)) splits;
+    map (v: addContextFrom _sep (addContextFrom _s v)) splits;
 
   /* Return a string without the specified prefix, if the prefix matches.
 
@@ -560,10 +564,10 @@ rec {
       preLen = stringLength prefix;
       sLen = stringLength str;
     in
-      if hasPrefix prefix str then
-        substring preLen (sLen - preLen) str
-      else
-        str;
+    if hasPrefix prefix str then
+      substring preLen (sLen - preLen) str
+    else
+      str;
 
   /* Return a string without the specified suffix, if the suffix matches.
 
@@ -584,10 +588,10 @@ rec {
       sufLen = stringLength suffix;
       sLen = stringLength str;
     in
-      if sufLen <= sLen && suffix == substring (sLen - sufLen) sufLen str then
-        substring 0 (sLen - sufLen) str
-      else
-        str;
+    if sufLen <= sLen && suffix == substring (sLen - sufLen) sufLen str then
+      substring 0 (sLen - sufLen) str
+    else
+      str;
 
   /* Return true if string v1 denotes a version older than v2.
 
@@ -622,11 +626,12 @@ rec {
        => "youtube-dl"
   */
   getName = x:
-   let
-     parse = drv: (parseDrvName drv).name;
-   in if isString x
-      then parse x
-      else x.pname or (parse x.name);
+    let
+      parse = drv: (parseDrvName drv).name;
+    in
+    if isString x
+    then parse x
+    else x.pname or (parse x.name);
 
   /* This function takes an argument that's either a derivation or a
      derivation's "name" attribute and extracts the version part from that
@@ -639,11 +644,12 @@ rec {
        => "2016.01.01"
   */
   getVersion = x:
-   let
-     parse = drv: (parseDrvName drv).version;
-   in if isString x
-      then parse x
-      else x.version or (parse x.name);
+    let
+      parse = drv: (parseDrvName drv).version;
+    in
+    if isString x
+    then parse x
+    else x.version or (parse x.name);
 
   /* Extract name with version from URL. Ask for separator which is
      supposed to start extension.
@@ -659,7 +665,8 @@ rec {
       components = splitString "/" url;
       filename = lib.last components;
       name = head (splitString sep filename);
-    in assert name != filename; name;
+    in
+    assert name != filename; name;
 
   /* Create an --{enable,disable}-<feat> string that can be passed to
      standard GNU Autoconf scripts.
@@ -726,11 +733,11 @@ rec {
       strw = lib.stringLength str;
       reqWidth = width - (lib.stringLength filler);
     in
-      assert lib.assertMsg (strw <= width)
-        "fixedWidthString: requested string length (${
+    assert lib.assertMsg (strw <= width)
+      "fixedWidthString: requested string length (${
           toString width}) must not be shorter than actual length (${
             toString strw})";
-      if strw == width then str else filler + fixedWidthString reqWidth filler str;
+    if strw == width then str else filler + fixedWidthString reqWidth filler str;
 
   /* Format a number adding leading zeroes up to fixed width.
 
@@ -750,11 +757,13 @@ rec {
        => trace: warning: Imprecise conversion from float to string 0.000000
           "0.000000"
   */
-  floatToString = float: let
-    result = toString float;
-    precise = float == fromJSON result;
-  in lib.warnIf (!precise) "Imprecise conversion from float to string ${result}"
-    result;
+  floatToString = float:
+    let
+      result = toString float;
+      precise = float == fromJSON result;
+    in
+    lib.warnIf (!precise) "Imprecise conversion from float to string ${result}"
+      result;
 
   /* Check whether a value can be coerced to a string */
   isCoercibleToString = x:
@@ -784,7 +793,7 @@ rec {
       false;
 
   /* Parse a string as an int. Does not support parsing of integers with preceding zero due to
-  ambiguity between zero-padded and octal numbers. See toIntBase10.
+    ambiguity between zero-padded and octal numbers. See toIntBase10.
 
      Type: string -> int
 
@@ -812,7 +821,7 @@ rec {
       strippedInput = match "[[:space:]]*([[:digit:]]+)[[:space:]]*" str;
 
       # RegEx: Match a leading '0' then one or more digits.
-      isLeadingZero = match "0[[:digit:]]+" (head strippedInput) == [];
+      isLeadingZero = match "0[[:digit:]]+" (head strippedInput) == [ ];
 
       # Attempt to parse input
       parsedInput = fromJSON (head strippedInput);
@@ -820,20 +829,20 @@ rec {
       generalError = "toInt: Could not convert ${escapeNixString str} to int.";
 
       octalAmbigError = "toInt: Ambiguity in interpretation of ${escapeNixString str}"
-      + " between octal and zero padded integer.";
+        + " between octal and zero padded integer.";
 
     in
-      # Error on presence of non digit characters.
-      if strippedInput == null
-      then throw generalError
-      # Error on presence of leading zero/octal ambiguity.
-      else if isLeadingZero
-      then throw octalAmbigError
-      # Error if parse function fails.
-      else if !isInt parsedInput
-      then throw generalError
-      # Return result.
-      else parsedInput;
+    # Error on presence of non digit characters.
+    if strippedInput == null
+    then throw generalError
+    # Error on presence of leading zero/octal ambiguity.
+    else if isLeadingZero
+    then throw octalAmbigError
+    # Error if parse function fails.
+    else if !isInt parsedInput
+    then throw generalError
+    # Return result.
+    else parsedInput;
 
 
   /* Parse a string as a base 10 int. This supports parsing of zero-padded integers.
@@ -863,7 +872,7 @@ rec {
       strippedInput = match "[[:space:]]*0*([[:digit:]]+)[[:space:]]*" str;
 
       # RegEx: Match at least one '0'.
-      isZero = match "0+" (head strippedInput) == [];
+      isZero = match "0+" (head strippedInput) == [ ];
 
       # Attempt to parse input
       parsedInput = fromJSON (head strippedInput);
@@ -871,17 +880,17 @@ rec {
       generalError = "toIntBase10: Could not convert ${escapeNixString str} to int.";
 
     in
-      # Error on presence of non digit characters.
-      if strippedInput == null
-      then throw generalError
-      # In the special case zero-padded zero (00000), return early.
-      else if isZero
-      then 0
-      # Error if parse function fails.
-      else if !isInt parsedInput
-      then throw generalError
-      # Return result.
-      else parsedInput;
+    # Error on presence of non digit characters.
+    if strippedInput == null
+    then throw generalError
+    # In the special case zero-padded zero (00000), return early.
+    else if isZero
+    then 0
+    # Error if parse function fails.
+    else if !isInt parsedInput
+    then throw generalError
+    # Return result.
+    else parsedInput;
 
   /* Read a list of paths from `file`, relative to the `rootPath`.
      Lines beginning with `#` are treated as comments and ignored.
@@ -906,7 +915,7 @@ rec {
         relativePaths = removeComments lines;
         absolutePaths = map (path: rootPath + "/${path}") relativePaths;
       in
-        absolutePaths);
+      absolutePaths);
 
   /* Read the contents of a file removing the trailing \n
 
@@ -934,29 +943,30 @@ rec {
        => "-nix-store-2g75chlbpxlrqn15zlby2dfh8hr9qwbk-hello-2.10"
   */
   sanitizeDerivationName =
-  let okRegex = match "[[:alnum:]+_?=-][[:alnum:]+._?=-]*";
-  in
-  string:
-  # First detect the common case of already valid strings, to speed those up
-  if stringLength string <= 207 && okRegex string != null
-  then unsafeDiscardStringContext string
-  else lib.pipe string [
-    # Get rid of string context. This is safe under the assumption that the
-    # resulting string is only used as a derivation name
-    unsafeDiscardStringContext
-    # Strip all leading "."
-    (x: elemAt (match "\\.*(.*)" x) 0)
-    # Split out all invalid characters
-    # https://github.com/NixOS/nix/blob/2.3.2/src/libstore/store-api.cc#L85-L112
-    # https://github.com/NixOS/nix/blob/2242be83c61788b9c0736a92bb0b5c7bbfc40803/nix-rust/src/store/path.rs#L100-L125
-    (split "[^[:alnum:]+._?=-]+")
-    # Replace invalid character ranges with a "-"
-    (concatMapStrings (s: if lib.isList s then "-" else s))
-    # Limit to 211 characters (minus 4 chars for ".drv")
-    (x: substring (lib.max (stringLength x - 207) 0) (-1) x)
-    # If the result is empty, replace it with "unknown"
-    (x: if stringLength x == 0 then "unknown" else x)
-  ];
+    let okRegex = match "[[:alnum:]+_?=-][[:alnum:]+._?=-]*";
+    in
+    string:
+    # First detect the common case of already valid strings, to speed those up
+    if stringLength string <= 207 && okRegex string != null
+    then unsafeDiscardStringContext string
+    else
+      lib.pipe string [
+        # Get rid of string context. This is safe under the assumption that the
+        # resulting string is only used as a derivation name
+        unsafeDiscardStringContext
+        # Strip all leading "."
+        (x: elemAt (match "\\.*(.*)" x) 0)
+        # Split out all invalid characters
+        # https://github.com/NixOS/nix/blob/2.3.2/src/libstore/store-api.cc#L85-L112
+        # https://github.com/NixOS/nix/blob/2242be83c61788b9c0736a92bb0b5c7bbfc40803/nix-rust/src/store/path.rs#L100-L125
+        (split "[^[:alnum:]+._?=-]+")
+        # Replace invalid character ranges with a "-"
+        (concatMapStrings (s: if lib.isList s then "-" else s))
+        # Limit to 211 characters (minus 4 chars for ".drv")
+        (x: substring (lib.max (stringLength x - 207) 0) (-1) x)
+        # If the result is empty, replace it with "unknown"
+        (x: if stringLength x == 0 then "unknown" else x)
+      ];
 
   /* Computes the Levenshtein distance between two strings.
      Complexity O(n*m) where n and m are the lengths of the strings.
@@ -972,24 +982,33 @@ rec {
        levenshtein "hello" "Heyo"
        => 3
   */
-  levenshtein = a: b: let
-    # Two dimensional array with dimensions (stringLength a + 1, stringLength b + 1)
-    arr = lib.genList (i:
-      lib.genList (j:
-        dist i j
-      ) (stringLength b + 1)
-    ) (stringLength a + 1);
-    d = x: y: lib.elemAt (lib.elemAt arr x) y;
-    dist = i: j:
-      let c = if substring (i - 1) 1 a == substring (j - 1) 1 b
-        then 0 else 1;
-      in
-      if j == 0 then i
-      else if i == 0 then j
-      else lib.min
-        ( lib.min (d (i - 1) j + 1) (d i (j - 1) + 1))
-        ( d (i - 1) (j - 1) + c );
-  in d (stringLength a) (stringLength b);
+  levenshtein = a: b:
+    let
+      # Two dimensional array with dimensions (stringLength a + 1, stringLength b + 1)
+      arr = lib.genList
+        (i:
+          lib.genList
+            (j:
+              dist i j
+            )
+            (stringLength b + 1)
+        )
+        (stringLength a + 1);
+      d = x: y: lib.elemAt (lib.elemAt arr x) y;
+      dist = i: j:
+        let
+          c =
+            if substring (i - 1) 1 a == substring (j - 1) 1 b
+            then 0 else 1;
+        in
+        if j == 0 then i
+        else if i == 0 then j
+        else
+          lib.min
+            (lib.min (d (i - 1) j + 1) (d i (j - 1) + 1))
+            (d (i - 1) (j - 1) + c);
+    in
+    d (stringLength a) (stringLength b);
 
   /* Returns the length of the prefix common to both strings.
   */
@@ -997,7 +1016,8 @@ rec {
     let
       m = lib.min (stringLength a) (stringLength b);
       go = i: if i >= m then m else if substring i 1 a == substring i 1 b then go (i + 1) else i;
-    in go 0;
+    in
+    go 0;
 
   /* Returns the length of the suffix common to both strings.
   */
@@ -1005,7 +1025,8 @@ rec {
     let
       m = lib.min (stringLength a) (stringLength b);
       go = i: if i >= m then m else if substring (stringLength a - i - 1) 1 a == substring (stringLength b - i - 1) 1 b then go (i + 1) else i;
-    in go 0;
+    in
+    go 0;
 
   /* Returns whether the levenshtein distance between two strings is at most some value
      Complexity is O(min(n,m)) for k <= 2 and O(n*m) otherwise
@@ -1025,36 +1046,37 @@ rec {
        => true
 
   */
-  levenshteinAtMost = let
-    infixDifferAtMost1 = x: y: stringLength x <= 1 && stringLength y <= 1;
+  levenshteinAtMost =
+    let
+      infixDifferAtMost1 = x: y: stringLength x <= 1 && stringLength y <= 1;
 
-    # This function takes two strings stripped by their common pre and suffix,
-    # and returns whether they differ by at most two by Levenshtein distance.
-    # Because of this stripping, if they do indeed differ by at most two edits,
-    # we know that those edits were (if at all) done at the start or the end,
-    # while the middle has to have stayed the same. This fact is used in the
-    # implementation.
-    infixDifferAtMost2 = x: y:
-      let
-        xlen = stringLength x;
-        ylen = stringLength y;
-        # This function is only called with |x| >= |y| and |x| - |y| <= 2, so
-        # diff is one of 0, 1 or 2
-        diff = xlen - ylen;
+      # This function takes two strings stripped by their common pre and suffix,
+      # and returns whether they differ by at most two by Levenshtein distance.
+      # Because of this stripping, if they do indeed differ by at most two edits,
+      # we know that those edits were (if at all) done at the start or the end,
+      # while the middle has to have stayed the same. This fact is used in the
+      # implementation.
+      infixDifferAtMost2 = x: y:
+        let
+          xlen = stringLength x;
+          ylen = stringLength y;
+          # This function is only called with |x| >= |y| and |x| - |y| <= 2, so
+          # diff is one of 0, 1 or 2
+          diff = xlen - ylen;
 
-        # Infix of x and y, stripped by the left and right most character
-        xinfix = substring 1 (xlen - 2) x;
-        yinfix = substring 1 (ylen - 2) y;
+          # Infix of x and y, stripped by the left and right most character
+          xinfix = substring 1 (xlen - 2) x;
+          yinfix = substring 1 (ylen - 2) y;
 
-        # x and y but a character deleted at the left or right
-        xdelr = substring 0 (xlen - 1) x;
-        xdell = substring 1 (xlen - 1) x;
-        ydelr = substring 0 (ylen - 1) y;
-        ydell = substring 1 (ylen - 1) y;
-      in
+          # x and y but a character deleted at the left or right
+          xdelr = substring 0 (xlen - 1) x;
+          xdell = substring 1 (xlen - 1) x;
+          ydelr = substring 0 (ylen - 1) y;
+          ydell = substring 1 (ylen - 1) y;
+        in
         # A length difference of 2 can only be gotten with 2 delete edits,
-        # which have to have happened at the start and end of x
-        # Example: "abcdef" -> "bcde"
+          # which have to have happened at the start and end of x
+          # Example: "abcdef" -> "bcde"
         if diff == 2 then xinfix == y
         # A length difference of 1 can only be gotten with a deletion on the
         # right and a replacement on the left or vice versa.
@@ -1066,8 +1088,10 @@ rec {
         # Example: "abcdef" -> "zbcdez" or "bcdefz" or "zabcde"
         else xinfix == yinfix || xdelr == ydell || xdell == ydelr;
 
-    in k: if k <= 0 then a: b: a == b else
-      let f = a: b:
+    in
+    k: if k <= 0 then a: b: a == b else
+    let
+      f = a: b:
         let
           alen = stringLength a;
           blen = stringLength b;
@@ -1084,5 +1108,6 @@ rec {
         else if k == 1 then infixDifferAtMost1 ainfix binfix
         else if k == 2 then infixDifferAtMost2 ainfix binfix
         else levenshtein ainfix binfix <= k;
-      in f;
+    in
+    f;
 }
