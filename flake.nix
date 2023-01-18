@@ -1,0 +1,77 @@
+{ 
+  description = "";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    flake-utils.url = "github:numtide/flake-utils";
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+  };
+  outputs = { self, nixpkgs, flake-utils, pre-commit-hooks }:
+    flake-utils.lib.eachSystem [ flake-utils.lib.system.x86_64-linux ] (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
+      in
+      {
+        devShells.default = pkgs.mkShell {
+        inputsFrom = [ self.packages.${system}.default ];
+        packages = with pkgs; [
+          statix
+          nodePackages.cspell
+          nodePackages.markdownlint-cli
+        ];
+        shellHook = ''
+          ${self.checks.${system}.pre-commit-check.shellHook}
+        '';
+      };
+      checks = {
+          pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              cspell = {
+                enable = true;
+                entry = "${pkgs.nodePackages.cspell}/bin/cspell --words-only";
+                types = [ "markdown" ];
+              };
+              nixpkgs-fmt.enable = true;
+              statix.enable = true;
+              markdownlint.enable = true;
+            };
+          };
+        };
+        packages = {
+          nix-types = pkgs.rustPlatform.buildRustPackage {
+            pname = "nix-types";
+            version = "0.1.0";
+            src = ./parser;
+            
+            cargoLock = {
+              lockFile = ./parser/Cargo.lock;
+              outputHashes = {
+                "arenatree-0.1.1" = "sha256-b3VVbYnWsjSjFMxvkfpJt13u+VC6baOIWD4qm1Gco4Q=";
+                "rnix-0.4.1" = "sha256-C1L/qXk6AimH7COrBlqpUA3giftaOYm/qNxs7rQgETA=";
+              };
+            };
+            nativeBuildInputs = [ pkgs.pkg-config ];
+          };
+          # currently use nixpkgs/lib as test source
+          parsed = pkgs.stdenv.mkDerivation {
+            name = "test-data";
+            src = nixpkgs;
+            nativeBuildInputs = [self.packages.${system}.nix-types];
+            buildPhase = ''
+              echo "running nix metadata collect in nixpkgs/lib"
+              ${self.packages.${system}.nix-types}/bin/nix-types --dir ./lib
+            '';
+            installPhase = ''
+              cat data.json > $out  
+            '';
+          };
+        default = self.packages.${system}.parsed;
+        };
+      });
+}
