@@ -19,4 +19,4 @@ __:construction: :construction: Any help welcome! :construction: :construction:_
 
 ![type-system](./Types.drawio.svg)
 
-The full content was moved temporarily into [here](./docs/README.md)
+The full content was moved temporarily into [here](./docs/README.md) until the full text was refactored into the doc-book

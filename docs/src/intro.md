@@ -2,10 +2,6 @@
 
 This Draft of an RFC could be the first step to improve how nix is used as a language.
 
-🚧 🚧 🚧 Currently - Under construction 🚧 🚧 🚧
-
-#️⃣ discuss with us on matrix:[https://matrix.to/#/#nix-types:matrix.org](https://matrix.to/#/#nix-types:matrix.org) #️⃣
-
 Generally there are two type systems:
 
 - __Static__
@@ -21,19 +17,11 @@ Generally there are two type systems:
 
 ## Why static types
 
-I propose to build a set of simple yet effective `static types` instead of following the dynamic types from the `option types`.
+I propose to build a set of simple yet effective `static types` instead of following the dynamic types approach.
 
-As i am not a type theorist but from my perspective few static types can represent a lot of dynamic ones.
+By using static types many additional possibilities even for dynamically typed languages arise.
 
-e.g
-
-| static   |  option types  |
-|--- |--- |
-| String   |  String  |
-| String   |  CommaSeparatedString  |
-| String   |  EmptyString  |
-| String   |  NonEmptyString  |
-
-Mainly those are the same `types` from a static perspective because it makes no difference if you have an empty string,
-or a comma separated one, you can always perform the same operations on them.
-like `split` `indexOf` `optionalString` `etc`. Option-Types are only dynamic checks and not real types.
+- determine whether a program would actually work or not, just by looking at the types.
+- provide autocompletion on typed variable- and function-bindings.
+- automatically generate good documentation directly from code.
+- ...
