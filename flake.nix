@@ -22,6 +22,7 @@
         devShells.default = pkgs.mkShell {
           inputsFrom = [ self.packages.${system}.default ];
           packages = with pkgs; [
+            mdbook
             statix
             nodePackages.cspell
             nodePackages.markdownlint-cli
@@ -50,6 +51,13 @@
           };
         };
         packages = {
+          docs = pkgs.runCommand
+            "static-docs"
+            { nativeBuildInputs = [ pkgs.mdbook ]; }
+            ''
+              mdbook build -d $out ${./.}/docs
+            '';
+
           nix-types = pkgs.rustPlatform.buildRustPackage {
             pname = "nix-types";
             version = "0.1.0";

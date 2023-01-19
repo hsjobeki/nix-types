@@ -8,6 +8,7 @@
     "words": [
         "builtins",
         "discoverablility",
+        "docstrings",
         "Linebreaks",
         "nix",
         "nixdoc",

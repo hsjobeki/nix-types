@@ -1,0 +1,12 @@
+[book]
+authors = ["@hsjobeki:Johannes Kirschbauer"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Nix Types - a first step in the right direction"
+
+[output.html]
+mathjax-support = true
+default-theme = "light"
+preferred-dark-theme = "navy"
+additional-css = ["theme/highlight-dark.css"]
