@@ -139,8 +139,6 @@
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>This Draft of an RFC could be the first step to improve how nix is used as a language.</p>
-<p>🚧 🚧 🚧 Currently - Under construction 🚧 🚧 🚧</p>
-<p>#️⃣ discuss with us on matrix:<a href="https://matrix.to/#/#nix-types:matrix.org">https://matrix.to/#/#nix-types:matrix.org</a> #️⃣</p>
 <p>Generally there are two type systems:</p>
 <ul>
 <li>
@@ -159,19 +157,14 @@ So errors can be caught while writing code.</p>
 </li>
 </ul>
 <h2 id="why-static-types"><a class="header" href="#why-static-types">Why static types</a></h2>
-<p>I propose to build a set of simple yet effective <code>static types</code> instead of following the dynamic types from the <code>option types</code>.</p>
-<p>As i am not a type theorist but from my perspective few static types can represent a lot of dynamic ones.</p>
-<p>e.g</p>
-<div class="table-wrapper"><table><thead><tr><th>static</th><th>option types</th></tr></thead><tbody>
-<tr><td>String</td><td>String</td></tr>
-<tr><td>String</td><td>CommaSeparatedString</td></tr>
-<tr><td>String</td><td>EmptyString</td></tr>
-<tr><td>String</td><td>NonEmptyString</td></tr>
-</tbody></table>
-</div>
-<p>Mainly those are the same <code>types</code> from a static perspective because it makes no difference if you have an empty string,
-or a comma separated one, you can always perform the same operations on them.
-like <code>split</code> <code>indexOf</code> <code>optionalString</code> <code>etc</code>. Option-Types are only dynamic checks and not real types.</p>
+<p>I propose to build a set of simple yet effective <code>static types</code> instead of following the dynamic types approach.</p>
+<p>By using static types many additional possibilities even for dynamically typed languages arise.</p>
+<ul>
+<li>determine whether a program would actually work or not, just by looking at the types.</li>
+<li>provide autocompletion on typed variable- and function-bindings.</li>
+<li>automatically generate good documentation directly from code.</li>
+<li>...</li>
+</ul>
 
                     </main>
 
