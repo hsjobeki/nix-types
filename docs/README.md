@@ -23,7 +23,7 @@ __:construction: :construction: Any help welcome! :construction: :construction:_
             - [List](#list)
             - [AttrSet](#attrset)
             - [Lambda](#lambda)
-        - [`|` syntactic or](#-syntactic-or)
+        <!-- - [`|` syntactic or](#-syntactic-or) -->
         - [Composed Types](#composed-types)
         - [Global Types](#global-types)
     - [List of Operators](#list-of-operators)
@@ -307,42 +307,6 @@ Number -> Number
 [ String ] -> ( String -> Number ) -> [ Number ]
 
 (Path -> String) -> { ${name} :: Path } -> { ${name} :: String }
-```
-
-### `|` syntactic or
-
-syntactic `Or` can be used for composition or enums
-
-Let `T` and `U` be different Types.
-Then the `|` operator evaluates to either `T` or `U`.
-
-> __Examples__
-
-`Float | Int`
-
-`( Number | Bool ) | Int`
-
-`{ opt :: Int | String }`
-
-```nix
-# lets say we want to create a type which can represent the type of both 'foo' and 'bar'
-let
-  /*
-    Type:
-      FooBar = Int | String
-
-      foo :: FooBar
-  */
-  foo = 1;
-  /*
-    Type: 
-      bar :: FooBar
-  */
-  bar = "baz";
-
-in
-  # ....
-
 ```
 
 ### Composed Types
