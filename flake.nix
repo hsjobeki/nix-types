@@ -56,6 +56,7 @@
             { nativeBuildInputs = [ pkgs.mdbook ]; }
             ''
               mdbook build -d $out ${./.}/docs
+              echo typednix.dev > $out/CNAME
             '';
 
           nix-types = pkgs.rustPlatform.buildRustPackage {
