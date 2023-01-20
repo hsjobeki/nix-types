@@ -11,3 +11,4 @@
         - [List](./specification/list.md)
         - [AttrSet](./specification/attrset.md)
 - [Operators](./specification/operators.md)
+- [Contributors](./contributors.md)

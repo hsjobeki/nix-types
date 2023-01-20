@@ -2,7 +2,22 @@
 
 ## Abstract
 
-An `AttrSet` type can be though of as just a `pair` of ...
+An `AttrSet` type can be thought of as just a list of `pair of name and value`.
+
+- `fst` on `pair of name and value` yields the `name`.
+- `snd` on `pair of name and value` yields the `value`.
+
+Then `AttrSet` can be written as:
+
+```nix
+[Pair(name,value)]
+```
+
+when you reference a specific **name** on an AttrSet; You basically implicitly apply a `filter` or `find` operation on that list where the `fst` of the `mapped entry` equals the referenced **name**
+
+For simplicity this is called a `member name` from now on, if that name exists.
+
+If that name does not exist it is called `non-existing member name`.
 
 ## Redefining some operators
 
@@ -10,7 +25,7 @@ An `AttrSet` type can be though of as just a `pair` of ...
 
 The `::`-operator maps the Type of its `RHS` over the `Type` on its `LHS`. It can take an `Iterable` or a `single element` on its LHS.
 
-Within Type-declarations for AttrSets it is possible to declare explicit members of an AttrSet like this.
+Within Type-declarations for AttrSets it is possible to declare an explicit `member name` of an AttrSet like this.
 
 ```nix
   {
@@ -18,16 +33,15 @@ Within Type-declarations for AttrSets it is possible to declare explicit members
   }
 ```
 
-Then `N` is of type `String` and `N` becomes an __explicit member__ of that AttrSet which references a value of type `T`.
-The value of `N` is called the `member name`
+Then `N` is of type `String` and `N` becomes a `member name` of that AttrSet. The `snd` operation on the entry of `N` would yield a value of type `T`.
 
 Introducing: `[ N :: T ]`-operator, which can only be used within `AttrSet` in `member name` fields.
 
-The `[ N :: T ]`-operator maps over all `member names` of an AttrSet `[N]` and applies the type `T` to each member name `N` if not already done by __explicit member__ declaration (see above).
+The `[ N :: T ]`-operator maps over all `member names` of an AttrSet `[N]` and applies the type `T` to each member name `N` if not already done by explicit member__ declaration (see above).
 
-When there are AttrSets with __dynamic members__ it is possible to declare all those members at once with the `[ N :: T ]` and `::` operator.
+When there are AttrSets with dynamic members it is possible to declare all those members at once with the `[ N :: T ]` and `::` operator.
 
-Then an AttrSet with list of __dynamic members__ where each member-name `N` references a __value of type__ `V` can be written as.
+Then an AttrSet with list of dynamic members where each member-name `N` references a **value of type** `V` can be written as.
 
 ```nix
   { 
@@ -35,7 +49,7 @@ Then an AttrSet with list of __dynamic members__ where each member-name `N` refe
   }
 ```
 
-> __Examples__
+### Examples
 
 ```nix
   # member '.foo' references a value of type string
@@ -56,7 +70,7 @@ Then an AttrSet with list of __dynamic members__ where each member-name `N` refe
 
 where the member names `[ N :: T ] are an empty list.
 
-__useful `${}` Shortcut__
+## useful `${}` Shortcut
 
 `${N} = [ N :: String ]`
 

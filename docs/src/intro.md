@@ -1,5 +1,7 @@
 # Introduction
 
+🚧🚧🚧 RFC Under construction 🚧🚧🚧🚧
+
 This Draft of an RFC could be the first step to improve how nix is used as a language.
 
 Generally there are two type systems:
@@ -31,3 +33,17 @@ By using `type hints` many additional possibilities even for dynamically typed l
 
 As type hints cannot provide any runtime assurances it is still needed to place guards in critical places.
 But instead of trying to represent a non-existent static type system the dynamic approach should transparently communicate what it really does: "Runtime validation".
+
+## Vision
+
+This project can be seen as a first step of possible many.
+By specifying the comments and not directly integrating types
+into the nix language this project stays downwards compatible
+and allows an intermediate phase of validation.
+
+In that validation phase the system can obtain feedback and corrections.
+It could then be made so good, that it really represents nix's type behavior.
+
+After that we can make a point about whether we should move forward and change the nix language so that it natively supports static types, or type annotations.
+
+> `Static Types` could then be built from the findings of this project.

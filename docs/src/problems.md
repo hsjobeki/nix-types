@@ -15,6 +15,10 @@ When ready through **nixpkgs** there are many comments that document functions a
   makeSearchPath = ...
 ```
 
+```txt
+The premise is that in Nix, every expression evaluates into a value. And every value has a type. And every type can be expressed in code, if we come up with the syntax to do that. 
+```
+
 Unfortunately those comments are very inconsistent.
 
 And cause problems if you want to process them with **external tools** or even try to **parse**

@@ -37,7 +37,7 @@ Every specified formal rule has the following format:
     ...
 
     Type:
-        attrByPath :: [ String ] -> a -> { ... } -> ( Any | a )
+        attrByPath :: [ String ] -> Any -> { ... } -> Any
   */
   attrByPath = ...
 ```
