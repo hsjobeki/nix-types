@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html" class="active"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html" class="active"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">5.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -139,11 +139,13 @@
                     <main>
                         <h1 id="goal--scope"><a class="header" href="#goal--scope">Goal / Scope</a></h1>
 <p><strong>Disclaimer: While <code>types</code> are great. This doesn't introduce any types into nix.</strong></p>
-<p>instead it can be seen as the first step towards them.</p>
+<h2 id="the-goal--scope"><a class="header" href="#the-goal--scope">The Goal / Scope</a></h2>
+<h3 id="introduce-a-type-annotation-system-for-the-doc-strings"><a class="header" href="#introduce-a-type-annotation-system-for-the-doc-strings">Introduce a type annotation system for the doc-strings</a></h3>
+<p>Which can be seen as the first step towards static types.</p>
+<h3 id="enhance-the-system-so-it-is-possible-to-annotate-the-type-of-everything-in-nix"><a class="header" href="#enhance-the-system-so-it-is-possible-to-annotate-the-type-of-everything-in-nix">Enhance the system so it is possible to annotate the type of everything in nix</a></h3>
 <ul>
 <li>Write down <em>convention</em> of the current typing system in nix. (<code>Type:</code> doc-stings)</li>
-<li>Let the convention be so good, that we can parse the <code>Type:</code> into an useful <code>AST</code>.</li>
-<li>Enhance the system so it is possible to type everything in nix using that new system.</li>
+<li>Let the convention be so, that we can parse the <code>Type:</code> into an useful <code>AST</code> (Abstract Syntax Tree).</li>
 <li>Provide a type-system that could proof correctness of code before runtime.</li>
 <li>Provide a Parser and AST Specification for that type system.</li>
 </ul>
