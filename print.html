@@ -157,15 +157,19 @@ So errors can be caught while writing code.</p>
 </ul>
 </li>
 </ul>
-<h2 id="why-static-types"><a class="header" href="#why-static-types">Why static types</a></h2>
-<p>I propose to build a set of simple yet effective <code>static types</code> instead of following the dynamic types approach.</p>
-<p>By using static types many additional possibilities even for dynamically typed languages arise.</p>
+<h2 id="proposal-type-hints"><a class="header" href="#proposal-type-hints">Proposal: Type hints</a></h2>
+<p>I propose to build a set of simple yet effective <code>type hints</code>, which would mimic <code>static types</code> instead of investing to much into the dynamic types approach,
+or trying to bring static types into the dynamic nix language.</p>
+<p>By using <code>type hints</code> many additional possibilities even for dynamically typed languages arise.</p>
 <ul>
 <li>determine whether a program would actually work or not, just by looking at the types.</li>
 <li>provide autocompletion on typed variable- and function-bindings.</li>
 <li>automatically generate good documentation directly from code.</li>
 <li>...</li>
 </ul>
+<h2 id="dynamic-type-validations-are-still-needed"><a class="header" href="#dynamic-type-validations-are-still-needed">Dynamic type validations are still needed</a></h2>
+<p>As type hints cannot provide any runtime assurances it is still needed to place guards in critical places.
+But instead of trying to represent a non-existent static type system the dynamic approach should transparently communicate what it really does: &quot;Runtime validation&quot;.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="goal--scope"><a class="header" href="#goal--scope">Goal / Scope</a></h1>
 <p><strong>Disclaimer: While <code>types</code> are great. This doesn't introduce any types into nix.</strong></p>
 <p>instead it can be seen as the first step towards them.</p>
