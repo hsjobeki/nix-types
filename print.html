@@ -79,7 +79,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -250,6 +250,311 @@ Sometimes the type-comment didn't include the functions name.</p>
 <p>If it accurately represents the code problems accurate enough,
 it might even be valid candidate for static type systems in future nix language versions.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="impact"><a class="header" href="#impact">Impact</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="formals"><a class="header" href="#formals">Formals</a></h1>
+<p>The following section specifies how to write <code>type hints</code> as comments</p>
+<blockquote>
+<p><code>type:</code> Type</p>
+</blockquote>
+<p>Every specified formal rule has the following format:</p>
+<blockquote>
+<p>[NT000] - Rule description</p>
+</blockquote>
+<h2 id="the-rules"><a class="header" href="#the-rules">The rules</a></h2>
+<ul>
+<li>[NT000] - The Language rules MUST be followed (described in this project)</li>
+<li>[NT001] - <code>Type hints</code> can only occur within multiline comments <code>/* */</code></li>
+<li>[NT002] - <code>Type:</code> starts the type block. Followed by at least one line-break (case sensitive)</li>
+<li>[NT003] - Within one block multiple declarations are allowed.</li>
+<li>[NT004] - All notations are <code>PascalCase</code>; starting with capital letters.</li>
+<li>[NT005] - Types MUST be chosen from the existing list. see <a href="specification/./basic.html">primitives</a></li>
+<li>[NT006] - Operators MUST be chosen from the existing list. see <a href="specification/./operators.html">operators</a></li>
+<li>[NT007] - explicit <code>AttrSet</code> and <code>List</code> keywords are PROHIBITED. See the correct usage <a href="specification/./complex.html">here</a></li>
+<li>[NT008] - <a href="specification/./complex.html">complex types</a> MUST include their members explicitly.</li>
+<li>[NT009] - Allowing arbitrary values within <a href="specification/./complex.html">complex-types</a> is possible but requires explicit statements.</li>
+<li>[NT010] - When using <a href="specification/./operators.html#type-binding">Type bindings</a> it is PROHIBITED to choose names from the <a href="specification/./types.html">reserved list</a></li>
+<li>[NT011] - Spaces between Operators (recommended)</li>
+<li>... more concrete rules may follow when implementation has started</li>
+</ul>
+<blockquote>
+<p>Hint: The type block is never terminated and expands till to the bottom of the <code>/* multiline comment */</code>. This is actually very close to how comments are parsed today.</p>
+</blockquote>
+<h3 id="example-of-a-valid-and-nicely-formatted-type-hint"><a class="header" href="#example-of-a-valid-and-nicely-formatted-type-hint">Example of a valid and nicely formatted <code>type hint</code></a></h3>
+<blockquote>
+<p>Usage of operators will be explained in the following chapters</p>
+</blockquote>
+<pre><code class="language-nix">  /* Return an attribute from nested attribute sets.
+    ...
+    Free Text goes here 
+    ...
+
+    Type:
+        attrByPath :: [ String ] -&gt; a -&gt; { ... } -&gt; ( Any | a )
+  */
+  attrByPath = ...
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
+<p>This chapter clarifies all types.</p>
+<p>To Pickup the overview more quickly they can be viewed in the following list.</p>
+<p>Every decision and further specification are explained in the corresponding sub-chapters respectively.</p>
+<h2 id="list-of-all-types"><a class="header" href="#list-of-all-types">List of all <code>Types</code></a></h2>
+<!-- markdownlint-disable MD041 -->
+<h3 id="primitives"><a class="header" href="#primitives">Primitives</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>Bool</td><td>A value of type boolean can be either <code>true</code> or <code>false</code></td></tr>
+<tr><td>Int</td><td>TODO: The classical integer type with 32-bit or 64-bit depending on the current system?</td></tr>
+<tr><td>Float</td><td>A float with 64 bits?</td></tr>
+<tr><td>String</td><td>A string of any unicode characters</td></tr>
+<tr><td>Path</td><td>Path referencing a location or a file. With no assumptions on the existence of that</td></tr>
+<tr><td>Null</td><td>The value null</td></tr>
+</tbody></table>
+</div><!-- markdownlint-disable MD041 -->
+<h3 id="complex"><a class="header" href="#complex">Complex</a></h3>
+<blockquote>
+<p><code>T</code>, <code>U</code>, ...; are placeholders for any types, those MUST be specifically declared on usage</p>
+</blockquote>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>Annotation</th><th>Type</th><th>Description</th><th>chapter</th></tr></thead><tbody>
+<tr><td><code>[T]</code></td><td>List</td><td>List of elements with type <code>T</code> each</td><td><a href="specification/../list.html">List</a></td></tr>
+<tr><td><code>{N::T}</code></td><td>AttrSet</td><td>AttrSet where member <code>N</code> references value of type <code>T</code></td><td><a href="specification/../attrset.html">AttrSet</a></td></tr>
+<tr><td><code>T-&gt;U</code></td><td>Lambda</td><td>A function that takes a single argument of type <code>T</code> and returns a value of type <code>U</code></td><td>[lambda] (../lambda.md)</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>More details how to use complex types in the corresponding chapters</p>
+</blockquote>
+<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD013 -->
+<h3 id="composed"><a class="header" href="#composed">Composed</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Composition</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>Number</code></td><td><code>Int {or} Float</code></td><td>The <code>Number</code> is either of type <code>Int</code> or of type <code>Float</code></td></tr>
+<tr><td><code>Any</code></td><td><code>[ Any ] {or} { [ name :: String ] :: Any } {or} (Any -&gt; Any) {or} Bool {or} Int {or} Float {or} String {or} Path {or} Null</code></td><td>Any is either one of the primitives or a complex type or any other composable type</td></tr>
+<tr><td><code>StorePath</code></td><td><code>Path</code></td><td>The <code>StorePath</code> is just a meaningful alias of the type <code>Path</code></td></tr>
+<tr><td><code>Derivation</code></td><td><code>{ ... }</code></td><td>TODO: <code>Derivation</code> is just a special AttrSet.</td></tr>
+<tr><td><code>Package</code></td><td><code>Derivation {or} {...}</code></td><td>TODO: <code>Package</code> is either a Derivation or a special AttrSet with <code>name</code> xy in it.</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>used operators are defined in the <a href="specification/../operators.html">operators chapter</a></p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="primitives-1"><a class="header" href="#primitives-1">Primitives</a></h1>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The following primitive types have been identified.</p>
+<p>All other types can be composed from them by using those and the <a href="specification/./operators.html">operators</a>.</p>
+<!-- markdownlint-disable MD041 -->
+<h3 id="primitives-2"><a class="header" href="#primitives-2">Primitives</a></h3>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>Bool</td><td>A value of type boolean can be either <code>true</code> or <code>false</code></td></tr>
+<tr><td>Int</td><td>TODO: The classical integer type with 32-bit or 64-bit depending on the current system?</td></tr>
+<tr><td>Float</td><td>A float with 64 bits?</td></tr>
+<tr><td>String</td><td>A string of any unicode characters</td></tr>
+<tr><td>Path</td><td>Path referencing a location or a file. With no assumptions on the existence of that</td></tr>
+<tr><td>Null</td><td>The value null</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="complex-1"><a class="header" href="#complex-1">Complex</a></h1>
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<p>The following complex types have been identified.</p>
+<p>All complex types can be composed from Any other types even from themselves by using those and the <a href="specification/./operators.html">operators</a>.</p>
+<!-- markdownlint-disable MD041 -->
+<h3 id="complex-2"><a class="header" href="#complex-2">Complex</a></h3>
+<blockquote>
+<p><code>T</code>, <code>U</code>, ...; are placeholders for any types, those MUST be specifically declared on usage</p>
+</blockquote>
+<hr />
+<div class="table-wrapper"><table><thead><tr><th>Annotation</th><th>Type</th><th>Description</th><th>chapter</th></tr></thead><tbody>
+<tr><td><code>[T]</code></td><td>List</td><td>List of elements with type <code>T</code> each</td><td><a href="specification/../list.html">List</a></td></tr>
+<tr><td><code>{N::T}</code></td><td>AttrSet</td><td>AttrSet where member <code>N</code> references value of type <code>T</code></td><td><a href="specification/../attrset.html">AttrSet</a></td></tr>
+<tr><td><code>T-&gt;U</code></td><td>Lambda</td><td>A function that takes a single argument of type <code>T</code> and returns a value of type <code>U</code></td><td>[lambda] (../lambda.md)</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>More details how to use complex types in the corresponding chapters</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="list"><a class="header" href="#list">List</a></h1>
+<h2 id="abstract-definition"><a class="header" href="#abstract-definition">Abstract definition</a></h2>
+<p>Let <code>[ a ]</code> be a list where the elements of that list do not have any type constraints.</p>
+<p>Then a List of a specific Type <code>[ T ]</code> is a list where all elements <code>a</code> fullfil the type constraint <code>T</code></p>
+<blockquote>
+<p>A list <code>[]</code> can contain <strong>no</strong>, <strong>one</strong> or <strong>multiple</strong> elements. (0...n)</p>
+</blockquote>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="list-of-string"><a class="header" href="#list-of-string">list of string</a></h3>
+<p><code>[ String ]</code></p>
+<h3 id="list-of-string-or-bool"><a class="header" href="#list-of-string-or-bool">list of string or bool</a></h3>
+<p><code>[ Number | Bool ]</code></p>
+<h3 id="empty-list"><a class="header" href="#empty-list">empty list</a></h3>
+<p><code>[ ]</code></p>
+<h3 id="list-of-any-attrset"><a class="header" href="#list-of-any-attrset">list of any attrSet</a></h3>
+<p><code>[ { ... } ]</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="attrset"><a class="header" href="#attrset">AttrSet</a></h1>
+<h2 id="abstract"><a class="header" href="#abstract">Abstract</a></h2>
+<p>An <code>AttrSet</code> type can be though of as just a <code>pair</code> of ...</p>
+<h2 id="redefining-some-operators"><a class="header" href="#redefining-some-operators">Redefining some operators</a></h2>
+<p><code>::</code>-operator within <code>AttrSet</code> contexts</p>
+<p>The <code>::</code>-operator maps the Type of its <code>RHS</code> over the <code>Type</code> on its <code>LHS</code>. It can take an <code>Iterable</code> or a <code>single element</code> on its LHS.</p>
+<p>Within Type-declarations for AttrSets it is possible to declare explicit members of an AttrSet like this.</p>
+<pre><code class="language-nix">  {
+    N :: T
+  }
+</code></pre>
+<p>Then <code>N</code> is of type <code>String</code> and <code>N</code> becomes an <strong>explicit member</strong> of that AttrSet which references a value of type <code>T</code>.
+The value of <code>N</code> is called the <code>member name</code></p>
+<p>Introducing: <code>[ N :: T ]</code>-operator, which can only be used within <code>AttrSet</code> in <code>member name</code> fields.</p>
+<p>The <code>[ N :: T ]</code>-operator maps over all <code>member names</code> of an AttrSet <code>[N]</code> and applies the type <code>T</code> to each member name <code>N</code> if not already done by <strong>explicit member</strong> declaration (see above).</p>
+<p>When there are AttrSets with <strong>dynamic members</strong> it is possible to declare all those members at once with the <code>[ N :: T ]</code> and <code>::</code> operator.</p>
+<p>Then an AttrSet with list of <strong>dynamic members</strong> where each member-name <code>N</code> references a <strong>value of type</strong> <code>V</code> can be written as.</p>
+<pre><code class="language-nix">  { 
+    [ N :: T ] :: V 
+  }
+</code></pre>
+<blockquote>
+<p><strong>Examples</strong></p>
+</blockquote>
+<pre><code class="language-nix">  # member '.foo' references a value of type string
+  # all other members `*` are of type string and each member reference value of any variable Type.
+  { 
+    [ name :: String ] :: a, 
+    foo :: String 
+  }
+</code></pre>
+<pre><code class="language-nix">  { foo :: a } 
+</code></pre>
+<pre><code class="language-nix">   {} 
+</code></pre>
+<p>where the member names `[ N :: T ] are an empty list.</p>
+<p><strong>useful <code>${}</code> Shortcut</strong></p>
+<p><code>${N} = [ N :: String ]</code></p>
+<p>If we take into account that in AttrSets <code>names</code> (<code>N</code>) are always of type <code>String</code> the user can omit the <code>String</code> Keyword completely, and instead give only the names. <code>N</code></p>
+<p>That rule allows for intuitive usage of names within type definitions of an AttrSet</p>
+<pre><code class="language-nix">/*
+type:
+  packageMap :: { 
+    ${pname} :: {
+      ${version} :: Derivation
+    }
+  }
+*/
+packageMap = {
+  &quot;gcc-utils&quot; = {
+    &quot;1.2.3&quot; = builtins.Derivation {...};
+    };
+  # ...
+  };
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="operators"><a class="header" href="#operators">Operators</a></h1>
+<p><strong>All Operators SHOULD be used with surrounding whitespace.</strong></p>
+<h2 id="-declares-the-type"><a class="header" href="#-declares-the-type"><code>::</code> declares the type</a></h2>
+<p>The variable name on the LHS is declared to have the <code>type</code> on the RHS</p>
+<p>e.g. <code>name :: Any</code></p>
+<h2 id="-parenthesis"><a class="header" href="#-parenthesis"><code>()</code> Parenthesis</a></h2>
+<p>Parenthesis to clarify order of type evaluation</p>
+<p>e.g. <code>( a -&gt; b ) | Bool</code></p>
+<h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>,</code> Separator for subsequent entries (like in AttrSet)</a></h2>
+<p>e.g. <code>{ foo :: Any, bar :: Any }</code></p>
+<h2 id="-syntactic-or"><a class="header" href="#-syntactic-or"><code>|</code> syntactic or</a></h2>
+<p>syntactic <code>Or</code> can be used for composition or enums</p>
+<p>Let <code>T</code> and <code>U</code> be different Types.
+Then the <code>|</code> operator evaluates to either <code>T</code> or <code>U</code>.</p>
+<blockquote>
+<p>Sometimes within this paper <code>|</code> is written as <code>{or}</code></p>
+<p>This is only due to readability and not allowed in the real language</p>
+</blockquote>
+<h3 id="examples-1"><a class="header" href="#examples-1">Examples</a></h3>
+<p><code>Float | Int</code></p>
+<p><code>( Number | Bool ) | Int</code></p>
+<p><code>{ opt :: Int | String }</code></p>
+<pre><code class="language-nix"># lets say we want to create a type which can represent the type of both 'foo' and 'bar'
+let
+  /*
+    Type:
+      FooBar = Int | String
+
+      foo :: FooBar
+  */
+  foo = 1;
+  /*
+    Type: 
+      bar :: FooBar
+  */
+  bar = &quot;baz&quot;;
+
+in
+  # ....
+
+</code></pre>
+<h3 id="---arbitrary-input-values"><a class="header" href="#---arbitrary-input-values"><code>...</code> - arbitrary input values</a></h3>
+<p>can only be used within an AttrSet to allow <code>Any</code> more <code>name-value pairs</code>.</p>
+<p><code>...</code> = <code>${rest} :: Any</code> within an AttrSet context</p>
+<p>e.g.</p>
+<pre><code class="language-nix">/*
+  Type: foo :: { bar :: Any, ...} -&gt; Any
+*/
+Foo = {bar, ...}@inp:
+#...
+</code></pre>
+<h2 id="-merge-operator"><a class="header" href="#-merge-operator"><code>//</code> merge operator</a></h2>
+<p>syntactically <code>merges</code> Types of AttrSets</p>
+<p><code>{ foo :: String } // { bar :: Any }</code> =&gt; <code>{ foo :: String, bar :: Any }</code></p>
+<p><code>{ foo :: String } // { ${names} :: Any }</code> =&gt; <code>{ foo :: String, ${names} :: Any  }</code></p>
+<p>Overwrites occur like in the nix language itself</p>
+<p><code>{ foo :: String } // { foo :: Any }</code> =&gt; <code>{ foo :: Any }</code></p>
+<h2 id="-equality-operator"><a class="header" href="#-equality-operator"><code>=</code> equality operator</a></h2>
+<p>Allows for <strong>type bindings</strong></p>
+<p>Convention: As types always start with Capital letters; Type bindings also start with capital letters.</p>
+<p>Binding types to names will allow to specify recursive types, which is required for many structures in nix.</p>
+<p>Binding types to intermediate variables makes it harder to see which declaration is related to the actual code.</p>
+<p>e.g.</p>
+<pre><code class="language-nix">
+/*
+ Type: 
+   DerivationAttrs = { buildInputs :: [ Derivation ], ... }
+   MkDerivationAttrs = DerivationAttrs // { buildInputs :: String }
+   mkDerivation :: MkDerivationAttrs -&gt; Derivation
+*/
+mkDerivation = {pname, version, foo, ...}@args: let
+# ...
+
+</code></pre>
+<p>Those bindings should be scoped with an useful mechanism, which could be:</p>
+<ul>
+<li>File wide</li>
+<li>Project wide</li>
+<li>Declaration block</li>
+<li>Same scope as the referenced function binding has</li>
+</ul>
+<p>e.g.</p>
+<pre><code class="language-nix">  type:
+    foo = Any
+</code></pre>
+<h3 id="prohibited-binding"><a class="header" href="#prohibited-binding">prohibited binding</a></h3>
+<p>To prevent conflicts and confusion.
+<strong>It is strictly prohibited to choose a name your custom type to be the same as:</strong></p>
+<ul>
+<li>One of the <a href="specification/./types.html">reserved types</a></li>
+</ul>
+<h2 id="-optional-arguments-in-an-attrset"><a class="header" href="#-optional-arguments-in-an-attrset"><code>?</code> optional arguments in an AttrSet</a></h2>
+<p>e.g.  <code>{ opt :: ? Int }</code></p>
+<p>Note: The <code>type</code> side contains the <code>?</code> operator.</p>
+<h2 id="const-types"><a class="header" href="#const-types">Const types</a></h2>
+<p>Instead of assigning types it is allowed to assign a nix-value to the type. Which is then declared constant across that specific type.</p>
+<p>e.g. <code>{ foo :: &quot;bar&quot;, bar :: 1 }</code> specifies the name <code>foo</code> to be of value &quot;bar&quot;</p>
+<pre><code class="language-nix">{
+  foo = &quot;bar&quot;;
+  bar = 1;
+}
+</code></pre>
+<p>concrete use-case</p>
+<pre><code class="language-nix">/*
+    type:
+        derivation :: { 
+            type: &quot;derivation&quot;,
+            ...
+        }
+*/
+derivation = ...
+</code></pre>
 
                     </main>
 
