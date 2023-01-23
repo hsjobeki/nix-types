@@ -79,7 +79,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">5.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">3.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">5.</strong> Usage</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">6.</strong> Examples</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">7.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -340,9 +340,9 @@ it might even be valid candidate for static type systems in future nix language 
 </blockquote>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th>Annotation</th><th>Type</th><th>Description</th><th>chapter</th></tr></thead><tbody>
-<tr><td><code>[T]</code></td><td>List</td><td>List of elements with type <code>T</code> each</td><td><a href="specification/../list.html">List</a></td></tr>
-<tr><td><code>{N::T}</code></td><td>AttrSet</td><td>AttrSet where member <code>N</code> references value of type <code>T</code></td><td><a href="specification/../attrset.html">AttrSet</a></td></tr>
-<tr><td><code>T-&gt;U</code></td><td>Lambda</td><td>A function that takes a single argument of type <code>T</code> and returns a value of type <code>U</code></td><td>[lambda] (../lambda.md)</td></tr>
+<tr><td><code>[T]</code></td><td>List</td><td>List of elements with type <code>T</code> each</td><td><a href="specification/list.html">List</a></td></tr>
+<tr><td><code>{N::T}</code></td><td>AttrSet</td><td>AttrSet where member <code>N</code> references value of type <code>T</code></td><td><a href="specification/attrset.html">AttrSet</a></td></tr>
+<tr><td><code>T-&gt;U</code></td><td>Lambda</td><td>A function that takes a single argument of type <code>T</code> and returns a value of type <code>U</code></td><td><a href="specification/lambda.html">lambda</a></td></tr>
 </tbody></table>
 </div>
 <blockquote>
@@ -361,7 +361,7 @@ it might even be valid candidate for static type systems in future nix language 
 </tbody></table>
 </div>
 <blockquote>
-<p>used operators are defined in the <a href="specification/../operators.html">operators chapter</a></p>
+<p>used operators are defined in the <a href="specification/operators.html">operators chapter</a></p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="primitives-1"><a class="header" href="#primitives-1">Primitives</a></h1>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
@@ -389,9 +389,9 @@ it might even be valid candidate for static type systems in future nix language 
 </blockquote>
 <hr />
 <div class="table-wrapper"><table><thead><tr><th>Annotation</th><th>Type</th><th>Description</th><th>chapter</th></tr></thead><tbody>
-<tr><td><code>[T]</code></td><td>List</td><td>List of elements with type <code>T</code> each</td><td><a href="specification/../list.html">List</a></td></tr>
-<tr><td><code>{N::T}</code></td><td>AttrSet</td><td>AttrSet where member <code>N</code> references value of type <code>T</code></td><td><a href="specification/../attrset.html">AttrSet</a></td></tr>
-<tr><td><code>T-&gt;U</code></td><td>Lambda</td><td>A function that takes a single argument of type <code>T</code> and returns a value of type <code>U</code></td><td>[lambda] (../lambda.md)</td></tr>
+<tr><td><code>[T]</code></td><td>List</td><td>List of elements with type <code>T</code> each</td><td><a href="specification/list.html">List</a></td></tr>
+<tr><td><code>{N::T}</code></td><td>AttrSet</td><td>AttrSet where member <code>N</code> references value of type <code>T</code></td><td><a href="specification/attrset.html">AttrSet</a></td></tr>
+<tr><td><code>T-&gt;U</code></td><td>Lambda</td><td>A function that takes a single argument of type <code>T</code> and returns a value of type <code>U</code></td><td><a href="specification/lambda.html">lambda</a></td></tr>
 </tbody></table>
 </div>
 <blockquote>
@@ -475,6 +475,7 @@ packageMap = {
   # ...
   };
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lambda"><a class="header" href="#lambda">Lambda</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="operators"><a class="header" href="#operators">Operators</a></h1>
 <p><strong>All Operators SHOULD be used with surrounding whitespace.</strong></p>
 <h2 id="-declares-the-type"><a class="header" href="#-declares-the-type"><code>::</code> declares the type</a></h2>
@@ -586,6 +587,115 @@ mkDerivation = {pname, version, foo, ...}@args: let
         }
 */
 derivation = ...
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
+<p>The goal was to create a system that can add <code>type hints</code> to every expression in nix.</p>
+<p>A nix file can contain many possible things.</p>
+<p>So what kind of expressions and formats does the <code>RFC</code> need to support?</p>
+<ul>
+<li>named function expression.</li>
+<li>anonymous functions.</li>
+<li>named variables.</li>
+</ul>
+<p>In any possible way nix has only expressions thus if this project covers all kind of expressions, it covers the complete nix language.</p>
+<p>The following can be imported as a function called <code>foo</code> as the parent folder is named <code>foo</code> and contains a <code>default.nix</code></p>
+<pre><code class="language-nix"># /foo/default.nix
+
+{lib, ...}:
+let
+    applyIt = fn: fn 10;
+#....
+in
+    act: applyIt act
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples-3"><a class="header" href="#examples-3">Examples</a></h1>
+<p>This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.</p>
+<h2 id="short-recap-of-the-basic-syntax"><a class="header" href="#short-recap-of-the-basic-syntax">Short recap of the basic syntax</a></h2>
+<pre><code class="language-nix"># lib.lists.any
+
+/* 
+    Type: 
+        any :: ( Any -&gt; Bool ) -&gt; [ Any ] -&gt; Bool
+         ↑   ↑        ↑        ↑             ↑
+         |   |        |        |             └── final return value is a Bool
+         |   |        |        └── The first function returns a function that takes a list of Any      
+         |   |        └── function that takes Any and returns True or False (Boolean)
+         |   └── declares the type as follows
+         └── referenced binding name
+*/
+any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
+</code></pre>
+<h2 id="first-examples"><a class="header" href="#first-examples">first examples</a></h2>
+<pre><code class="language-nix"># lib.lists.remove
+
+/*
+    Type:
+        remove :: Any -&gt; [ Any ] -&gt; [ Any ]
+*/
+remove = #...
+</code></pre>
+<pre><code class="language-nix"># lib.attrsets.hasAttrByPath
+
+/*
+Type:
+    hasAttrByPath :: [ String ] -&gt; { ... } -&gt; Bool
+*/
+hasAttrByPath = # ...
+</code></pre>
+<pre><code class="language-nix">/*
+# example file from the dream2nix framework
+
+type:
+    depsTree :: DependencyTree
+
+    DependencyTree = { ${name} :: { ${version} :: DependencyAttrs } }
+    DependencyAttrs = { { deps :: DependencyTree, derivation :: Derivation } }
+*/
+depsTree = let 
+# ...
+</code></pre>
+<pre><code class="language-nix">/*
+Type:
+    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
+*/
+getAttrs = names: attrs: genAttrs names (name: attrs.${name});
+</code></pre>
+<h2 id="open-points"><a class="header" href="#open-points">Open points</a></h2>
+<p>With <code>Any</code> there is no indication if all arguments must contain the same single type <code>a</code> thus it would be more precise with <strong>type variable</strong> instead of the explicit <code>Any</code> type.</p>
+<pre><code class="language-nix"># lib.lists.remove
+
+/*
+    Type:
+        remove :: a -&gt; [ a ] -&gt; [ a ]
+*/
+remove = #...
+</code></pre>
+<p>The following is a hard one. We are not sure yet how to present that type <code>b</code> is present somewhere in a nested set.</p>
+<p>It gets returned, if the referenced value is present in the attrSet; default value of type <code>a</code> otherwise.</p>
+<p><code>a</code> can be equal to <code>b</code> but generally speaking it doesn't have to.</p>
+<pre><code class="language-nix"># lib.attrsets.attrByPath
+
+/* Return an attribute from nested attribute sets.
+
+    Type:
+    attrByPath :: [ String ] -&gt; a -&gt; { ... } -&gt; b | a
+*/
+attrByPath = # ...
+</code></pre>
+<p>We are not able yet to dynamically create members of an AttrSet from a given type signature.</p>
+<pre><code class="language-nix">/*
+Type:
+    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
+                    ↑                      ↑
+                    └──────────────────────┴─ The list of String matches the member name of the returned AttrSet
+
+*/
+getAttrs = names: attrs: genAttrs names (name: attrs.${name});
+</code></pre>
+<p>Thus it might make sense to generally allow context on ListItems as follows. (Optional Context)</p>
+<pre><code class="language-nix">    getAttrs :: [ name :: String ] -&gt; { ... } -&gt; { [ name :: String ] :: Any }
+                    ↑                                 ↑
+                    └─────────────────────────────────┴─ The list of String matches the member-names of the returned AttrSet
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="contributors"><a class="header" href="#contributors">Contributors</a></h1>
 <p>Thanks to all people who contributed to this project. (if agreed) github handles will be published here.</p>
