@@ -10,5 +10,8 @@
     - [Complex](./specification/complex.md)
         - [List](./specification/list.md)
         - [AttrSet](./specification/attrset.md)
+        - [Lambda](./specification/lambda.md)
 - [Operators](./specification/operators.md)
+- [Usage](./specification/usage.md)
+- [Examples](./examples.md)
 - [Contributors](./contributors.md)

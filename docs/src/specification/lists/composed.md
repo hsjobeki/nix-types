@@ -12,4 +12,4 @@
 | `Derivation` | `{ ... }` | TODO: `Derivation` is just a special AttrSet. |
 | `Package` | `Derivation {or} {...}` | TODO: `Package` is either a Derivation or a special AttrSet with `name` xy in it.  |
 
-> used operators are defined in the [operators chapter](../operators.md)
+> used operators are defined in the [operators chapter](operators.md)

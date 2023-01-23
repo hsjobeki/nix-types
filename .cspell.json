@@ -6,9 +6,11 @@
     "language": "en",
     // words - list of words to be always considered correct
     "words": [
+        "attrsets",
         "builtins",
         "discoverablility",
         "docstrings",
+        "foldr",
         "Linebreaks",
         "nix",
         "nixdoc",
