@@ -169,7 +169,8 @@ or trying to bring static types into the dynamic nix language.</p>
 </ul>
 <h2 id="dynamic-type-validations-are-still-needed"><a class="header" href="#dynamic-type-validations-are-still-needed">Dynamic type validations are still needed</a></h2>
 <p>As type hints cannot provide any runtime assurances it is still needed to place guards in critical places.
-But instead of trying to represent a non-existent static type system the dynamic approach should transparently communicate what it really does: &quot;Runtime validation&quot;.</p>
+But instead of trying to represent a non-existent static type system;
+The dynamic approach should transparently communicate what it really does: &quot;Runtime validation&quot;.</p>
 <h2 id="analogy-to-other-dynamic-languages"><a class="header" href="#analogy-to-other-dynamic-languages">Analogy to other dynamic languages</a></h2>
 <p><img src="./assets/Other-dynamic-languages.drawio.png" alt="other-dynamic-languages" /></p>
 <h2 id="vision"><a class="header" href="#vision">Vision</a></h2>
@@ -177,6 +178,9 @@ But instead of trying to represent a non-existent static type system the dynamic
 <p>There are many opinions about whether static types make sense at all in nix.</p>
 <p>But this project does not discuss those. Instead i propose that &quot;types&quot; in whatever form do make total sense. And will give much value to dynamic languages.
 Which can undoubtedly be seen on the above examples (Python, Javascript).</p>
+<p><strong>Discussion about</strong>
+<code>Does typing make sense in a dynamic Language</code>
+<strong>is open, but history has a clear answer to that.</strong></p>
 <p>By specifying the comments and not directly integrating types
 into the nix language this project stays downwards compatible
 and allows an intermediate phase of transition and validation.</p>
