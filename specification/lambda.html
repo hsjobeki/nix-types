@@ -138,6 +138,33 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="lambda"><a class="header" href="#lambda">Lambda</a></h1>
+<h2 id="abstract-definition"><a class="header" href="#abstract-definition">Abstract definition</a></h2>
+<p>A lambda is a function that takes exactly one <code>argument</code> and returns exactly one <code>result</code>.</p>
+<p>It is denoted as follows:</p>
+<pre><code class="language-nix">a -&gt; b
+</code></pre>
+<p>Where <code>a</code> is the <code>argument</code> and <code>b</code> is the returned <code>result</code>.</p>
+<p>Then a typed lambda notation:</p>
+<pre><code class="language-nix">T -&gt; G
+</code></pre>
+<p>Denotes that <code>T</code> is the type of argument <code>a</code> and <code>G</code> is the type of result <code>b</code>.</p>
+<blockquote>
+<p>In <code>lambda</code> notations arguments do not have names like in e.g. <code>AttrSet</code> because they are positional arguments.</p>
+</blockquote>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="lambda-that-takes-a-string-and-returns-string"><a class="header" href="#lambda-that-takes-a-string-and-returns-string">Lambda that takes a <code>String</code> and returns <code>String</code></a></h3>
+<p><code>String -&gt; String</code></p>
+<h3 id="function-that-takes-string-and-number-and-finally-returns-string"><a class="header" href="#function-that-takes-string-and-number-and-finally-returns-string">Function that takes <code>String</code> and <code>Number</code> and finally returns <code>String</code></a></h3>
+<p><code>String -&gt; Number -&gt; String</code></p>
+<blockquote>
+<p>As lambdas can take only one argument, the return type of the first lambda expression is a lambda that takes the second argument and returns the final type.</p>
+</blockquote>
+<h3 id="function-that-takes-a-function"><a class="header" href="#function-that-takes-a-function">Function that takes a function</a></h3>
+<p><code>(String -&gt; String) -&gt; [String] -&gt; [String]</code></p>
+<blockquote>
+<p>Sometimes parenthesis is necessary to clarify order of evaluation</p>
+<p>The <code>()</code> Parenthesis operator is defined <a href="./operators.html">here</a></p>
+</blockquote>
 
                     </main>
 

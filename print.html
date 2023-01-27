@@ -413,6 +413,7 @@ it might even be valid candidate for static type systems in future nix language 
 <p><code>[ String ]</code></p>
 <h3 id="list-of-string-or-bool"><a class="header" href="#list-of-string-or-bool">list of string or bool</a></h3>
 <p><code>[ Number | Bool ]</code></p>
+<p>-&gt; see the <code>|</code> {or} operator defined <a href="specification/./operators.html">here</a></p>
 <h3 id="empty-list"><a class="header" href="#empty-list">empty list</a></h3>
 <p><code>[ ]</code></p>
 <h3 id="list-of-any-attrset"><a class="header" href="#list-of-any-attrset">list of any attrSet</a></h3>
@@ -480,6 +481,33 @@ packageMap = {
   };
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="lambda"><a class="header" href="#lambda">Lambda</a></h1>
+<h2 id="abstract-definition-1"><a class="header" href="#abstract-definition-1">Abstract definition</a></h2>
+<p>A lambda is a function that takes exactly one <code>argument</code> and returns exactly one <code>result</code>.</p>
+<p>It is denoted as follows:</p>
+<pre><code class="language-nix">a -&gt; b
+</code></pre>
+<p>Where <code>a</code> is the <code>argument</code> and <code>b</code> is the returned <code>result</code>.</p>
+<p>Then a typed lambda notation:</p>
+<pre><code class="language-nix">T -&gt; G
+</code></pre>
+<p>Denotes that <code>T</code> is the type of argument <code>a</code> and <code>G</code> is the type of result <code>b</code>.</p>
+<blockquote>
+<p>In <code>lambda</code> notations arguments do not have names like in e.g. <code>AttrSet</code> because they are positional arguments.</p>
+</blockquote>
+<h2 id="examples-2"><a class="header" href="#examples-2">Examples</a></h2>
+<h3 id="lambda-that-takes-a-string-and-returns-string"><a class="header" href="#lambda-that-takes-a-string-and-returns-string">Lambda that takes a <code>String</code> and returns <code>String</code></a></h3>
+<p><code>String -&gt; String</code></p>
+<h3 id="function-that-takes-string-and-number-and-finally-returns-string"><a class="header" href="#function-that-takes-string-and-number-and-finally-returns-string">Function that takes <code>String</code> and <code>Number</code> and finally returns <code>String</code></a></h3>
+<p><code>String -&gt; Number -&gt; String</code></p>
+<blockquote>
+<p>As lambdas can take only one argument, the return type of the first lambda expression is a lambda that takes the second argument and returns the final type.</p>
+</blockquote>
+<h3 id="function-that-takes-a-function"><a class="header" href="#function-that-takes-a-function">Function that takes a function</a></h3>
+<p><code>(String -&gt; String) -&gt; [String] -&gt; [String]</code></p>
+<blockquote>
+<p>Sometimes parenthesis is necessary to clarify order of evaluation</p>
+<p>The <code>()</code> Parenthesis operator is defined <a href="specification/./operators.html">here</a></p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="operators"><a class="header" href="#operators">Operators</a></h1>
 <p><strong>All Operators SHOULD be used with surrounding whitespace.</strong></p>
 <h2 id="-declares-the-type"><a class="header" href="#-declares-the-type"><code>::</code> declares the type</a></h2>
@@ -498,7 +526,7 @@ Then the <code>|</code> operator evaluates to either <code>T</code> or <code>U</
 <p>Sometimes within this paper <code>|</code> is written as <code>{or}</code></p>
 <p>This is only due to readability and not allowed in the real language</p>
 </blockquote>
-<h3 id="examples-2"><a class="header" href="#examples-2">Examples</a></h3>
+<h3 id="examples-3"><a class="header" href="#examples-3">Examples</a></h3>
 <p><code>Float | Int</code></p>
 <p><code>( Number | Bool ) | Int</code></p>
 <p><code>{ opt :: Int | String }</code></p>
@@ -612,7 +640,7 @@ let
 in
     act: applyIt act
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="examples-3"><a class="header" href="#examples-3">Examples</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples-4"><a class="header" href="#examples-4">Examples</a></h1>
 <p>This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.</p>
 <h2 id="short-recap-of-the-basic-syntax"><a class="header" href="#short-recap-of-the-basic-syntax">Short recap of the basic syntax</a></h2>
 <pre><code class="language-nix"># lib.lists.any
