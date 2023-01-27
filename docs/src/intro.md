@@ -32,7 +32,8 @@ By using `type hints` many additional possibilities even for dynamically typed l
 ## Dynamic type validations are still needed
 
 As type hints cannot provide any runtime assurances it is still needed to place guards in critical places.
-But instead of trying to represent a non-existent static type system the dynamic approach should transparently communicate what it really does: "Runtime validation".
+But instead of trying to represent a non-existent static type system;
+The dynamic approach should transparently communicate what it really does: "Runtime validation".
 
 ## Analogy to other dynamic languages
 
@@ -46,6 +47,10 @@ There are many opinions about whether static types make sense at all in nix.
 
 But this project does not discuss those. Instead i propose that "types" in whatever form do make total sense. And will give much value to dynamic languages.
 Which can undoubtedly be seen on the above examples (Python, Javascript).
+
+__Discussion about__
+```Does typing make sense in a dynamic Language```
+__is open, but history has a clear answer to that.__
 
 By specifying the comments and not directly integrating types
 into the nix language this project stays downwards compatible
