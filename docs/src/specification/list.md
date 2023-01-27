@@ -18,6 +18,8 @@ Then a List of a specific Type `[ T ]` is a list where all elements `a` fullfil 
 
 `[ Number | Bool ]`
 
+-> see the `|` {or} operator defined [here](./operators.md)
+
 ### empty list
 
 `[ ]`
