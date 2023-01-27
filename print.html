@@ -171,16 +171,22 @@ or trying to bring static types into the dynamic nix language.</p>
 <h2 id="dynamic-type-validations-are-still-needed"><a class="header" href="#dynamic-type-validations-are-still-needed">Dynamic type validations are still needed</a></h2>
 <p>As type hints cannot provide any runtime assurances it is still needed to place guards in critical places.
 But instead of trying to represent a non-existent static type system the dynamic approach should transparently communicate what it really does: &quot;Runtime validation&quot;.</p>
+<h2 id="analogy-to-other-dynamic-languages"><a class="header" href="#analogy-to-other-dynamic-languages">Analogy to other dynamic languages</a></h2>
+<p><img src="./assets/Other-dynamic-languages.drawio.png" alt="other-dynamic-languages" /></p>
 <h2 id="vision"><a class="header" href="#vision">Vision</a></h2>
-<p>This project can be seen as a first step of possible many.
-By specifying the comments and not directly integrating types
+<p>This project can be seen as a first step of possibly many.</p>
+<p>There are many opinions about whether static types make sense at all in nix.</p>
+<p>But this project does not discuss those. Instead i propose that &quot;types&quot; in whatever form do make total sense. And will give much value to dynamic languages.
+Which can undoubtedly be seen on the above examples (Python, Javascript).</p>
+<p>By specifying the comments and not directly integrating types
 into the nix language this project stays downwards compatible
-and allows an intermediate phase of validation.</p>
-<p>In that validation phase the system can obtain feedback and corrections.
-It could then be made so good, that it really represents nix's type behavior.</p>
-<p>After that we can make a point about whether we should move forward and change the nix language so that it natively supports static types, or type annotations.</p>
+and allows an intermediate phase of transition and validation.</p>
+<p>In that validation phase the system can obtain feedback and corrections.</p>
+<p>It could then be made so good, that it really represents nix's type behavior.</p>
 <blockquote>
-<p><code>Static Types</code> could then be built from the findings of this project.</p>
+<p>NOTE: Currently out of scope of this project.
+Change the nix language to natively support type annotations. (Even if they are not real static types)
+<code>Types</code> could then be built from the findings of this project.</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="goal--scope"><a class="header" href="#goal--scope">Goal / Scope</a></h1>
 <p><strong>Disclaimer: While <code>types</code> are great. This doesn't introduce any types into nix.</strong></p>
@@ -210,8 +216,6 @@ The goal is to build more accurate type comments and have a consistent conventio
        =&gt; &quot;/bin&quot;
   */
   makeSearchPath = ...
-</code></pre>
-<pre><code class="language-txt">The premise is that in Nix, every expression evaluates into a value. And every value has a type. And every type can be expressed in code, if we come up with the syntax to do that. 
 </code></pre>
 <p>Unfortunately those comments are very inconsistent.</p>
 <p>And cause problems if you want to process them with <strong>external tools</strong> or even try to <strong>parse</strong>
