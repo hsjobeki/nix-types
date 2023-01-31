@@ -18,8 +18,10 @@ Every specified formal rule has the following format:
 - [NT005] - Types MUST be chosen from the existing list. see [primitives](./basic.md)
 - [NT006] - Operators MUST be chosen from the existing list. see [operators](./operators.md)
 - [NT007] - explicit `AttrSet` and `List` keywords are PROHIBITED. See the correct usage [here](./complex.md)
+- [NT007] - explicit `Any` is PROHIBITED. Correct usage with type variables see [here](./type-variables.md)
 - [NT008] - [complex types](./complex.md) MUST include their members explicitly.
 - [NT009] - Allowing arbitrary values within [complex-types](./complex.md) is possible but requires explicit statements.
+- [NT009] - `Type variables` must be written in LOWERCASE to prevent confusion.
 - [NT010] - When using [Type bindings](./operators.md#type-binding) it is PROHIBITED to choose names from the [reserved list](./types.md)
 - [NT011] - Spaces between Operators (recommended)
 - ... more concrete rules may follow when implementation has started
@@ -35,9 +37,11 @@ Every specified formal rule has the following format:
     ...
     Free Text goes here 
     ...
-
+    
     Type:
-        attrByPath :: [ String ] -> Any -> { ... } -> Any
+        attrByPath :: [ String ] -> a -> { ${path} :: b } -> ( a | b )
   */
   attrByPath = ...
 ```
+
+This function takes a path as list of strings and then traverses the attrSet until it may find a value of type 'b' otherwise it returns the default value of type 'a'.

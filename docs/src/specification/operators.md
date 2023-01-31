@@ -6,7 +6,7 @@ __All Operators SHOULD be used with surrounding whitespace.__
 
 The variable name on the LHS is declared to have the `type` on the RHS
 
-e.g. `name :: Any`
+e.g. `name :: String`
 
 ## `()` Parenthesis
 
@@ -16,7 +16,7 @@ e.g. `( a -> b ) | Bool`
 
 ## `,` Separator for subsequent entries (like in AttrSet)
 
-e.g. `{ foo :: Any, bar :: Any }`
+e.g. `{ foo :: Number, bar :: String }`
 
 ## `|` syntactic or
 
@@ -62,13 +62,13 @@ in
 
 can only be used within an AttrSet to allow `Any` more `name-value pairs`.
 
-`...` = `${rest} :: Any` within an AttrSet context
+`...` = `${rest} :: a` within an AttrSet context
 
 e.g.
 
 ```nix
 /*
-  Type: foo :: { bar :: Any, ...} -> Any
+  Type: foo :: { bar :: a, ...} -> a
 */
 Foo = {bar, ...}@inp:
 #...
@@ -78,13 +78,13 @@ Foo = {bar, ...}@inp:
 
 syntactically `merges` Types of AttrSets
 
-`{ foo :: String } // { bar :: Any }` => `{ foo :: String, bar :: Any }`
+`{ foo :: String } // { bar :: Number }` => `{ foo :: String, bar :: Number }`
 
-`{ foo :: String } // { ${names} :: Any }` => `{ foo :: String, ${names} :: Any  }`
+`{ foo :: String } // { ${names} :: a }` => `{ foo :: String, ${names} :: a  }`
 
 Overwrites occur like in the nix language itself
 
-`{ foo :: String } // { foo :: Any }` => `{ foo :: Any }`
+`{ foo :: String } // { foo :: Number }` => `{ foo :: Number }`
 
 ## `=` equality operator
 
@@ -122,7 +122,7 @@ e.g.
 
 ```nix
   type:
-    foo = Any
+    Foo = Number
 ```
 
 ### prohibited binding

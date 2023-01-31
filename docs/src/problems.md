@@ -29,6 +29,8 @@ them into an Type-AST which could be used **for linting** and other possible fea
 - `singleton :: Any -> [Any]`
 - `imap0 :: (int -> a -> b) -> [a] -> [b]`
 
+> Type variables are better than the explicit `Any` this Project highly recommends to PROHIBIT the use of explicit `Any` and force users to use type variables.
+
 ## Lowercase, PascalCase, vs camelCase
 
 - `imap0 :: (int -> a -> b) -> [a] -> [b]`

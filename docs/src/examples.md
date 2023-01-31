@@ -2,18 +2,18 @@
 
 This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.
 
-## Short recap of the basic syntax
+## Short preview of the basic syntax
 
 ```nix
 # lib.lists.any
 
 /* 
     Type: 
-        any :: ( Any -> Bool ) -> [ Any ] -> Bool
+        any :: ( a -> Bool ) -> [ a ] -> Bool
          ↑   ↑        ↑        ↑             ↑
          |   |        |        |             └── final return value is a Bool
-         |   |        |        └── The first function returns a function that takes a list of Any      
-         |   |        └── function that takes Any and returns True or False (Boolean)
+         |   |        |        └── The first function returns a function that takes a list of type 'a'      
+         |   |        └── function that takes an 'a' and returns True or False (Boolean)
          |   └── declares the type as follows
          └── referenced binding name
 */
@@ -27,7 +27,7 @@ any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
 
 /*
     Type:
-        remove :: Any -> [ Any ] -> [ Any ]
+        remove :: a -> [ a ] -> [ a ]
 */
 remove = #...
 ```
@@ -64,7 +64,9 @@ Type:
 getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 ```
 
-## Open points
+## Advanced
+
+### Open points
 
 With `Any` there is no indication if all arguments must contain the same single type `a` thus it would be more precise with **type variable** instead of the explicit `Any` type.
 
