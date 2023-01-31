@@ -1,0 +1,454 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>nix Builtins - Nix Types - a first step in the right direction</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/highlight-dark.css">
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="../problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="../impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../builtins/types.html" class="active"><strong aria-hidden="true">7.</strong> nix Builtins</a></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Nix Types - a first step in the right direction</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="builtin-types"><a class="header" href="#builtin-types">Builtin Types</a></h1>
+<p>This section contains the proof that all nix <code>builtins</code> can be meaningfully and correctly annotated with the proposed type system.</p>
+<p>There are currently <strong>89</strong> builtin functions, that can be discovered with</p>
+<blockquote>
+<p>run <code>nix __dump-builtins</code></p>
+</blockquote>
+<p>Every builtins signature can be found below (sorted alphabetically)</p>
+<h2 id="builtins---todo-the-type-signatures-are-not-compliant-yet"><a class="header" href="#builtins---todo-the-type-signatures-are-not-compliant-yet">Builtins - TODO: The type signatures are not compliant yet</a></h2>
+<h3 id="abort"><a class="header" href="#abort">abort</a></h3>
+<pre><code class="language-nix"> String
+</code></pre>
+<h3 id="add"><a class="header" href="#add">add</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="all"><a class="header" href="#all">all</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; Bool
+</code></pre>
+<h3 id="any"><a class="header" href="#any">any</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; Bool
+</code></pre>
+<h3 id="attrnames"><a class="header" href="#attrnames">attrNames</a></h3>
+<pre><code class="language-nix"> {AttrSet} -&gt; [a]
+</code></pre>
+<h3 id="attrvalues"><a class="header" href="#attrvalues">attrValues</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; [a]
+</code></pre>
+<h3 id="basenameof"><a class="header" href="#basenameof">baseNameOf</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="bitand"><a class="header" href="#bitand">bitAnd</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="bitor"><a class="header" href="#bitor">bitOr</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="bitxor"><a class="header" href="#bitxor">bitXor</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="break"><a class="header" href="#break">break</a></h3>
+<pre><code class="language-nix"> a -&gt; a
+</code></pre>
+<h3 id="catattrs"><a class="header" href="#catattrs">catAttrs</a></h3>
+<pre><code class="language-nix"> String -&gt; [ { ${name} :: a } ] -&gt; [a]
+</code></pre>
+<h3 id="ceil"><a class="header" href="#ceil">ceil</a></h3>
+<pre><code class="language-nix"> Float -&gt; Int
+</code></pre>
+<h3 id="compareversions"><a class="header" href="#compareversions">compareVersions</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; Int
+</code></pre>
+<h3 id="concatlists"><a class="header" href="#concatlists">concatLists</a></h3>
+<pre><code class="language-nix"> [List] -&gt; []
+</code></pre>
+<h3 id="concatmap"><a class="header" href="#concatmap">concatMap</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="concatstringssep"><a class="header" href="#concatstringssep">concatStringsSep</a></h3>
+<pre><code class="language-nix"> String -&gt; [String] -&gt; String
+</code></pre>
+<h3 id="deepseq"><a class="header" href="#deepseq">deepSeq</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="dirof"><a class="header" href="#dirof">dirOf</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="div"><a class="header" href="#div">div</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="elem"><a class="header" href="#elem">elem</a></h3>
+<pre><code class="language-nix"> a -&gt; [b] -&gt; Bool
+</code></pre>
+<h3 id="elemat"><a class="header" href="#elemat">elemAt</a></h3>
+<pre><code class="language-nix"> [a] -&gt; Int -&gt; b
+</code></pre>
+<h3 id="fetchclosure"><a class="header" href="#fetchclosure">fetchClosure</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchgit"><a class="header" href="#fetchgit">fetchGit</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchtarball"><a class="header" href="#fetchtarball">fetchTarball</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchurl"><a class="header" href="#fetchurl">fetchurl</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet
+</code></pre>
+<h3 id="filter"><a class="header" href="#filter">filter</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="filtersource"><a class="header" href="#filtersource">filterSource</a></h3>
+<pre><code class="language-nix"> (Path -&gt; String -&gt; Bool) -&gt; Path -&gt; StorePath
+</code></pre>
+<h3 id="floor"><a class="header" href="#floor">floor</a></h3>
+<pre><code class="language-nix"> Float -&gt; Int
+</code></pre>
+<h3 id="foldl"><a class="header" href="#foldl">foldl'</a></h3>
+<pre><code class="language-nix"> (a -&gt; b -&gt; c) -&gt; a -&gt; [b] -&gt; c
+</code></pre>
+<h3 id="fromjson"><a class="header" href="#fromjson">fromJSON</a></h3>
+<pre><code class="language-nix"> String -&gt; a
+</code></pre>
+<h3 id="functionargs"><a class="header" href="#functionargs">functionArgs</a></h3>
+<pre><code class="language-nix"> (a) -&gt; AttrSet
+</code></pre>
+<h3 id="genlist"><a class="header" href="#genlist">genList</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; a -&gt; [b]
+</code></pre>
+<h3 id="genericclosure"><a class="header" href="#genericclosure">genericClosure</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; [AttrSet]
+</code></pre>
+<h3 id="getattr"><a class="header" href="#getattr">getAttr</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet -&gt; a
+</code></pre>
+<h3 id="getenv"><a class="header" href="#getenv">getEnv</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="getflake"><a class="header" href="#getflake">getFlake</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="groupby"><a class="header" href="#groupby">groupBy</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="hasattr"><a class="header" href="#hasattr">hasAttr</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet -&gt; Bool
+</code></pre>
+<h3 id="hashfile"><a class="header" href="#hashfile">hashFile</a></h3>
+<pre><code class="language-nix"> String -&gt; Path -&gt; String
+</code></pre>
+<h3 id="hashstring"><a class="header" href="#hashstring">hashString</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; String
+</code></pre>
+<h3 id="head"><a class="header" href="#head">head</a></h3>
+<pre><code class="language-nix"> [a] -&gt; a
+</code></pre>
+<h3 id="import"><a class="header" href="#import">import</a></h3>
+<pre><code class="language-nix"> Path -&gt; a
+</code></pre>
+<h3 id="intersectattrs"><a class="header" href="#intersectattrs">intersectAttrs</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="isattrs"><a class="header" href="#isattrs">isAttrs</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isbool"><a class="header" href="#isbool">isBool</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isfloat"><a class="header" href="#isfloat">isFloat</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isfunction"><a class="header" href="#isfunction">isFunction</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isint"><a class="header" href="#isint">isInt</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="islist"><a class="header" href="#islist">isList</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isnull"><a class="header" href="#isnull">isNull</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="ispath"><a class="header" href="#ispath">isPath</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isstring"><a class="header" href="#isstring">isString</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="length"><a class="header" href="#length">length</a></h3>
+<pre><code class="language-nix"> [a] -&gt; Int
+</code></pre>
+<h3 id="lessthan"><a class="header" href="#lessthan">lessThan</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Bool
+</code></pre>
+<h3 id="listtoattrs"><a class="header" href="#listtoattrs">listToAttrs</a></h3>
+<pre><code class="language-nix"> [{name :: String; value :: a}] -&gt; AttrSet
+</code></pre>
+<h3 id="map"><a class="header" href="#map">map</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="mapattrs"><a class="header" href="#mapattrs">mapAttrs</a></h3>
+<pre><code class="language-nix"> (a -&gt; b -&gt; c) -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="match"><a class="header" href="#match">match</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; Bool
+</code></pre>
+<h3 id="mul"><a class="header" href="#mul">mul</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="parsedrvname"><a class="header" href="#parsedrvname">parseDrvName</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet
+</code></pre>
+<h3 id="partition"><a class="header" href="#partition">partition</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="path"><a class="header" href="#path">Path</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; StorePath
+</code></pre>
+<h3 id="pathexists"><a class="header" href="#pathexists">pathExists</a></h3>
+<pre><code class="language-nix"> Path -&gt; Bool
+</code></pre>
+<h3 id="placeholder"><a class="header" href="#placeholder">placeholder</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="readdir"><a class="header" href="#readdir">readDir</a></h3>
+<pre><code class="language-nix"> Path -&gt; AttrSet
+</code></pre>
+<h3 id="readfile"><a class="header" href="#readfile">readFile</a></h3>
+<pre><code class="language-nix"> Path -&gt; String
+</code></pre>
+<h3 id="removeattrs"><a class="header" href="#removeattrs">removeAttrs</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="replacestrings"><a class="header" href="#replacestrings">replaceStrings</a></h3>
+<pre><code class="language-nix"> [String] -&gt; [String] -&gt; String -&gt; String
+</code></pre>
+<h3 id="seq"><a class="header" href="#seq">seq</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="sort"><a class="header" href="#sort">sort</a></h3>
+<pre><code class="language-nix"> (a -&gt; b -&gt; Bool) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="split"><a class="header" href="#split">split</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; [String]
+</code></pre>
+<h3 id="splitversion"><a class="header" href="#splitversion">splitVersion</a></h3>
+<pre><code class="language-nix"> String -&gt; [String]
+</code></pre>
+<h3 id="storepath"><a class="header" href="#storepath">StorePath</a></h3>
+<pre><code class="language-nix"> StorePath -&gt; StorePath
+</code></pre>
+<h3 id="stringlength"><a class="header" href="#stringlength">stringLength</a></h3>
+<pre><code class="language-nix"> String -&gt; Int
+</code></pre>
+<h3 id="sub"><a class="header" href="#sub">sub</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="substring"><a class="header" href="#substring">substring</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; String -&gt; String
+</code></pre>
+<h3 id="tail"><a class="header" href="#tail">tail</a></h3>
+<pre><code class="language-nix"> [a] -&gt; a
+</code></pre>
+<h3 id="throw"><a class="header" href="#throw">throw</a></h3>
+<pre><code class="language-nix"> String
+</code></pre>
+<h3 id="tofile"><a class="header" href="#tofile">toFile</a></h3>
+<pre><code class="language-nix"> Path -&gt; String -&gt; StorePath 
+</code></pre>
+<h3 id="tojson"><a class="header" href="#tojson">toJSON</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="topath"><a class="header" href="#topath">toPath</a></h3>
+<pre><code class="language-nix"> String -&gt; Path
+</code></pre>
+<h3 id="tostring"><a class="header" href="#tostring">toString</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="toxml"><a class="header" href="#toxml">toXML</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="trace"><a class="header" href="#trace">trace</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="traceverbose"><a class="header" href="#traceverbose">traceVerbose</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="tryeval"><a class="header" href="#tryeval">tryEval</a></h3>
+<pre><code class="language-nix"> a
+</code></pre>
+<h3 id="typeof"><a class="header" href="#typeof">typeOf</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="zipattrswith"><a class="header" href="#zipattrswith">zipAttrsWith</a></h3>
+<pre><code class="language-nix"> (String -&gt; [a] ) -&gt; [a] -&gt; AttrSet
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../specification/type-variables.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../specification/usage.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../specification/type-variables.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../specification/usage.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

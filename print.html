@@ -79,7 +79,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">3.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">5.</strong> Usage</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">6.</strong> Examples</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">7.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="builtins/types.html"><strong aria-hidden="true">7.</strong> nix Builtins</a></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -234,6 +234,9 @@ them into an Type-AST which could be used <strong>for linting</strong> and other
 <li><code>singleton :: Any -&gt; [Any]</code></li>
 <li><code>imap0 :: (int -&gt; a -&gt; b) -&gt; [a] -&gt; [b]</code></li>
 </ul>
+<blockquote>
+<p>Type variables are better than the explicit <code>Any</code> this Project highly recommends to PROHIBIT the use of explicit <code>Any</code> and force users to use type variables.</p>
+</blockquote>
 <h2 id="lowercase-pascalcase-vs-camelcase"><a class="header" href="#lowercase-pascalcase-vs-camelcase">Lowercase, PascalCase, vs camelCase</a></h2>
 <ul>
 <li><code>imap0 :: (int -&gt; a -&gt; b) -&gt; [a] -&gt; [b]</code></li>
@@ -283,6 +286,96 @@ it might even be valid candidate for static type systems in future nix language 
 <li>tell the developer if his code would not work</li>
 <li>many more....</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
+<p>This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.</p>
+<h2 id="short-preview-of-the-basic-syntax"><a class="header" href="#short-preview-of-the-basic-syntax">Short preview of the basic syntax</a></h2>
+<pre><code class="language-nix"># lib.lists.any
+
+/* 
+    Type: 
+        any :: ( a -&gt; Bool ) -&gt; [ a ] -&gt; Bool
+         ↑   ↑        ↑        ↑             ↑
+         |   |        |        |             └── final return value is a Bool
+         |   |        |        └── The first function returns a function that takes a list of type 'a'      
+         |   |        └── function that takes an 'a' and returns True or False (Boolean)
+         |   └── declares the type as follows
+         └── referenced binding name
+*/
+any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
+</code></pre>
+<h2 id="first-examples"><a class="header" href="#first-examples">first examples</a></h2>
+<pre><code class="language-nix"># lib.lists.remove
+
+/*
+    Type:
+        remove :: a -&gt; [ a ] -&gt; [ a ]
+*/
+remove = #...
+</code></pre>
+<pre><code class="language-nix"># lib.attrsets.hasAttrByPath
+
+/*
+Type:
+    hasAttrByPath :: [ String ] -&gt; { ... } -&gt; Bool
+*/
+hasAttrByPath = # ...
+</code></pre>
+<pre><code class="language-nix">/*
+# example file from the dream2nix framework
+
+type:
+    depsTree :: DependencyTree
+
+    DependencyTree = { ${name} :: { ${version} :: DependencyAttrs } }
+    DependencyAttrs = { { deps :: DependencyTree, derivation :: Derivation } }
+*/
+depsTree = let 
+# ...
+</code></pre>
+<pre><code class="language-nix">/*
+Type:
+    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
+*/
+getAttrs = names: attrs: genAttrs names (name: attrs.${name});
+</code></pre>
+<h2 id="advanced"><a class="header" href="#advanced">Advanced</a></h2>
+<h3 id="open-points"><a class="header" href="#open-points">Open points</a></h3>
+<p>With <code>Any</code> there is no indication if all arguments must contain the same single type <code>a</code> thus it would be more precise with <strong>type variable</strong> instead of the explicit <code>Any</code> type.</p>
+<pre><code class="language-nix"># lib.lists.remove
+
+/*
+    Type:
+        remove :: a -&gt; [ a ] -&gt; [ a ]
+*/
+remove = #...
+</code></pre>
+<p>The following is a hard one. We are not sure yet how to present that type <code>b</code> is present somewhere in a nested set.</p>
+<p>It gets returned, if the referenced value is present in the attrSet; default value of type <code>a</code> otherwise.</p>
+<p><code>a</code> can be equal to <code>b</code> but generally speaking it doesn't have to.</p>
+<pre><code class="language-nix"># lib.attrsets.attrByPath
+
+/* Return an attribute from nested attribute sets.
+
+    Type:
+    attrByPath :: [ String ] -&gt; a -&gt; { ... } -&gt; b | a
+*/
+attrByPath = # ...
+</code></pre>
+<p>We are not able yet to dynamically create members of an AttrSet from a given type signature.</p>
+<pre><code class="language-nix">/*
+Type:
+    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
+                    ↑                      ↑
+                    └──────────────────────┴─ The list of String matches the member name of the returned AttrSet
+
+*/
+getAttrs = names: attrs: genAttrs names (name: attrs.${name});
+</code></pre>
+<p>Thus it might make sense to generally allow context on ListItems as follows. (Optional Context)</p>
+<pre><code class="language-nix">    getAttrs :: [ name :: String ] -&gt; { ... } -&gt; { [ name :: String ] :: Any }
+                    ↑                                 ↑
+                    └─────────────────────────────────┴─ The list of String matches the member-names of the returned AttrSet
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="formals"><a class="header" href="#formals">Formals</a></h1>
 <p>The following section specifies how to write <code>type hints</code> as comments</p>
 <blockquote>
@@ -302,8 +395,10 @@ it might even be valid candidate for static type systems in future nix language 
 <li>[NT005] - Types MUST be chosen from the existing list. see <a href="specification/./basic.html">primitives</a></li>
 <li>[NT006] - Operators MUST be chosen from the existing list. see <a href="specification/./operators.html">operators</a></li>
 <li>[NT007] - explicit <code>AttrSet</code> and <code>List</code> keywords are PROHIBITED. See the correct usage <a href="specification/./complex.html">here</a></li>
+<li>[NT007] - explicit <code>Any</code> is PROHIBITED. Correct usage with type variables see <a href="specification/./type-variables.html">here</a></li>
 <li>[NT008] - <a href="specification/./complex.html">complex types</a> MUST include their members explicitly.</li>
 <li>[NT009] - Allowing arbitrary values within <a href="specification/./complex.html">complex-types</a> is possible but requires explicit statements.</li>
+<li>[NT009] - <code>Type variables</code> must be written in LOWERCASE to prevent confusion.</li>
 <li>[NT010] - When using <a href="specification/./operators.html#type-binding">Type bindings</a> it is PROHIBITED to choose names from the <a href="specification/./types.html">reserved list</a></li>
 <li>[NT011] - Spaces between Operators (recommended)</li>
 <li>... more concrete rules may follow when implementation has started</li>
@@ -319,12 +414,13 @@ it might even be valid candidate for static type systems in future nix language 
     ...
     Free Text goes here 
     ...
-
+    
     Type:
-        attrByPath :: [ String ] -&gt; Any -&gt; { ... } -&gt; Any
+        attrByPath :: [ String ] -&gt; a -&gt; { ${path} :: b } -&gt; ( a | b )
   */
   attrByPath = ...
 </code></pre>
+<p>This function takes a path as list of strings and then traverses the attrSet until it may find a value of type 'b' otherwise it returns the default value of type 'a'.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
 <p>This chapter clarifies all types.</p>
 <p>To Pickup the overview more quickly they can be viewed in the following list.</p>
@@ -362,7 +458,7 @@ it might even be valid candidate for static type systems in future nix language 
 <hr />
 <div class="table-wrapper"><table><thead><tr><th>Type</th><th>Composition</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>Number</code></td><td><code>Int {or} Float</code></td><td>The <code>Number</code> is either of type <code>Int</code> or of type <code>Float</code></td></tr>
-<tr><td><code>Any</code></td><td><code>[ Any ] {or} { [ name :: String ] :: Any } {or} (Any -&gt; Any) {or} Bool {or} Int {or} Float {or} String {or} Path {or} Null</code></td><td>Any is either one of the primitives or a complex type or any other composable type</td></tr>
+<tr><td><code>Any</code></td><td><code>?</code></td><td>There is no <code>Any</code> type and it is explicitly prohibited to use the Any type. Use type variables instead if you want to allow variable type signatures.</td></tr>
 <tr><td><code>StorePath</code></td><td><code>Path</code></td><td>The <code>StorePath</code> is just a meaningful alias of the type <code>Path</code></td></tr>
 <tr><td><code>Derivation</code></td><td><code>{ ... }</code></td><td>TODO: <code>Derivation</code> is just a special AttrSet.</td></tr>
 <tr><td><code>Package</code></td><td><code>Derivation {or} {...}</code></td><td>TODO: <code>Package</code> is either a Derivation or a special AttrSet with <code>name</code> xy in it.</td></tr>
@@ -412,7 +508,7 @@ it might even be valid candidate for static type systems in future nix language 
 <blockquote>
 <p>A list <code>[]</code> can contain <strong>no</strong>, <strong>one</strong> or <strong>multiple</strong> elements. (0...n)</p>
 </blockquote>
-<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="examples-1"><a class="header" href="#examples-1">Examples</a></h2>
 <h3 id="list-of-string"><a class="header" href="#list-of-string">list of string</a></h3>
 <p><code>[ String ]</code></p>
 <h3 id="list-of-string-or-bool"><a class="header" href="#list-of-string-or-bool">list of string or bool</a></h3>
@@ -452,7 +548,7 @@ it might even be valid candidate for static type systems in future nix language 
     [ N :: T ] :: V 
   }
 </code></pre>
-<h3 id="examples-1"><a class="header" href="#examples-1">Examples</a></h3>
+<h3 id="examples-2"><a class="header" href="#examples-2">Examples</a></h3>
 <pre><code class="language-nix">  # member '.foo' references a value of type string
   # all other members `*` are of type string and each member reference value of any variable Type.
   { 
@@ -498,7 +594,7 @@ packageMap = {
 <blockquote>
 <p>In <code>lambda</code> notations arguments do not have names like in e.g. <code>AttrSet</code> because they are positional arguments.</p>
 </blockquote>
-<h2 id="examples-2"><a class="header" href="#examples-2">Examples</a></h2>
+<h2 id="examples-3"><a class="header" href="#examples-3">Examples</a></h2>
 <h3 id="lambda-that-takes-a-string-and-returns-string"><a class="header" href="#lambda-that-takes-a-string-and-returns-string">Lambda that takes a <code>String</code> and returns <code>String</code></a></h3>
 <p><code>String -&gt; String</code></p>
 <h3 id="function-that-takes-string-and-number-and-finally-returns-string"><a class="header" href="#function-that-takes-string-and-number-and-finally-returns-string">Function that takes <code>String</code> and <code>Number</code> and finally returns <code>String</code></a></h3>
@@ -516,12 +612,12 @@ packageMap = {
 <p><strong>All Operators SHOULD be used with surrounding whitespace.</strong></p>
 <h2 id="-declares-the-type"><a class="header" href="#-declares-the-type"><code>::</code> declares the type</a></h2>
 <p>The variable name on the LHS is declared to have the <code>type</code> on the RHS</p>
-<p>e.g. <code>name :: Any</code></p>
+<p>e.g. <code>name :: String</code></p>
 <h2 id="-parenthesis"><a class="header" href="#-parenthesis"><code>()</code> Parenthesis</a></h2>
 <p>Parenthesis to clarify order of type evaluation</p>
 <p>e.g. <code>( a -&gt; b ) | Bool</code></p>
 <h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>,</code> Separator for subsequent entries (like in AttrSet)</a></h2>
-<p>e.g. <code>{ foo :: Any, bar :: Any }</code></p>
+<p>e.g. <code>{ foo :: Number, bar :: String }</code></p>
 <h2 id="-syntactic-or"><a class="header" href="#-syntactic-or"><code>|</code> syntactic or</a></h2>
 <p>syntactic <code>Or</code> can be used for composition or enums</p>
 <p>Let <code>T</code> and <code>U</code> be different Types.
@@ -530,7 +626,7 @@ Then the <code>|</code> operator evaluates to either <code>T</code> or <code>U</
 <p>Sometimes within this paper <code>|</code> is written as <code>{or}</code></p>
 <p>This is only due to readability and not allowed in the real language</p>
 </blockquote>
-<h3 id="examples-3"><a class="header" href="#examples-3">Examples</a></h3>
+<h3 id="examples-4"><a class="header" href="#examples-4">Examples</a></h3>
 <p><code>Float | Int</code></p>
 <p><code>( Number | Bool ) | Int</code></p>
 <p><code>{ opt :: Int | String }</code></p>
@@ -555,20 +651,20 @@ in
 </code></pre>
 <h3 id="---arbitrary-input-values"><a class="header" href="#---arbitrary-input-values"><code>...</code> - arbitrary input values</a></h3>
 <p>can only be used within an AttrSet to allow <code>Any</code> more <code>name-value pairs</code>.</p>
-<p><code>...</code> = <code>${rest} :: Any</code> within an AttrSet context</p>
+<p><code>...</code> = <code>${rest} :: a</code> within an AttrSet context</p>
 <p>e.g.</p>
 <pre><code class="language-nix">/*
-  Type: foo :: { bar :: Any, ...} -&gt; Any
+  Type: foo :: { bar :: a, ...} -&gt; a
 */
 Foo = {bar, ...}@inp:
 #...
 </code></pre>
 <h2 id="-merge-operator"><a class="header" href="#-merge-operator"><code>//</code> merge operator</a></h2>
 <p>syntactically <code>merges</code> Types of AttrSets</p>
-<p><code>{ foo :: String } // { bar :: Any }</code> =&gt; <code>{ foo :: String, bar :: Any }</code></p>
-<p><code>{ foo :: String } // { ${names} :: Any }</code> =&gt; <code>{ foo :: String, ${names} :: Any  }</code></p>
+<p><code>{ foo :: String } // { bar :: Number }</code> =&gt; <code>{ foo :: String, bar :: Number }</code></p>
+<p><code>{ foo :: String } // { ${names} :: a }</code> =&gt; <code>{ foo :: String, ${names} :: a  }</code></p>
 <p>Overwrites occur like in the nix language itself</p>
-<p><code>{ foo :: String } // { foo :: Any }</code> =&gt; <code>{ foo :: Any }</code></p>
+<p><code>{ foo :: String } // { foo :: Number }</code> =&gt; <code>{ foo :: Number }</code></p>
 <h2 id="-equality-operator"><a class="header" href="#-equality-operator"><code>=</code> equality operator</a></h2>
 <p>Allows for <strong>type bindings</strong></p>
 <p>Convention: As types always start with Capital letters; Type bindings also start with capital letters.</p>
@@ -595,7 +691,7 @@ mkDerivation = {pname, version, foo, ...}@args: let
 </ul>
 <p>e.g.</p>
 <pre><code class="language-nix">  type:
-    foo = Any
+    Foo = Number
 </code></pre>
 <h3 id="prohibited-binding"><a class="header" href="#prohibited-binding">prohibited binding</a></h3>
 <p>To prevent conflicts and confusion.
@@ -624,6 +720,327 @@ mkDerivation = {pname, version, foo, ...}@args: let
 */
 derivation = ...
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="type-variables"><a class="header" href="#type-variables">Type Variables</a></h1>
+<h2 id="abstract-1"><a class="header" href="#abstract-1">Abstract</a></h2>
+<p>As the explicit <code>Any</code> keyword is prohibited. Even there is no such <code>Any</code> type.</p>
+<p>It is of course possible to construct the <code>Any</code> type and use it properly but in good type systems there is no need for that type.</p>
+<p>The <code>Any</code> type is covered from <code>Polymorphism</code> with the usage of <code>type variables</code>.</p>
+<p>Type variables can have any name but it is usually considered best practice to choose either letters from the latin alphabet or use meaningful names.</p>
+<blockquote>
+<p><code>Type variables</code> must be written in LOWERCASE to prevent confusion.</p>
+</blockquote>
+<h2 id="examples-5"><a class="header" href="#examples-5">Examples</a></h2>
+<p>The following function signatures from <code>nix</code> and <code>nixpkgs</code> are written most clearly with <code>type variables</code></p>
+<h3 id="builtinsmap"><a class="header" href="#builtinsmap">builtins.map</a></h3>
+<pre><code class="language-nix">( a -&gt; b ) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="builtinscatattrs"><a class="header" href="#builtinscatattrs">builtins.catAttrs</a></h3>
+<pre><code class="language-nix">String -&gt; [ { ${name} :: a } ] -&gt; [a]
+</code></pre>
+<h3 id="libattrsetsattrbypath"><a class="header" href="#libattrsetsattrbypath">lib.attrsets.attrByPath</a></h3>
+<pre><code class="language-nix">[ String ] -&gt; a -&gt; { ${path} :: b } -&gt; (a | b)
+</code></pre>
+<h3 id="builtinsmapattrs"><a class="header" href="#builtinsmapattrs">builtins.mapAttrs</a></h3>
+<pre><code class="language-nix">(String -&gt; a -&gt; b) -&gt; { ${name} :: a } -&gt; { ${name} :: b }
+</code></pre>
+<h3 id="builtinssort"><a class="header" href="#builtinssort">builtins.sort</a></h3>
+<pre><code class="language-nix">(a -&gt; b -&gt; Bool) -&gt; [a] -&gt; [b]
+</code></pre>
+<h2 id="namespaces"><a class="header" href="#namespaces">Namespaces</a></h2>
+<p>Type variables are currently the best way to properly use polymorphism in type signatures.
+But using them requires the underlying parser and the user need to understand some concepts like namespaces and shadowing.</p>
+<p>This section orients itself on the <em>Haskell type variables</em>. See here for <a href="https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/scoped_type_variables.html">their rules</a></p>
+<blockquote>
+<p>In nix we don't have the same syntax as haskell has but the basic principles and core concept will be adopted from the parser.</p>
+</blockquote>
+<h3 id="bigger-sets-with-nested-type-variables"><a class="header" href="#bigger-sets-with-nested-type-variables">Bigger sets with nested type variables</a></h3>
+<p>sometime it is possible to have expressions, that contain multiple levels of nestings, where also different hierarchies of <code>type variables</code> must interact with each other.</p>
+<pre><code class="language-nix">{ foo :: a } -&gt; {
+  nestedFunction :: a -&gt; b,
+  bar :: ( b -&gt; c ) -&gt; [c] -&gt; [b]
+}
+</code></pre>
+<p>This seem a little complex now, because the parent function returns an AttrSet that includes function signatures using the same <code>type variables</code> as the outermost function itself.</p>
+<blockquote>
+<p><strong>There is actually a very strict and proven ruleset for that exact problem out there.</strong></p>
+<p>The Haskell Ruleset for <a href="https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/scoped_type_variables.html">scoped type variables</a></p>
+<p>(see also above).</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="builtin-types"><a class="header" href="#builtin-types">Builtin Types</a></h1>
+<p>This section contains the proof that all nix <code>builtins</code> can be meaningfully and correctly annotated with the proposed type system.</p>
+<p>There are currently <strong>89</strong> builtin functions, that can be discovered with</p>
+<blockquote>
+<p>run <code>nix __dump-builtins</code></p>
+</blockquote>
+<p>Every builtins signature can be found below (sorted alphabetically)</p>
+<h2 id="builtins---todo-the-type-signatures-are-not-compliant-yet"><a class="header" href="#builtins---todo-the-type-signatures-are-not-compliant-yet">Builtins - TODO: The type signatures are not compliant yet</a></h2>
+<h3 id="abort"><a class="header" href="#abort">abort</a></h3>
+<pre><code class="language-nix"> String
+</code></pre>
+<h3 id="add"><a class="header" href="#add">add</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="all"><a class="header" href="#all">all</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; Bool
+</code></pre>
+<h3 id="any"><a class="header" href="#any">any</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; Bool
+</code></pre>
+<h3 id="attrnames"><a class="header" href="#attrnames">attrNames</a></h3>
+<pre><code class="language-nix"> {AttrSet} -&gt; [a]
+</code></pre>
+<h3 id="attrvalues"><a class="header" href="#attrvalues">attrValues</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; [a]
+</code></pre>
+<h3 id="basenameof"><a class="header" href="#basenameof">baseNameOf</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="bitand"><a class="header" href="#bitand">bitAnd</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="bitor"><a class="header" href="#bitor">bitOr</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="bitxor"><a class="header" href="#bitxor">bitXor</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="break"><a class="header" href="#break">break</a></h3>
+<pre><code class="language-nix"> a -&gt; a
+</code></pre>
+<h3 id="catattrs"><a class="header" href="#catattrs">catAttrs</a></h3>
+<pre><code class="language-nix"> String -&gt; [ { ${name} :: a } ] -&gt; [a]
+</code></pre>
+<h3 id="ceil"><a class="header" href="#ceil">ceil</a></h3>
+<pre><code class="language-nix"> Float -&gt; Int
+</code></pre>
+<h3 id="compareversions"><a class="header" href="#compareversions">compareVersions</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; Int
+</code></pre>
+<h3 id="concatlists"><a class="header" href="#concatlists">concatLists</a></h3>
+<pre><code class="language-nix"> [List] -&gt; []
+</code></pre>
+<h3 id="concatmap"><a class="header" href="#concatmap">concatMap</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="concatstringssep"><a class="header" href="#concatstringssep">concatStringsSep</a></h3>
+<pre><code class="language-nix"> String -&gt; [String] -&gt; String
+</code></pre>
+<h3 id="deepseq"><a class="header" href="#deepseq">deepSeq</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="dirof"><a class="header" href="#dirof">dirOf</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="div"><a class="header" href="#div">div</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="elem"><a class="header" href="#elem">elem</a></h3>
+<pre><code class="language-nix"> a -&gt; [b] -&gt; Bool
+</code></pre>
+<h3 id="elemat"><a class="header" href="#elemat">elemAt</a></h3>
+<pre><code class="language-nix"> [a] -&gt; Int -&gt; b
+</code></pre>
+<h3 id="fetchclosure"><a class="header" href="#fetchclosure">fetchClosure</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchgit"><a class="header" href="#fetchgit">fetchGit</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchtarball"><a class="header" href="#fetchtarball">fetchTarball</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchurl"><a class="header" href="#fetchurl">fetchurl</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet
+</code></pre>
+<h3 id="filter"><a class="header" href="#filter">filter</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="filtersource"><a class="header" href="#filtersource">filterSource</a></h3>
+<pre><code class="language-nix"> (Path -&gt; String -&gt; Bool) -&gt; Path -&gt; StorePath
+</code></pre>
+<h3 id="floor"><a class="header" href="#floor">floor</a></h3>
+<pre><code class="language-nix"> Float -&gt; Int
+</code></pre>
+<h3 id="foldl"><a class="header" href="#foldl">foldl'</a></h3>
+<pre><code class="language-nix"> (a -&gt; b -&gt; c) -&gt; a -&gt; [b] -&gt; c
+</code></pre>
+<h3 id="fromjson"><a class="header" href="#fromjson">fromJSON</a></h3>
+<pre><code class="language-nix"> String -&gt; a
+</code></pre>
+<h3 id="functionargs"><a class="header" href="#functionargs">functionArgs</a></h3>
+<pre><code class="language-nix"> (a) -&gt; AttrSet
+</code></pre>
+<h3 id="genlist"><a class="header" href="#genlist">genList</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; a -&gt; [b]
+</code></pre>
+<h3 id="genericclosure"><a class="header" href="#genericclosure">genericClosure</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; [AttrSet]
+</code></pre>
+<h3 id="getattr"><a class="header" href="#getattr">getAttr</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet -&gt; a
+</code></pre>
+<h3 id="getenv"><a class="header" href="#getenv">getEnv</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="getflake"><a class="header" href="#getflake">getFlake</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="groupby"><a class="header" href="#groupby">groupBy</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="hasattr"><a class="header" href="#hasattr">hasAttr</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet -&gt; Bool
+</code></pre>
+<h3 id="hashfile"><a class="header" href="#hashfile">hashFile</a></h3>
+<pre><code class="language-nix"> String -&gt; Path -&gt; String
+</code></pre>
+<h3 id="hashstring"><a class="header" href="#hashstring">hashString</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; String
+</code></pre>
+<h3 id="head"><a class="header" href="#head">head</a></h3>
+<pre><code class="language-nix"> [a] -&gt; a
+</code></pre>
+<h3 id="import"><a class="header" href="#import">import</a></h3>
+<pre><code class="language-nix"> Path -&gt; a
+</code></pre>
+<h3 id="intersectattrs"><a class="header" href="#intersectattrs">intersectAttrs</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="isattrs"><a class="header" href="#isattrs">isAttrs</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isbool"><a class="header" href="#isbool">isBool</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isfloat"><a class="header" href="#isfloat">isFloat</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isfunction"><a class="header" href="#isfunction">isFunction</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isint"><a class="header" href="#isint">isInt</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="islist"><a class="header" href="#islist">isList</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isnull"><a class="header" href="#isnull">isNull</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="ispath"><a class="header" href="#ispath">isPath</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="isstring"><a class="header" href="#isstring">isString</a></h3>
+<pre><code class="language-nix"> a -&gt; Bool
+</code></pre>
+<h3 id="length"><a class="header" href="#length">length</a></h3>
+<pre><code class="language-nix"> [a] -&gt; Int
+</code></pre>
+<h3 id="lessthan"><a class="header" href="#lessthan">lessThan</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Bool
+</code></pre>
+<h3 id="listtoattrs"><a class="header" href="#listtoattrs">listToAttrs</a></h3>
+<pre><code class="language-nix"> [{name :: String; value :: a}] -&gt; AttrSet
+</code></pre>
+<h3 id="map"><a class="header" href="#map">map</a></h3>
+<pre><code class="language-nix"> (a -&gt; b) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="mapattrs"><a class="header" href="#mapattrs">mapAttrs</a></h3>
+<pre><code class="language-nix"> (a -&gt; b -&gt; c) -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="match"><a class="header" href="#match">match</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; Bool
+</code></pre>
+<h3 id="mul"><a class="header" href="#mul">mul</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="parsedrvname"><a class="header" href="#parsedrvname">parseDrvName</a></h3>
+<pre><code class="language-nix"> String -&gt; AttrSet
+</code></pre>
+<h3 id="partition"><a class="header" href="#partition">partition</a></h3>
+<pre><code class="language-nix"> (a -&gt; Bool) -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="path"><a class="header" href="#path">Path</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; StorePath
+</code></pre>
+<h3 id="pathexists"><a class="header" href="#pathexists">pathExists</a></h3>
+<pre><code class="language-nix"> Path -&gt; Bool
+</code></pre>
+<h3 id="placeholder"><a class="header" href="#placeholder">placeholder</a></h3>
+<pre><code class="language-nix"> String -&gt; String
+</code></pre>
+<h3 id="readdir"><a class="header" href="#readdir">readDir</a></h3>
+<pre><code class="language-nix"> Path -&gt; AttrSet
+</code></pre>
+<h3 id="readfile"><a class="header" href="#readfile">readFile</a></h3>
+<pre><code class="language-nix"> Path -&gt; String
+</code></pre>
+<h3 id="removeattrs"><a class="header" href="#removeattrs">removeAttrs</a></h3>
+<pre><code class="language-nix"> AttrSet -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="replacestrings"><a class="header" href="#replacestrings">replaceStrings</a></h3>
+<pre><code class="language-nix"> [String] -&gt; [String] -&gt; String -&gt; String
+</code></pre>
+<h3 id="seq"><a class="header" href="#seq">seq</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="sort"><a class="header" href="#sort">sort</a></h3>
+<pre><code class="language-nix"> (a -&gt; b -&gt; Bool) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="split"><a class="header" href="#split">split</a></h3>
+<pre><code class="language-nix"> String -&gt; String -&gt; [String]
+</code></pre>
+<h3 id="splitversion"><a class="header" href="#splitversion">splitVersion</a></h3>
+<pre><code class="language-nix"> String -&gt; [String]
+</code></pre>
+<h3 id="storepath"><a class="header" href="#storepath">StorePath</a></h3>
+<pre><code class="language-nix"> StorePath -&gt; StorePath
+</code></pre>
+<h3 id="stringlength"><a class="header" href="#stringlength">stringLength</a></h3>
+<pre><code class="language-nix"> String -&gt; Int
+</code></pre>
+<h3 id="sub"><a class="header" href="#sub">sub</a></h3>
+<pre><code class="language-nix"> Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="substring"><a class="header" href="#substring">substring</a></h3>
+<pre><code class="language-nix"> Int -&gt; Int -&gt; String -&gt; String
+</code></pre>
+<h3 id="tail"><a class="header" href="#tail">tail</a></h3>
+<pre><code class="language-nix"> [a] -&gt; a
+</code></pre>
+<h3 id="throw"><a class="header" href="#throw">throw</a></h3>
+<pre><code class="language-nix"> String
+</code></pre>
+<h3 id="tofile"><a class="header" href="#tofile">toFile</a></h3>
+<pre><code class="language-nix"> Path -&gt; String -&gt; StorePath 
+</code></pre>
+<h3 id="tojson"><a class="header" href="#tojson">toJSON</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="topath"><a class="header" href="#topath">toPath</a></h3>
+<pre><code class="language-nix"> String -&gt; Path
+</code></pre>
+<h3 id="tostring"><a class="header" href="#tostring">toString</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="toxml"><a class="header" href="#toxml">toXML</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="trace"><a class="header" href="#trace">trace</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="traceverbose"><a class="header" href="#traceverbose">traceVerbose</a></h3>
+<pre><code class="language-nix"> a -&gt; b -&gt; b
+</code></pre>
+<h3 id="tryeval"><a class="header" href="#tryeval">tryEval</a></h3>
+<pre><code class="language-nix"> a
+</code></pre>
+<h3 id="typeof"><a class="header" href="#typeof">typeOf</a></h3>
+<pre><code class="language-nix"> a -&gt; String
+</code></pre>
+<h3 id="zipattrswith"><a class="header" href="#zipattrswith">zipAttrsWith</a></h3>
+<pre><code class="language-nix"> (String -&gt; [a] ) -&gt; [a] -&gt; AttrSet
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
 <p>The goal was to create a system that can add <code>type hints</code> to every expression in nix.</p>
 <p>A nix file can contain many possible things.</p>
@@ -643,95 +1060,6 @@ let
 #....
 in
     act: applyIt act
-</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="examples-4"><a class="header" href="#examples-4">Examples</a></h1>
-<p>This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.</p>
-<h2 id="short-recap-of-the-basic-syntax"><a class="header" href="#short-recap-of-the-basic-syntax">Short recap of the basic syntax</a></h2>
-<pre><code class="language-nix"># lib.lists.any
-
-/* 
-    Type: 
-        any :: ( Any -&gt; Bool ) -&gt; [ Any ] -&gt; Bool
-         ↑   ↑        ↑        ↑             ↑
-         |   |        |        |             └── final return value is a Bool
-         |   |        |        └── The first function returns a function that takes a list of Any      
-         |   |        └── function that takes Any and returns True or False (Boolean)
-         |   └── declares the type as follows
-         └── referenced binding name
-*/
-any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
-</code></pre>
-<h2 id="first-examples"><a class="header" href="#first-examples">first examples</a></h2>
-<pre><code class="language-nix"># lib.lists.remove
-
-/*
-    Type:
-        remove :: Any -&gt; [ Any ] -&gt; [ Any ]
-*/
-remove = #...
-</code></pre>
-<pre><code class="language-nix"># lib.attrsets.hasAttrByPath
-
-/*
-Type:
-    hasAttrByPath :: [ String ] -&gt; { ... } -&gt; Bool
-*/
-hasAttrByPath = # ...
-</code></pre>
-<pre><code class="language-nix">/*
-# example file from the dream2nix framework
-
-type:
-    depsTree :: DependencyTree
-
-    DependencyTree = { ${name} :: { ${version} :: DependencyAttrs } }
-    DependencyAttrs = { { deps :: DependencyTree, derivation :: Derivation } }
-*/
-depsTree = let 
-# ...
-</code></pre>
-<pre><code class="language-nix">/*
-Type:
-    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
-*/
-getAttrs = names: attrs: genAttrs names (name: attrs.${name});
-</code></pre>
-<h2 id="open-points"><a class="header" href="#open-points">Open points</a></h2>
-<p>With <code>Any</code> there is no indication if all arguments must contain the same single type <code>a</code> thus it would be more precise with <strong>type variable</strong> instead of the explicit <code>Any</code> type.</p>
-<pre><code class="language-nix"># lib.lists.remove
-
-/*
-    Type:
-        remove :: a -&gt; [ a ] -&gt; [ a ]
-*/
-remove = #...
-</code></pre>
-<p>The following is a hard one. We are not sure yet how to present that type <code>b</code> is present somewhere in a nested set.</p>
-<p>It gets returned, if the referenced value is present in the attrSet; default value of type <code>a</code> otherwise.</p>
-<p><code>a</code> can be equal to <code>b</code> but generally speaking it doesn't have to.</p>
-<pre><code class="language-nix"># lib.attrsets.attrByPath
-
-/* Return an attribute from nested attribute sets.
-
-    Type:
-    attrByPath :: [ String ] -&gt; a -&gt; { ... } -&gt; b | a
-*/
-attrByPath = # ...
-</code></pre>
-<p>We are not able yet to dynamically create members of an AttrSet from a given type signature.</p>
-<pre><code class="language-nix">/*
-Type:
-    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
-                    ↑                      ↑
-                    └──────────────────────┴─ The list of String matches the member name of the returned AttrSet
-
-*/
-getAttrs = names: attrs: genAttrs names (name: attrs.${name});
-</code></pre>
-<p>Thus it might make sense to generally allow context on ListItems as follows. (Optional Context)</p>
-<pre><code class="language-nix">    getAttrs :: [ name :: String ] -&gt; { ... } -&gt; { [ name :: String ] :: Any }
-                    ↑                                 ↑
-                    └─────────────────────────────────┴─ The list of String matches the member-names of the returned AttrSet
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="contributors"><a class="header" href="#contributors">Contributors</a></h1>
 <p>Thanks to all people who contributed to this project. (if agreed) github handles will be published here.</p>

@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="../problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="../impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">3.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html" class="active"><strong aria-hidden="true">4.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">5.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">6.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">7.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="../problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="../impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html" class="active"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../builtins/types.html"><strong aria-hidden="true">7.</strong> nix Builtins</a></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -141,12 +141,12 @@
 <p><strong>All Operators SHOULD be used with surrounding whitespace.</strong></p>
 <h2 id="-declares-the-type"><a class="header" href="#-declares-the-type"><code>::</code> declares the type</a></h2>
 <p>The variable name on the LHS is declared to have the <code>type</code> on the RHS</p>
-<p>e.g. <code>name :: Any</code></p>
+<p>e.g. <code>name :: String</code></p>
 <h2 id="-parenthesis"><a class="header" href="#-parenthesis"><code>()</code> Parenthesis</a></h2>
 <p>Parenthesis to clarify order of type evaluation</p>
 <p>e.g. <code>( a -&gt; b ) | Bool</code></p>
 <h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>,</code> Separator for subsequent entries (like in AttrSet)</a></h2>
-<p>e.g. <code>{ foo :: Any, bar :: Any }</code></p>
+<p>e.g. <code>{ foo :: Number, bar :: String }</code></p>
 <h2 id="-syntactic-or"><a class="header" href="#-syntactic-or"><code>|</code> syntactic or</a></h2>
 <p>syntactic <code>Or</code> can be used for composition or enums</p>
 <p>Let <code>T</code> and <code>U</code> be different Types.
@@ -180,20 +180,20 @@ in
 </code></pre>
 <h3 id="---arbitrary-input-values"><a class="header" href="#---arbitrary-input-values"><code>...</code> - arbitrary input values</a></h3>
 <p>can only be used within an AttrSet to allow <code>Any</code> more <code>name-value pairs</code>.</p>
-<p><code>...</code> = <code>${rest} :: Any</code> within an AttrSet context</p>
+<p><code>...</code> = <code>${rest} :: a</code> within an AttrSet context</p>
 <p>e.g.</p>
 <pre><code class="language-nix">/*
-  Type: foo :: { bar :: Any, ...} -&gt; Any
+  Type: foo :: { bar :: a, ...} -&gt; a
 */
 Foo = {bar, ...}@inp:
 #...
 </code></pre>
 <h2 id="-merge-operator"><a class="header" href="#-merge-operator"><code>//</code> merge operator</a></h2>
 <p>syntactically <code>merges</code> Types of AttrSets</p>
-<p><code>{ foo :: String } // { bar :: Any }</code> =&gt; <code>{ foo :: String, bar :: Any }</code></p>
-<p><code>{ foo :: String } // { ${names} :: Any }</code> =&gt; <code>{ foo :: String, ${names} :: Any  }</code></p>
+<p><code>{ foo :: String } // { bar :: Number }</code> =&gt; <code>{ foo :: String, bar :: Number }</code></p>
+<p><code>{ foo :: String } // { ${names} :: a }</code> =&gt; <code>{ foo :: String, ${names} :: a  }</code></p>
 <p>Overwrites occur like in the nix language itself</p>
-<p><code>{ foo :: String } // { foo :: Any }</code> =&gt; <code>{ foo :: Any }</code></p>
+<p><code>{ foo :: String } // { foo :: Number }</code> =&gt; <code>{ foo :: Number }</code></p>
 <h2 id="-equality-operator"><a class="header" href="#-equality-operator"><code>=</code> equality operator</a></h2>
 <p>Allows for <strong>type bindings</strong></p>
 <p>Convention: As types always start with Capital letters; Type bindings also start with capital letters.</p>
@@ -220,7 +220,7 @@ mkDerivation = {pname, version, foo, ...}@args: let
 </ul>
 <p>e.g.</p>
 <pre><code class="language-nix">  type:
-    foo = Any
+    Foo = Number
 </code></pre>
 <h3 id="prohibited-binding"><a class="header" href="#prohibited-binding">prohibited binding</a></h3>
 <p>To prevent conflicts and confusion.
@@ -257,7 +257,7 @@ derivation = ...
                             <a rel="prev" href="../specification/lambda.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="../specification/usage.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../specification/type-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -269,7 +269,7 @@ derivation = ...
                     <a rel="prev" href="../specification/lambda.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="../specification/usage.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../specification/type-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

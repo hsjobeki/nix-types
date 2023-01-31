@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">3.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">5.</strong> Usage</a></li><li class="chapter-item expanded "><a href="examples.html" class="active"><strong aria-hidden="true">6.</strong> Examples</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">7.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="examples.html" class="active"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="builtins/types.html"><strong aria-hidden="true">7.</strong> nix Builtins</a></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -139,16 +139,16 @@
                     <main>
                         <h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
 <p>This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.</p>
-<h2 id="short-recap-of-the-basic-syntax"><a class="header" href="#short-recap-of-the-basic-syntax">Short recap of the basic syntax</a></h2>
+<h2 id="short-preview-of-the-basic-syntax"><a class="header" href="#short-preview-of-the-basic-syntax">Short preview of the basic syntax</a></h2>
 <pre><code class="language-nix"># lib.lists.any
 
 /* 
     Type: 
-        any :: ( Any -&gt; Bool ) -&gt; [ Any ] -&gt; Bool
+        any :: ( a -&gt; Bool ) -&gt; [ a ] -&gt; Bool
          ↑   ↑        ↑        ↑             ↑
          |   |        |        |             └── final return value is a Bool
-         |   |        |        └── The first function returns a function that takes a list of Any      
-         |   |        └── function that takes Any and returns True or False (Boolean)
+         |   |        |        └── The first function returns a function that takes a list of type 'a'      
+         |   |        └── function that takes an 'a' and returns True or False (Boolean)
          |   └── declares the type as follows
          └── referenced binding name
 */
@@ -159,7 +159,7 @@ any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
 
 /*
     Type:
-        remove :: Any -&gt; [ Any ] -&gt; [ Any ]
+        remove :: a -&gt; [ a ] -&gt; [ a ]
 */
 remove = #...
 </code></pre>
@@ -189,7 +189,8 @@ Type:
 */
 getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 </code></pre>
-<h2 id="open-points"><a class="header" href="#open-points">Open points</a></h2>
+<h2 id="advanced"><a class="header" href="#advanced">Advanced</a></h2>
+<h3 id="open-points"><a class="header" href="#open-points">Open points</a></h3>
 <p>With <code>Any</code> there is no indication if all arguments must contain the same single type <code>a</code> thus it would be more precise with <strong>type variable</strong> instead of the explicit <code>Any</code> type.</p>
 <pre><code class="language-nix"># lib.lists.remove
 
@@ -231,10 +232,10 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="specification/usage.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="impact.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="contributors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="specification/formals.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -243,10 +244,10 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="specification/usage.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="impact.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="contributors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="specification/formals.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

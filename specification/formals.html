@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="../problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="../impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/formals.html" class="active"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">3.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">3.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">3.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">3.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">3.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">3.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">4.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">5.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">6.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">7.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="../problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="../impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../specification/formals.html" class="active"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../builtins/types.html"><strong aria-hidden="true">7.</strong> nix Builtins</a></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -156,8 +156,10 @@
 <li>[NT005] - Types MUST be chosen from the existing list. see <a href="./basic.html">primitives</a></li>
 <li>[NT006] - Operators MUST be chosen from the existing list. see <a href="./operators.html">operators</a></li>
 <li>[NT007] - explicit <code>AttrSet</code> and <code>List</code> keywords are PROHIBITED. See the correct usage <a href="./complex.html">here</a></li>
+<li>[NT007] - explicit <code>Any</code> is PROHIBITED. Correct usage with type variables see <a href="./type-variables.html">here</a></li>
 <li>[NT008] - <a href="./complex.html">complex types</a> MUST include their members explicitly.</li>
 <li>[NT009] - Allowing arbitrary values within <a href="./complex.html">complex-types</a> is possible but requires explicit statements.</li>
+<li>[NT009] - <code>Type variables</code> must be written in LOWERCASE to prevent confusion.</li>
 <li>[NT010] - When using <a href="./operators.html#type-binding">Type bindings</a> it is PROHIBITED to choose names from the <a href="./types.html">reserved list</a></li>
 <li>[NT011] - Spaces between Operators (recommended)</li>
 <li>... more concrete rules may follow when implementation has started</li>
@@ -173,18 +175,19 @@
     ...
     Free Text goes here 
     ...
-
+    
     Type:
-        attrByPath :: [ String ] -&gt; Any -&gt; { ... } -&gt; Any
+        attrByPath :: [ String ] -&gt; a -&gt; { ${path} :: b } -&gt; ( a | b )
   */
   attrByPath = ...
 </code></pre>
+<p>This function takes a path as list of strings and then traverses the attrSet until it may find a value of type 'b' otherwise it returns the default value of type 'a'.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../impact.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../examples.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                             <a rel="next" href="../specification/types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
@@ -196,7 +199,7 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../impact.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../examples.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                     <a rel="next" href="../specification/types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
