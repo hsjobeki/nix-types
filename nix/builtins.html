@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Types - Nix Types - a first step in the right direction</title>
+        <title>Builtins - Nix Types - a first step in the right direction</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="../problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="../impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/types.html" class="active"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">7.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">7.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">7.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="../problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="../impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">7.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">7.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html" class="active"><strong aria-hidden="true">7.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -137,61 +137,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="types"><a class="header" href="#types">Types</a></h1>
-<p>This chapter clarifies all types.</p>
-<p>To Pickup the overview more quickly they can be viewed in the following list.</p>
-<p>Every decision and further specification are explained in the corresponding sub-chapters respectively.</p>
-<h2 id="list-of-all-types"><a class="header" href="#list-of-all-types">List of all <code>Types</code></a></h2>
-<!-- markdownlint-disable MD041 -->
-<h3 id="primitives"><a class="header" href="#primitives">Primitives</a></h3>
-<hr />
-<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
-<tr><td>Bool</td><td>A value of type boolean can be either <code>true</code> or <code>false</code></td></tr>
-<tr><td>Int</td><td>TODO: The classical integer type with 32-bit or 64-bit depending on the current system?</td></tr>
-<tr><td>Float</td><td>A float with 64 bits?</td></tr>
-<tr><td>String</td><td>A string of any unicode characters</td></tr>
-<tr><td>Path</td><td>Path referencing a location or a file. With no assumptions on the existence of that</td></tr>
-<tr><td>Null</td><td>The value null</td></tr>
-</tbody></table>
-</div><!-- markdownlint-disable MD041 -->
-<h3 id="complex"><a class="header" href="#complex">Complex</a></h3>
+                        <h1 id="builtins"><a class="header" href="#builtins">Builtins</a></h1>
+<p>This section contains the proof that all nix <code>builtins</code> can be meaningfully and correctly annotated with the proposed type system.</p>
+<p>There are currently <strong>89</strong> builtin functions, that can be discovered with</p>
 <blockquote>
-<p><code>T</code>, <code>U</code>, ...; are placeholders for any types, those MUST be specifically declared on usage</p>
+<p>run <code>nix __dump-builtins</code></p>
 </blockquote>
-<hr />
-<div class="table-wrapper"><table><thead><tr><th>Annotation</th><th>Type</th><th>Description</th><th>chapter</th></tr></thead><tbody>
-<tr><td><code>[T]</code></td><td>List</td><td>List of elements with type <code>T</code> each</td><td><a href="list.html">List</a></td></tr>
-<tr><td><code>{N::T}</code></td><td>AttrSet</td><td>AttrSet where member <code>N</code> references value of type <code>T</code></td><td><a href="attrset.html">AttrSet</a></td></tr>
-<tr><td><code>T-&gt;U</code></td><td>Lambda</td><td>A function that takes a single argument of type <code>T</code> and returns a value of type <code>U</code></td><td><a href="lambda.html">lambda</a></td></tr>
-</tbody></table>
-</div>
+<p>Every builtins signature can be found below (sorted alphabetically)</p>
 <blockquote>
-<p>More details how to use complex types in the corresponding chapters</p>
+<p>Following symbols are used below</p>
+<ul>
+<li>✅ - Compliant</li>
+<li>⚠️ - Under construction.</li>
+</ul>
 </blockquote>
-<!-- markdownlint-disable MD041 -->
-<!-- markdownlint-disable MD013 -->
-<h3 id="composed"><a class="header" href="#composed">Composed</a></h3>
-<hr />
-<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Composition</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>Number</code></td><td><code>Int {or} Float</code></td><td>The <code>Number</code> is either of type <code>Int</code> or of type <code>Float</code></td></tr>
-<tr><td><code>Any</code></td><td><code>?</code></td><td>There is no <code>Any</code> type and it is explicitly prohibited to use the Any type. Use type variables instead if you want to allow variable type signatures.</td></tr>
-<tr><td><code>StorePath</code></td><td><code>Path</code></td><td>The <code>StorePath</code> is just a meaningful alias of the type <code>Path</code></td></tr>
-<tr><td><code>Derivation</code></td><td><code>{ ... }</code></td><td>TODO: <code>Derivation</code> is just a special AttrSet.</td></tr>
-<tr><td><code>Package</code></td><td><code>Derivation {or} {...}</code></td><td>TODO: <code>Package</code> is either a Derivation or a special AttrSet with <code>name</code> xy in it.</td></tr>
-</tbody></table>
-</div>
-<blockquote>
-<p>used operators are defined in the <a href="operators.html">operators chapter</a></p>
-</blockquote>
+<h2 id="builtins---todo-the-type-signatures-are-not-compliant-yet"><a class="header" href="#builtins---todo-the-type-signatures-are-not-compliant-yet">Builtins - TODO: The type signatures are not compliant yet</a></h2>
+<p>{{#include ../generated/builtin-types.md}}</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../specification/formals.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../nix/operations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="../specification/basic.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../specification/usage.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -200,10 +170,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../specification/formals.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../nix/operations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="../specification/basic.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../specification/usage.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
