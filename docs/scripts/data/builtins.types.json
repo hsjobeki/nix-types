@@ -1,0 +1,112 @@
+{
+  "abort": { "fn_type": "String" },
+  "add": { "fn_type": "Number -> Number -> Number" },
+  "all": { "fn_type": "(a -> Bool) -> [a] -> Bool" },
+  "Any": { "fn_type": "(a -> Bool) -> [a] -> Bool" },
+  "attrNames": { "fn_type": "AttrSet -> [a]" },
+  "attrValues": { "fn_type": "AttrSet -> [a]" },
+  "baseNameOf": { "fn_type": "String -> String" },
+  "bitAnd": { "fn_type": "Int -> Int -> Int" },
+  "bitOr": { "fn_type": "Int -> Int -> Int" },
+  "bitXor": { "fn_type": "Int -> Int -> Int" },
+  "break": { "fn_type": "a -> a" },
+  "catAttrs": {
+    "fn_type": "String -> [ { ${name} :: a } ] -> [a]"
+  },
+  "ceil": { "fn_type": "Float -> Int" },
+  "compareVersions": {
+    "fn_type": "String -> String -> Int"
+  },
+  "concatLists": { "fn_type": "[[a]] -> [a]" },
+  "concatMap": { "fn_type": "(a -> b) -> [a] -> [b]" },
+  "concatStringsSep": {
+    "fn_type": "String -> [String] -> String"
+  },
+  "deepSeq": { "fn_type": "a -> b -> b" },
+  "dirOf": { "fn_type": "String -> String" },
+  "div": { "fn_type": "Number -> Number -> Number" },
+  "elem": { "fn_type": "a -> [b] -> Bool" },
+  "elemAt": { "fn_type": "[a] -> Int -> b" },
+  "fetchClosure": { "fn_type": "AttrSet -> AttrSet" },
+  "fetchGit": { "fn_type": "AttrSet -> AttrSet" },
+  "fetchTarball": { "fn_type": "AttrSet -> AttrSet" },
+  "fetchurl": { "fn_type": "String -> AttrSet" },
+  "filter": { "fn_type": "(a -> Bool) -> [a] -> [b]" },
+  "filterSource": {
+    "fn_type": "(Path -> String -> Bool) -> Path -> Path"
+  },
+  "floor": { "fn_type": "Float -> Int" },
+  "foldl'": {
+    "fn_type": "(a -> b -> c) -> a -> [b] -> c"
+  },
+  "fromJSON": { "fn_type": "String -> a" },
+  "functionArgs": { "fn_type": "(a) -> AttrSet" },
+  "genList": { "fn_type": "(a -> b) -> a -> [b]" },
+  "genericClosure": { "fn_type": "AttrSet -> [AttrSet]" },
+  "getAttr": { "fn_type": "String -> AttrSet -> a" },
+  "getEnv": { "fn_type": "String -> String" },
+  "getFlake": { "fn_type": "AttrSet -> AttrSet" },
+  "groupBy": { "fn_type": "(a -> b) -> [a] -> AttrSet" },
+  "hasAttr": { "fn_type": "String -> AttrSet -> Bool" },
+  "hashFile": { "fn_type": "String -> Path -> String" },
+  "hashString": { "fn_type": "String -> String -> String" },
+  "head": { "fn_type": "[a] -> a" },
+  "import": { "fn_type": "Path -> a" },
+  "intersectAttrs": {
+    "fn_type": "AttrSet -> AttrSet -> AttrSet"
+  },
+  "isAttrs": { "fn_type": "a -> Bool" },
+  "isBool": { "fn_type": "a -> Bool" },
+  "isFloat": { "fn_type": "a -> Bool" },
+  "isFunction": { "fn_type": "a -> Bool" },
+  "isInt": { "fn_type": "a -> Bool" },
+  "isList": { "fn_type": "a -> Bool" },
+  "isNull": { "fn_type": "a -> Bool" },
+  "isPath": { "fn_type": "a -> Bool" },
+  "isString": { "fn_type": "a -> Bool" },
+  "length": { "fn_type": "[a] -> Int" },
+  "lessThan": { "fn_type": "Number -> Number -> Bool" },
+  "listToAttrs": {
+    "fn_type": "[{name :: String, value :: a}] -> AttrSet"
+  },
+  "map": { "fn_type": "(a -> b) -> [a] -> [b]" },
+  "mapAttrs": { "fn_type": "(a -> b -> c) -> AttrSet -> AttrSet" },
+  "match": { "fn_type": "String -> String -> ( Null | [ String ] )" },
+  "mul": { "fn_type": "Number -> Number -> Number" },
+  "parseDrvName": { "fn_type": "String -> AttrSet" },
+  "partition": { "fn_type": "(a -> Bool) -> [a] -> AttrSet" },
+  "Path": { "fn_type": "AttrSet -> StorePath" },
+  "pathExists": { "fn_type": "Path -> Bool" },
+  "placeholder": { "fn_type": "String -> String" },
+  "readDir": { "fn_type": "Path -> AttrSet" },
+  "readFile": { "fn_type": "Path -> String" },
+  "removeAttrs": { "fn_type": "AttrSet -> [a] -> AttrSet" },
+  "replaceStrings": {
+    "fn_type": "[String] -> [String] -> String -> String"
+  },
+  "seq": { "fn_type": "a -> b -> b" },
+  "sort": { "fn_type": "(a -> b -> Bool) -> [a] -> [b]" },
+  "split": { "fn_type": "String -> String -> [String]" },
+  "splitVersion": { "fn_type": "String -> [String]" },
+  "StorePath": { "fn_type": "StorePath -> StorePath" },
+  "stringLength": { "fn_type": "String -> Int" },
+  "sub": { "fn_type": "Number -> Number -> Number" },
+  "substring": { "fn_type": "Int -> Int -> String -> String" },
+  "tail": { "fn_type": "[a] -> a" },
+  "throw": { "fn_type": "String" },
+  "toFile": { "fn_type": "Path -> String -> StorePath " },
+  "toJSON": { "fn_type": "a -> String" },
+  "toPath": { "fn_type": "String -> Path" },
+  "toString": { "fn_type": "a -> String" },
+  "toXML": { "fn_type": "a -> String" },
+  "trace": { "fn_type": "a -> b -> b" },
+  "traceVerbose": { "fn_type": "a -> b -> b" },
+  "tryEval": { "fn_type": "a -> a" },
+  "typeOf": {
+    "fn_type": "a -> \"bool\" | \"int\" | \"float\" | \"string\" | \"set\" | \"list\" | \"path\" | \"null\" | \"lambda\" ",
+    "latest": "31.01.2023"
+  },
+  "zipAttrsWith": {
+    "fn_type": "(String -> [a] ) -> [a] -> AttrSet"
+  }
+}

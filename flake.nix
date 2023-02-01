@@ -22,6 +22,7 @@
         devShells.default = pkgs.mkShell {
           inputsFrom = [ self.packages.${system}.default ];
           packages = with pkgs; [
+            nodejs-16_x
             mdbook
             statix
             nodePackages.cspell
