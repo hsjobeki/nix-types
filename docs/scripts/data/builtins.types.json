@@ -1,29 +1,47 @@
 {
-  "abort": { "fn_type": "String" },
-  "add": { "fn_type": "Number -> Number -> Number" },
-  "all": { "fn_type": "(a -> Bool) -> [a] -> Bool" },
-  "Any": { "fn_type": "(a -> Bool) -> [a] -> Bool" },
-  "attrNames": { "fn_type": "AttrSet -> [a]" },
-  "attrValues": { "fn_type": "AttrSet -> [a]" },
-  "baseNameOf": { "fn_type": "String -> String" },
-  "bitAnd": { "fn_type": "Int -> Int -> Int" },
-  "bitOr": { "fn_type": "Int -> Int -> Int" },
-  "bitXor": { "fn_type": "Int -> Int -> Int" },
-  "break": { "fn_type": "a -> a" },
+  "abort": { "fn_type": "String -> Error" },
+  "add": { "fn_type": "Number -> Number -> Number", "latest": "03.02.2023" },
+  "all": { "fn_type": "(a -> Bool) -> [a] -> Bool", "latest": "03.02.2023" },
+  "any": { "fn_type": "(a -> Bool) -> [a] -> Bool", "latest": "03.02.2023" },
+  "attrNames": {
+    "fn_type": "{ ${key} :: a } -> [String]",
+    "latest": "03.02.2023"
+  },
+  "attrValues": {
+    "fn_type": "{ ${key} :: a } -> [a]",
+    "latest": "03.02.2023"
+  },
+  "baseNameOf": {
+    "fn_type": "( String | Path ) -> String",
+    "latest": "03.02.2023"
+  },
+  "bitAnd": { "fn_type": "Int -> Int -> Int", "latest": "03.02.2023" },
+  "bitOr": { "fn_type": "Int -> Int -> Int", "latest": "03.02.2023" },
+  "bitXor": { "fn_type": "Int -> Int -> Int", "latest": "03.02.2023" },
+  "break": { "fn_type": "a -> a", "latest": "03.02.2023" },
   "catAttrs": {
-    "fn_type": "String -> [ { ${name} :: a } ] -> [a]"
+    "fn_type": "String -> [ { ${name} :: a } ] -> [a]",
+    "latest": "03.02.2023"
   },
-  "ceil": { "fn_type": "Float -> Int" },
+  "ceil": { "fn_type": "Number -> Int", "latest": "03.02.2023" },
   "compareVersions": {
-    "fn_type": "String -> String -> Int"
+    "fn_type": "String -> String -> (-1 | 0 | 1)",
+    "latest": "03.02.2023"
   },
-  "concatLists": { "fn_type": "[[a]] -> [a]" },
-  "concatMap": { "fn_type": "(a -> b) -> [a] -> [b]" },
+  "concatLists": { "fn_type": "[ [ a ] ] -> [ a ]", "latest": "03.02.2023" },
+  "concatMap": {
+    "fn_type": "( a -> [ b ] ) -> [ a ] -> [ b ]",
+    "latest": "03.02.2023"
+  },
   "concatStringsSep": {
-    "fn_type": "String -> [String] -> String"
+    "fn_type": "String -> [ ( String | Path ) ] -> String",
+    "latest": "03.02.2023"
   },
-  "deepSeq": { "fn_type": "a -> b -> b" },
-  "dirOf": { "fn_type": "String -> String" },
+  "deepSeq": { "fn_type": "a -> b -> b", "latest": "03.02.2023" },
+  "dirOf": {
+    "fn_type": "a = (Path | String)\na -> a",
+    "latest": "03.02.2023"
+  },
   "div": { "fn_type": "Number -> Number -> Number" },
   "elem": { "fn_type": "a -> [b] -> Bool" },
   "elemAt": { "fn_type": "[a] -> Int -> b" },

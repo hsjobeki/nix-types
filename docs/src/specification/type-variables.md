@@ -73,3 +73,20 @@ This seem a little complex now, because the parent function returns an AttrSet t
 > The Haskell Ruleset for [scoped type variables](https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/scoped_type_variables.html)
 >
 > (see also above).
+
+## Type Variables with constraints
+
+Sometime we have variable types in signatures, but cannot allow any type for the variable.
+Then we could construct a type and assign it like this.
+
+```nix
+  Foo = ( String | Path )
+  Foo -> Foo 
+```
+
+> This is already allowed syntax in the proposed type system. There are no additional changes that need to be made.
+>
+> Sometimes there might be more than one expression necessary to express the type of a function.
+
+Also this means that the annotated function might take a `String` or a `Path`, and also returns them.
+If that function takes a `String` it will return the same `String` type. Once `Foo` evaluates to type `String` every occurrence of `Foo` is then of type `String`.
