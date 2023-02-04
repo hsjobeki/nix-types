@@ -766,6 +766,18 @@ But using them requires the underlying parser and the user need to understand so
 <p>The Haskell Ruleset for <a href="https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/scoped_type_variables.html">scoped type variables</a></p>
 <p>(see also above).</p>
 </blockquote>
+<h2 id="type-variables-with-constraints"><a class="header" href="#type-variables-with-constraints">Type Variables with constraints</a></h2>
+<p>Sometime we have variable types in signatures, but cannot allow any type for the variable.
+Then we could construct a type and assign it like this.</p>
+<pre><code class="language-nix">  Foo = ( String | Path )
+  Foo -&gt; Foo 
+</code></pre>
+<blockquote>
+<p>This is already allowed syntax in the proposed type system. There are no additional changes that need to be made.</p>
+<p>Sometimes there might be more than one expression necessary to express the type of a function.</p>
+</blockquote>
+<p>Also this means that the annotated function might take a <code>String</code> or a <code>Path</code>, and also returns them.
+If that function takes a <code>String</code> it will return the same <code>String</code> type. Once <code>Foo</code> evaluates to type <code>String</code> every occurrence of <code>Foo</code> is then of type <code>String</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="nix"><a class="header" href="#nix">Nix</a></h1>
 <h2 id="the-language-fundamentals"><a class="header" href="#the-language-fundamentals">The language fundamentals</a></h2>
 <p>It is very desireable to build a solid set of type signatures for the most basic operators in <code>nix</code>.</p>
