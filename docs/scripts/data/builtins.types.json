@@ -102,8 +102,11 @@
   "replaceStrings": {
     "fn_type": "[String] -> [String] -> String -> String"
   },
-  "seq": { "fn_type": "a -> b -> b" },
-  "sort": { "fn_type": "(a -> b -> Bool) -> [a] -> [b]" },
+  "seq": { "fn_type": "a -> b -> b", "latest": "05.02.2023" },
+  "sort": {
+    "fn_type": "(a -> a -> Bool) -> [a] -> [a]",
+    "latest": "05.02.2023"
+  },
   "split": { "fn_type": "String -> String -> [String]" },
   "splitVersion": { "fn_type": "String -> [String]" },
   "StorePath": { "fn_type": "StorePath -> StorePath" },

@@ -415,16 +415,16 @@ AttrSet -> [a] -> AttrSet
 [String] -> [String] -> String -> String
 ```
 
-### seq ⚠️
+### seq ✅
 
 ```nix
 a -> b -> b
 ```
 
-### sort ⚠️
+### sort ✅
 
 ```nix
-(a -> b -> Bool) -> [a] -> [b]
+(a -> a -> Bool) -> [a] -> [a]
 ```
 
 ### split ⚠️

@@ -43,7 +43,7 @@ String -> [ { ${name} :: a } ] -> [a]
 ### builtins.sort
 
 ```nix
-(a -> b -> Bool) -> [a] -> [b]
+(a -> a -> Bool) -> [a] -> [a]
 ```
 
 ## Namespaces
