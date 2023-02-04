@@ -898,7 +898,276 @@ It depends on the received argument value</p>
 </ul>
 </blockquote>
 <h2 id="builtins---todo-the-type-signatures-are-not-compliant-yet"><a class="header" href="#builtins---todo-the-type-signatures-are-not-compliant-yet">Builtins - TODO: The type signatures are not compliant yet</a></h2>
-<p>{{#include ../generated/builtin-types.md}}</p>
+<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD013 -->
+<h3 id="abort-"><a class="header" href="#abort-">abort ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; Error
+</code></pre>
+<h3 id="add-"><a class="header" href="#add-">add ✅</a></h3>
+<pre><code class="language-nix">Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="all-"><a class="header" href="#all-">all ✅</a></h3>
+<pre><code class="language-nix">(a -&gt; Bool) -&gt; [a] -&gt; Bool
+</code></pre>
+<h3 id="any-"><a class="header" href="#any-">any ✅</a></h3>
+<pre><code class="language-nix">(a -&gt; Bool) -&gt; [a] -&gt; Bool
+</code></pre>
+<h3 id="attrnames-"><a class="header" href="#attrnames-">attrNames ✅</a></h3>
+<pre><code class="language-nix">{ ${key} :: a } -&gt; [String]
+</code></pre>
+<h3 id="attrvalues-"><a class="header" href="#attrvalues-">attrValues ✅</a></h3>
+<pre><code class="language-nix">{ ${key} :: a } -&gt; [a]
+</code></pre>
+<h3 id="basenameof-"><a class="header" href="#basenameof-">baseNameOf ✅</a></h3>
+<pre><code class="language-nix">( String | Path ) -&gt; String
+</code></pre>
+<h3 id="bitand-"><a class="header" href="#bitand-">bitAnd ✅</a></h3>
+<pre><code class="language-nix">Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="bitor-"><a class="header" href="#bitor-">bitOr ✅</a></h3>
+<pre><code class="language-nix">Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="bitxor-"><a class="header" href="#bitxor-">bitXor ✅</a></h3>
+<pre><code class="language-nix">Int -&gt; Int -&gt; Int
+</code></pre>
+<h3 id="break-"><a class="header" href="#break-">break ✅</a></h3>
+<pre><code class="language-nix">a -&gt; a
+</code></pre>
+<h3 id="catattrs-"><a class="header" href="#catattrs-">catAttrs ✅</a></h3>
+<pre><code class="language-nix">String -&gt; [ { ${name} :: a } ] -&gt; [a]
+</code></pre>
+<h3 id="ceil-"><a class="header" href="#ceil-">ceil ✅</a></h3>
+<pre><code class="language-nix">Number -&gt; Int
+</code></pre>
+<h3 id="compareversions-"><a class="header" href="#compareversions-">compareVersions ✅</a></h3>
+<pre><code class="language-nix">String -&gt; String -&gt; (-1 | 0 | 1)
+</code></pre>
+<h3 id="concatlists-"><a class="header" href="#concatlists-">concatLists ✅</a></h3>
+<pre><code class="language-nix">[ [ a ] ] -&gt; [ a ]
+</code></pre>
+<h3 id="concatmap-"><a class="header" href="#concatmap-">concatMap ✅</a></h3>
+<pre><code class="language-nix">( a -&gt; [ b ] ) -&gt; [ a ] -&gt; [ b ]
+</code></pre>
+<h3 id="concatstringssep-"><a class="header" href="#concatstringssep-">concatStringsSep ✅</a></h3>
+<pre><code class="language-nix">String -&gt; [ ( String | Path ) ] -&gt; String
+</code></pre>
+<h3 id="deepseq-"><a class="header" href="#deepseq-">deepSeq ✅</a></h3>
+<pre><code class="language-nix">a -&gt; b -&gt; b
+</code></pre>
+<h3 id="dirof-"><a class="header" href="#dirof-">dirOf ✅</a></h3>
+<pre><code class="language-nix">a = (Path | String)
+a -&gt; a
+</code></pre>
+<h3 id="div-"><a class="header" href="#div-">div ⚠️</a></h3>
+<pre><code class="language-nix">Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="elem-"><a class="header" href="#elem-">elem ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; [b] -&gt; Bool
+</code></pre>
+<h3 id="elemat-"><a class="header" href="#elemat-">elemAt ⚠️</a></h3>
+<pre><code class="language-nix">[a] -&gt; Int -&gt; b
+</code></pre>
+<h3 id="fetchclosure-"><a class="header" href="#fetchclosure-">fetchClosure ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchgit-"><a class="header" href="#fetchgit-">fetchGit ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchtarball-"><a class="header" href="#fetchtarball-">fetchTarball ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="fetchurl-"><a class="header" href="#fetchurl-">fetchurl ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; AttrSet
+</code></pre>
+<h3 id="filter-"><a class="header" href="#filter-">filter ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; Bool) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="filtersource-"><a class="header" href="#filtersource-">filterSource ⚠️</a></h3>
+<pre><code class="language-nix">(Path -&gt; String -&gt; Bool) -&gt; Path -&gt; Path
+</code></pre>
+<h3 id="floor-"><a class="header" href="#floor-">floor ⚠️</a></h3>
+<pre><code class="language-nix">Float -&gt; Int
+</code></pre>
+<h3 id="foldl-"><a class="header" href="#foldl-">foldl' ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; b -&gt; c) -&gt; a -&gt; [b] -&gt; c
+</code></pre>
+<h3 id="fromjson-"><a class="header" href="#fromjson-">fromJSON ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; a
+</code></pre>
+<h3 id="functionargs-"><a class="header" href="#functionargs-">functionArgs ⚠️</a></h3>
+<pre><code class="language-nix">(a) -&gt; AttrSet
+</code></pre>
+<h3 id="genlist-"><a class="header" href="#genlist-">genList ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; b) -&gt; a -&gt; [b]
+</code></pre>
+<h3 id="genericclosure-"><a class="header" href="#genericclosure-">genericClosure ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; [AttrSet]
+</code></pre>
+<h3 id="getattr-"><a class="header" href="#getattr-">getAttr ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; AttrSet -&gt; a
+</code></pre>
+<h3 id="getenv-"><a class="header" href="#getenv-">getEnv ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; String
+</code></pre>
+<h3 id="getflake-"><a class="header" href="#getflake-">getFlake ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="groupby-"><a class="header" href="#groupby-">groupBy ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; b) -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="hasattr-"><a class="header" href="#hasattr-">hasAttr ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; AttrSet -&gt; Bool
+</code></pre>
+<h3 id="hashfile-"><a class="header" href="#hashfile-">hashFile ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; Path -&gt; String
+</code></pre>
+<h3 id="hashstring-"><a class="header" href="#hashstring-">hashString ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; String -&gt; String
+</code></pre>
+<h3 id="head-"><a class="header" href="#head-">head ⚠️</a></h3>
+<pre><code class="language-nix">[a] -&gt; a
+</code></pre>
+<h3 id="import-"><a class="header" href="#import-">import ⚠️</a></h3>
+<pre><code class="language-nix">Path -&gt; a
+</code></pre>
+<h3 id="intersectattrs-"><a class="header" href="#intersectattrs-">intersectAttrs ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="isattrs-"><a class="header" href="#isattrs-">isAttrs ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="isbool-"><a class="header" href="#isbool-">isBool ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="isfloat-"><a class="header" href="#isfloat-">isFloat ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="isfunction-"><a class="header" href="#isfunction-">isFunction ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="isint-"><a class="header" href="#isint-">isInt ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="islist-"><a class="header" href="#islist-">isList ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="isnull-"><a class="header" href="#isnull-">isNull ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="ispath-"><a class="header" href="#ispath-">isPath ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="isstring-"><a class="header" href="#isstring-">isString ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; Bool
+</code></pre>
+<h3 id="length-"><a class="header" href="#length-">length ⚠️</a></h3>
+<pre><code class="language-nix">[a] -&gt; Int
+</code></pre>
+<h3 id="lessthan-"><a class="header" href="#lessthan-">lessThan ⚠️</a></h3>
+<pre><code class="language-nix">Number -&gt; Number -&gt; Bool
+</code></pre>
+<h3 id="listtoattrs-"><a class="header" href="#listtoattrs-">listToAttrs ⚠️</a></h3>
+<pre><code class="language-nix">[{name :: String, value :: a}] -&gt; AttrSet
+</code></pre>
+<h3 id="map-"><a class="header" href="#map-">map ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; b) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="mapattrs-"><a class="header" href="#mapattrs-">mapAttrs ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; b -&gt; c) -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<h3 id="match-"><a class="header" href="#match-">match ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; String -&gt; ( Null | [ String ] )
+</code></pre>
+<h3 id="mul-"><a class="header" href="#mul-">mul ⚠️</a></h3>
+<pre><code class="language-nix">Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="parsedrvname-"><a class="header" href="#parsedrvname-">parseDrvName ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; AttrSet
+</code></pre>
+<h3 id="partition-"><a class="header" href="#partition-">partition ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; Bool) -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="path-"><a class="header" href="#path-">Path ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; StorePath
+</code></pre>
+<h3 id="pathexists-"><a class="header" href="#pathexists-">pathExists ⚠️</a></h3>
+<pre><code class="language-nix">Path -&gt; Bool
+</code></pre>
+<h3 id="placeholder-"><a class="header" href="#placeholder-">placeholder ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; String
+</code></pre>
+<h3 id="readdir-"><a class="header" href="#readdir-">readDir ⚠️</a></h3>
+<pre><code class="language-nix">Path -&gt; AttrSet
+</code></pre>
+<h3 id="readfile-"><a class="header" href="#readfile-">readFile ⚠️</a></h3>
+<pre><code class="language-nix">Path -&gt; String
+</code></pre>
+<h3 id="removeattrs-"><a class="header" href="#removeattrs-">removeAttrs ⚠️</a></h3>
+<pre><code class="language-nix">AttrSet -&gt; [a] -&gt; AttrSet
+</code></pre>
+<h3 id="replacestrings-"><a class="header" href="#replacestrings-">replaceStrings ⚠️</a></h3>
+<pre><code class="language-nix">[String] -&gt; [String] -&gt; String -&gt; String
+</code></pre>
+<h3 id="seq-"><a class="header" href="#seq-">seq ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; b -&gt; b
+</code></pre>
+<h3 id="sort-"><a class="header" href="#sort-">sort ⚠️</a></h3>
+<pre><code class="language-nix">(a -&gt; b -&gt; Bool) -&gt; [a] -&gt; [b]
+</code></pre>
+<h3 id="split-"><a class="header" href="#split-">split ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; String -&gt; [String]
+</code></pre>
+<h3 id="splitversion-"><a class="header" href="#splitversion-">splitVersion ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; [String]
+</code></pre>
+<h3 id="storepath-"><a class="header" href="#storepath-">StorePath ⚠️</a></h3>
+<pre><code class="language-nix">StorePath -&gt; StorePath
+</code></pre>
+<h3 id="stringlength-"><a class="header" href="#stringlength-">stringLength ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; Int
+</code></pre>
+<h3 id="sub-"><a class="header" href="#sub-">sub ⚠️</a></h3>
+<pre><code class="language-nix">Number -&gt; Number -&gt; Number
+</code></pre>
+<h3 id="substring-"><a class="header" href="#substring-">substring ⚠️</a></h3>
+<pre><code class="language-nix">Int -&gt; Int -&gt; String -&gt; String
+</code></pre>
+<h3 id="tail-"><a class="header" href="#tail-">tail ⚠️</a></h3>
+<pre><code class="language-nix">[a] -&gt; a
+</code></pre>
+<h3 id="throw-"><a class="header" href="#throw-">throw ⚠️</a></h3>
+<pre><code class="language-nix">String
+</code></pre>
+<h3 id="tofile-"><a class="header" href="#tofile-">toFile ⚠️</a></h3>
+<pre><code class="language-nix">Path -&gt; String -&gt; StorePath 
+</code></pre>
+<h3 id="tojson-"><a class="header" href="#tojson-">toJSON ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; String
+</code></pre>
+<h3 id="topath-"><a class="header" href="#topath-">toPath ⚠️</a></h3>
+<pre><code class="language-nix">String -&gt; Path
+</code></pre>
+<h3 id="tostring-"><a class="header" href="#tostring-">toString ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; String
+</code></pre>
+<h3 id="toxml-"><a class="header" href="#toxml-">toXML ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; String
+</code></pre>
+<h3 id="trace-"><a class="header" href="#trace-">trace ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; b -&gt; b
+</code></pre>
+<h3 id="traceverbose-"><a class="header" href="#traceverbose-">traceVerbose ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; b -&gt; b
+</code></pre>
+<h3 id="tryeval-"><a class="header" href="#tryeval-">tryEval ⚠️</a></h3>
+<pre><code class="language-nix">a -&gt; a
+</code></pre>
+<h3 id="typeof-"><a class="header" href="#typeof-">typeOf ✅</a></h3>
+<pre><code class="language-nix">a -&gt; &quot;bool&quot; | &quot;int&quot; | &quot;float&quot; | &quot;string&quot; | &quot;set&quot; | &quot;list&quot; | &quot;path&quot; | &quot;null&quot; | &quot;lambda&quot; 
+</code></pre>
+<h3 id="zipattrswith-"><a class="header" href="#zipattrswith-">zipAttrsWith ⚠️</a></h3>
+<pre><code class="language-nix">(String -&gt; [a] ) -&gt; [a] -&gt; AttrSet
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
 <p>The goal was to create a system that can add <code>type hints</code> to every expression in nix.</p>
 <p>A nix file can contain many possible things.</p>
