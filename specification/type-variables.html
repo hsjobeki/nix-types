@@ -161,7 +161,7 @@
 <pre><code class="language-nix">(String -&gt; a -&gt; b) -&gt; { ${name} :: a } -&gt; { ${name} :: b }
 </code></pre>
 <h3 id="builtinssort"><a class="header" href="#builtinssort">builtins.sort</a></h3>
-<pre><code class="language-nix">(a -&gt; b -&gt; Bool) -&gt; [a] -&gt; [b]
+<pre><code class="language-nix">(a -&gt; a -&gt; Bool) -&gt; [a] -&gt; [a]
 </code></pre>
 <h2 id="namespaces"><a class="header" href="#namespaces">Namespaces</a></h2>
 <p>Type variables are currently the best way to properly use polymorphism in type signatures.
