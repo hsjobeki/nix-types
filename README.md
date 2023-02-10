@@ -35,7 +35,8 @@ Example:
 | ✅ | name | String | | The name of the `Derivation` |
 | ❓ | builder | String | "setup.sh" | Uses the predefined `setup.sh` script. Usually you want to define scripts for the different `phases`. |
 | ❓ | buildInputs | List[Derivation] | | List of Packages needed inside the build-sandbox of this Derivation. Will be built beforehand and made available in $PATH of that build. e.g `python` is needed for python command executed during build time. |
-| ❓ | buildPhase | String | | String is interpreted and executed as bash script. Use magic quotes '' {script} '' for multiline scripts|
+| ❓ | buildPhase | String | | String is interpreted and executed as bash script. Use magic quotes '' {script} '' for multiline scripts. It is important that all `outputs` defined in the `outputs` attribute are generated e.g. `touch $out` |
+| ❓ | outputs | List[String] | ["out"] | List of outputs. All outputs must have been touched / generated after the build time. Every output is available as env variable e.g. `$out`|
 
 Defined in: __pkgs/stdenv/generic/make-derivation.nix__
 
