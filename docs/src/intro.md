@@ -1,10 +1,55 @@
 # Introduction
 
-🚧🚧🚧 RFC Under construction 🚧🚧🚧🚧
+This RFC prioritizes in the first place how documentation of nix can consistently be improved.
 
-This Draft of an RFC could be the first step to improve how nix is used as a language.
+By specifying the doc-string format for nix this opens a wide range of possibilities.
 
-Generally there are two type systems:
+One of the biggest issues and working points in the nix ecosystem is __Documentation__. Although documentation is available on different platforms and also on the official pages of nix and nixpkgs.
+Most beginners and advanced users still struggle and need unnecessary time to find the right starting point.
+
+__By specifying doc-strings I hope to improve the quality of in-code-comments so we can automagically build different formats of documentation.
+
+Specifying syntax rules for type annotations in comments is also very important as those need to be parsed consistently. To provide analysis over those types.
+
+External tool like: [noogle.dev](https://noogle.dev) already utilize and demonstrate the enormous potential that lies in understanding `type` abstractions.
+
+## Goal: standardize current comment syntax
+
+Currently there is no `strict ruleset` for how to write type comments.
+
+There is the following convention:
+
+```nix
+/*
+  Type:
+  foo :: AttrSet -> Any
+*/
+let
+foo = arg: ;#....
+in
+{
+  # ....
+}
+```
+
+__However that convention is very inconsistent and not written down yet.__
+
+> There is the opinion that it follows the haskell syntax, but nix is not haskell and has some differences that must also be reflected in the type-syntax.
+
+## Standardizing the format of doc-comments to make them parsable
+
+### Big vision: Feature-rich doc-strings. That allow automatic rich-documentation
+
+Steps toward that vision:
+
+- Type syntax; such as: `signatures`, `attrsets`, `type everything`
+    - Properly render the type signature of different things
+    - Default Values of optional attributes
+    - Description field for attributes
+- Code Examples
+- General Description
+
+### Generally there are two type systems
 
 - __Static__
   checked during 'compile' time or development time.
@@ -16,6 +61,7 @@ Generally there are two type systems:
     - Fails execution of code based on conditionals.
     - Used in `lib/types.nix`
     - Used in `YANTS`
+    - Used in Contracts
 
 ## Proposal: Type hints
 

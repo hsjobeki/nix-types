@@ -41,3 +41,5 @@ Example:
 Defined in: __pkgs/stdenv/generic/make-derivation.nix__
 
 The full content is available as mdbook [here](https://typednix.dev).
+
+The current documentation as well as some other external tools have generated content from that inline comments. Thus it is highly desirable to standardize and enhance them.

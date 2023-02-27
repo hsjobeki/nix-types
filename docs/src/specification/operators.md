@@ -134,9 +134,20 @@ __It is strictly prohibited to choose a name your custom type to be the same as:
 
 ## `?` optional arguments in an AttrSet
 
-e.g.  `{ opt :: ? Int }`
+--e.g.  `{ opt :: Int ? }`
 
-Note: The `type` side contains the `?` operator.
+Note: The __very end__ of `type` side contains the `?` operator.
+
+The reason for this is __extendability__. Initially the `?`-Operator is introduced as Unary-operator, marking the entry type as optional.
+In future it will be desirable to use the `?` as binary-operator to add default values on optional entries.
+
+e.g.
+
+```nix
+{
+  foo :: Int ? 1;
+}
+```
 
 ## Const types
 

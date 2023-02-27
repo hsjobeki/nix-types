@@ -4,6 +4,7 @@
     - [Goal / Scope](./goals.md)
     - [Inconsistencies](./problems.md)
     - [Impact](./impact.md)
+- [General Blocks](./general-blocks.md)
 - [Examples](./examples.md)
 - [Formals](./specification/formals.md)
 - [Types](./specification/types.md)
