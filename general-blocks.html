@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Impact - Nix Types - a first step in the right direction</title>
+        <title>General Blocks - Nix Types - a first step in the right direction</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html" class="active"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">8.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html" class="active"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">8.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -137,25 +137,53 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="impact"><a class="header" href="#impact">Impact</a></h1>
-<p>If some first tools adopt and use the convention we could have</p>
+                        <h1 id="general-blocks"><a class="header" href="#general-blocks">General Blocks</a></h1>
+<p>Currently there are two main blocks available</p>
 <ul>
-<li>documentation</li>
-<li>auto-completion on actual code</li>
-<li>enhance linting by types</li>
-<li>code analysis</li>
-<li>tell the developer if his code would not work</li>
-<li>many more....</li>
+<li>{Description}</li>
+<li>Example</li>
+<li>Type</li>
 </ul>
+<p>I think we should keep the current general structure but clarify the rules for usage a bit.</p>
+<h2 id="general-rules"><a class="header" href="#general-rules">General Rules</a></h2>
+<p>[N000] - This ruleset only applies to multiline comments. Thus it makes it much easier to use and to parse later on.
+[N001] - Every block start with the appropriate (case-sensitive) <code>keyword</code> followed by a colon (:). e.g. <code>Type:</code> (see full list of <code>keywords</code>)
+[N002] - There can only be one &quot;Type:&quot; statement, but multiple &quot;Example:&quot; statements.
+[N002] - The <code>keyword</code> must be the first word in the <code>line</code>. e.g. the following token sequence starts a block: <code>[\n, {Whitespace(N)} {Keyword} {Colon} ]</code>.
+[N002] - Every block is continued until the next block starts. To the very end of the comment otherwise.
+[N003] - <code>Type:</code> blocks are validated using the custom parser provided by this project.
+[N003] - Any block can be inspected by using the custom parser provided by this project.</p>
+<h2 id="list-of-keywords"><a class="header" href="#list-of-keywords">List of Keywords</a></h2>
+<p>Current</p>
+<ul>
+<li><code>Type:</code></li>
+<li><code>Example:</code></li>
+</ul>
+<p>The: &quot;Description&quot; is everything before the first statement.</p>
+<p>Example:</p>
+<pre><code class="language-txt">/*
+Description
+....
+
+Example:
+
+- Some examples
+
+.....
+
+Type:
+ someType :: Int
+*/
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="problems.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="impact.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="general-blocks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="examples.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -164,10 +192,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="problems.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="impact.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="general-blocks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="examples.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

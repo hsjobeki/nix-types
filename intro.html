@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">2.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">7.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">7.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">7.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">9.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">8.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -138,9 +138,46 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>🚧🚧🚧 RFC Under construction 🚧🚧🚧🚧</p>
-<p>This Draft of an RFC could be the first step to improve how nix is used as a language.</p>
-<p>Generally there are two type systems:</p>
+<p>This RFC prioritizes in the first place how documentation of nix can consistently be improved.</p>
+<p>By specifying the doc-string format for nix this opens a wide range of possibilities.</p>
+<p>One of the biggest issues and working points in the nix ecosystem is <strong>Documentation</strong>. Although documentation is available on different platforms and also on the official pages of nix and nixpkgs.
+Most beginners and advanced users still struggle and need unnecessary time to find the right starting point.</p>
+<p>__By specifying doc-strings I hope to improve the quality of in-code-comments so we can automagically build different formats of documentation.</p>
+<p>Specifying syntax rules for type annotations in comments is also very important as those need to be parsed consistently. To provide analysis over those types.</p>
+<p>External tool like: <a href="https://noogle.dev">noogle.dev</a> already utilize and demonstrate the enormous potential that lies in understanding <code>type</code> abstractions.</p>
+<h2 id="goal-standardize-current-comment-syntax"><a class="header" href="#goal-standardize-current-comment-syntax">Goal: standardize current comment syntax</a></h2>
+<p>Currently there is no <code>strict ruleset</code> for how to write type comments.</p>
+<p>There is the following convention:</p>
+<pre><code class="language-nix">/*
+  Type:
+  foo :: AttrSet -&gt; Any
+*/
+let
+foo = arg: ;#....
+in
+{
+  # ....
+}
+</code></pre>
+<p><strong>However that convention is very inconsistent and not written down yet.</strong></p>
+<blockquote>
+<p>There is the opinion that it follows the haskell syntax, but nix is not haskell and has some differences that must also be reflected in the type-syntax.</p>
+</blockquote>
+<h2 id="standardizing-the-format-of-doc-comments-to-make-them-parsable"><a class="header" href="#standardizing-the-format-of-doc-comments-to-make-them-parsable">Standardizing the format of doc-comments to make them parsable</a></h2>
+<h3 id="big-vision-feature-rich-doc-strings-that-allow-automatic-rich-documentation"><a class="header" href="#big-vision-feature-rich-doc-strings-that-allow-automatic-rich-documentation">Big vision: Feature-rich doc-strings. That allow automatic rich-documentation</a></h3>
+<p>Steps toward that vision:</p>
+<ul>
+<li>Type syntax; such as: <code>signatures</code>, <code>attrsets</code>, <code>type everything</code>
+<ul>
+<li>Properly render the type signature of different things</li>
+<li>Default Values of optional attributes</li>
+<li>Description field for attributes</li>
+</ul>
+</li>
+<li>Code Examples</li>
+<li>General Description</li>
+</ul>
+<h3 id="generally-there-are-two-type-systems"><a class="header" href="#generally-there-are-two-type-systems">Generally there are two type systems</a></h3>
 <ul>
 <li>
 <p><strong>Static</strong>
@@ -154,6 +191,7 @@ So errors can be caught while writing code.</p>
 <li>Fails execution of code based on conditionals.</li>
 <li>Used in <code>lib/types.nix</code></li>
 <li>Used in <code>YANTS</code></li>
+<li>Used in Contracts</li>
 </ul>
 </li>
 </ul>
