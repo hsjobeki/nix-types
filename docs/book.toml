@@ -10,3 +10,5 @@ mathjax-support = true
 default-theme = "light"
 preferred-dark-theme = "navy"
 additional-css = ["theme/highlight-dark.css"]
+git-repository-url = "https://gitlab.com/hsjobeki/nix-types"
+git-repository-icon = "fa-code-fork"
