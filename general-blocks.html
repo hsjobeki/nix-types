@@ -113,6 +113,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://gitlab.com/hsjobeki/nix-types" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-code-fork"></i>
+                        </a>
                     </div>
                 </div>
 
@@ -146,13 +149,15 @@
 </ul>
 <p>I think we should keep the current general structure but clarify the rules for usage a bit.</p>
 <h2 id="general-rules"><a class="header" href="#general-rules">General Rules</a></h2>
-<p>[N000] - This ruleset only applies to multiline comments. Thus it makes it much easier to use and to parse later on.
-[N001] - Every block start with the appropriate (case-sensitive) <code>keyword</code> followed by a colon (:). e.g. <code>Type:</code> (see full list of <code>keywords</code>)
-[N002] - There can only be one &quot;Type:&quot; statement, but multiple &quot;Example:&quot; statements.
-[N002] - The <code>keyword</code> must be the first word in the <code>line</code>. e.g. the following token sequence starts a block: <code>[\n, {Whitespace(N)} {Keyword} {Colon} ]</code>.
-[N002] - Every block is continued until the next block starts. To the very end of the comment otherwise.
-[N003] - <code>Type:</code> blocks are validated using the custom parser provided by this project.
-[N003] - Any block can be inspected by using the custom parser provided by this project.</p>
+<ul>
+<li>[N000] - This ruleset only applies to multiline comments. Thus it makes it much easier to use and to parse later on.</li>
+<li>[N001] - Every block start with the appropriate (case-sensitive) <code>keyword</code> followed by a colon (:). e.g. <code>Type:</code> (see full list of <code>keywords</code>)</li>
+<li>[N002] - There can only be one &quot;Type:&quot; statement, but multiple &quot;Example:&quot; statements.</li>
+<li>[N002] - The <code>keyword</code> must be the first word in the <code>line</code>. e.g. the following token sequence starts a block: <code>[\n, {Whitespace(N)} {Keyword} {Colon} ]</code>.</li>
+<li>[N002] - Every block is continued until the next block starts. To the very end of the comment otherwise.</li>
+<li>[N003] - <code>Type:</code> blocks are validated using the custom parser provided by this project.</li>
+<li>[N003] - Any block can be inspected by using the custom parser provided by this project.</li>
+</ul>
 <h2 id="list-of-keywords"><a class="header" href="#list-of-keywords">List of Keywords</a></h2>
 <p>Current</p>
 <ul>
