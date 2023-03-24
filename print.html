@@ -79,7 +79,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">8.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -502,7 +502,82 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
   attrByPath = ...
 </code></pre>
 <p>This function takes a path as list of strings and then traverses the attrSet until it may find a value of type 'b' otherwise it returns the default value of type 'a'.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tokens"><a class="header" href="#tokens">Tokens</a></h1>
+<h2 id="the-following-tokens-do-exist"><a class="header" href="#the-following-tokens-do-exist">The following tokens do exist</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>{}</td><td>Left / Right Braces</td><td>Set Types; Interpolation together with the $-Token;</td></tr>
+<tr><td>[]</td><td>Left / Right Brackets</td><td>List Types</td></tr>
+<tr><td>()</td><td>Left / Right Parens</td><td>Structure Types,override precedence</td></tr>
+<tr><td>@</td><td>At</td><td>Binding Typed values to names</td></tr>
+<tr><td>::</td><td>Double Colon</td><td>Declares the type (RHS) of name (LHS)</td></tr>
+<tr><td>.</td><td>Dot</td><td>Used to create explicit float values; Usage for accessing child properties in sets is not yet implemented. Some usage example: <code>0.1</code> <code>.5e-9</code> <code>5.e2</code> (This is just native nix)</td></tr>
+<tr><td>?</td><td>Question</td><td>Optional properties of sets</td></tr>
+<tr><td>;</td><td>Semicolon</td><td>Terminate set entries</td></tr>
+<tr><td>-&gt;</td><td>Implication</td><td>Define Lambdas e.g. Int -&gt; String</td></tr>
+<tr><td>//</td><td>Update</td><td>Update Attribute Set Types. Can be used to partially update and insert name-value-types</td></tr>
+<tr><td>-</td><td>Sub</td><td>Used for explicit negative numbers (-2.0), subtraction is NOT supported (e.g 3 - 1)</td></tr>
+<tr><td>&lt;&gt;</td><td>Path</td><td>Define valid paths as explicit values</td></tr>
+<tr><td>|</td><td>Pipe</td><td>Create Type-Unions e.g. <code>Int \| Float</code></td></tr>
+<tr><td>${}</td><td>Interpolation</td><td>Used for naming / referring to dynamic names</td></tr>
+<tr><td>&quot;</td><td>String body (single-line)</td><td>explicit string values</td></tr>
+<tr><td>''</td><td>String body (multi-line)</td><td>explicit string values</td></tr>
+<tr><td><code>[0-9]*</code></td><td>Integer</td><td>explicit integer values</td></tr>
+</tbody></table>
+</div>
+<h2 id="the-following-keywords-do-exist"><a class="header" href="#the-following-keywords-do-exist">The following keywords do exist</a></h2>
+<p>Only the <code>let .. in</code> keyword are supported.</p>
+<div class="table-wrapper"><table><thead><tr><th>Keyword</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>let</td><td>declaration block</td></tr>
+<tr><td>in</td><td>what is yielded</td></tr>
+</tbody></table>
+</div>
+<h2 id="keywords-removed"><a class="header" href="#keywords-removed">Keywords removed</a></h2>
+<p>As complexity is already quite high. It is considered best to not support the following keywords in the type language.</p>
+<div class="table-wrapper"><table><thead><tr><th>Keyword</th><th></th></tr></thead><tbody>
+<tr><td>assert</td><td></td></tr>
+<tr><td>if</td><td></td></tr>
+<tr><td>else</td><td></td></tr>
+<tr><td>then</td><td></td></tr>
+<tr><td>inherit</td><td></td></tr>
+<tr><td>or</td><td></td></tr>
+<tr><td>rec</td><td></td></tr>
+<tr><td>with</td><td></td></tr>
+</tbody></table>
+</div>
+<h3 id="reserved-types"><a class="header" href="#reserved-types">Reserved Types</a></h3>
+<p>All types are written Uppercase by convention to visually distinguish them from variables and actual values.</p>
+<p>Some composed types are handled as native types as well. They are well defined internally, but can be used natively in the type language.</p>
+<div class="table-wrapper"><table><thead><tr><th>Keyword</th></tr></thead><tbody>
+<tr><td>Bool</td></tr>
+<tr><td>Int</td></tr>
+<tr><td>Float</td></tr>
+<tr><td>String</td></tr>
+<tr><td>Path</td></tr>
+<tr><td>Null</td></tr>
+<tr><td>Number</td></tr>
+<tr><td>Derivation</td></tr>
+</tbody></table>
+</div>
+<h3 id="tokens-removed"><a class="header" href="#tokens-removed">Tokens removed</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>,</td><td>Comma</td><td>Originally used for separation in lambda-patterns, replaced by ; (Semicolon)</td></tr>
+<tr><td>:</td><td>Colon</td><td>Originally used for lambda, patterns; in Type context replaced by -&gt;</td></tr>
+<tr><td>=</td><td>Assign</td><td>Does not exists, use :: (Double Colon) to declare</td></tr>
+<tr><td>++</td><td>Concat</td><td>Does not exists, use | (Pipe) to create list unions</td></tr>
+<tr><td>/</td><td>Div</td><td>Not used</td></tr>
+<tr><td>/**/</td><td>Multiline Comment</td><td>Not used</td></tr>
+<tr><td>+</td><td>Add</td><td>Not used</td></tr>
+<tr><td>*</td><td>Mul</td><td>Not used</td></tr>
+<tr><td>&amp;&amp;</td><td>And</td><td>not used</td></tr>
+<tr><td>||</td><td>Or</td><td>not used, use single <code>\|</code> (Pipe)</td></tr>
+<tr><td>&lt; &lt;=, =&gt;, &gt;</td><td>Less, Less or equal, More or equal, More</td><td>comparison not used</td></tr>
+</tbody></table>
+</div>
+<h2 id="_internal-context"><a class="header" href="#_internal-context">_Internal context</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Context</th><th>Purpose</th></tr></thead><tbody>
+<tr><td></td><td></td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
 <p>This chapter clarifies all types.</p>
 <p>To Pickup the overview more quickly they can be viewed in the following list.</p>
 <p>Every decision and further specification are explained in the corresponding sub-chapters respectively.</p>
@@ -697,6 +772,7 @@ packageMap = {
 <h2 id="-parenthesis"><a class="header" href="#-parenthesis"><code>()</code> Parenthesis</a></h2>
 <p>Parenthesis to clarify order of type evaluation</p>
 <p>e.g. <code>( a -&gt; b ) | Bool</code></p>
+<p>Precedence: (Highest)</p>
 <h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>,</code> Separator for subsequent entries (like in AttrSet)</a></h2>
 <p>e.g. <code>{ foo :: Number, bar :: String }</code></p>
 <h2 id="-syntactic-or"><a class="header" href="#-syntactic-or"><code>|</code> syntactic or</a></h2>
@@ -707,6 +783,7 @@ Then the <code>|</code> operator evaluates to either <code>T</code> or <code>U</
 <p>Sometimes within this paper <code>|</code> is written as <code>{or}</code></p>
 <p>This is only due to readability and not allowed in the real language</p>
 </blockquote>
+<p>Precedence: 2</p>
 <h3 id="examples-4"><a class="header" href="#examples-4">Examples</a></h3>
 <p><code>Float | Int</code></p>
 <p><code>( Number | Bool ) | Int</code></p>
@@ -740,46 +817,22 @@ in
 Foo = {bar, ...}@inp:
 #...
 </code></pre>
+<p>Precedence: None</p>
 <h2 id="-merge-operator"><a class="header" href="#-merge-operator"><code>//</code> merge operator</a></h2>
 <p>syntactically <code>merges</code> Types of AttrSets</p>
 <p><code>{ foo :: String } // { bar :: Number }</code> =&gt; <code>{ foo :: String, bar :: Number }</code></p>
 <p><code>{ foo :: String } // { ${names} :: a }</code> =&gt; <code>{ foo :: String, ${names} :: a  }</code></p>
 <p>Overwrites occur like in the nix language itself</p>
 <p><code>{ foo :: String } // { foo :: Number }</code> =&gt; <code>{ foo :: Number }</code></p>
-<h2 id="-equality-operator"><a class="header" href="#-equality-operator"><code>=</code> equality operator</a></h2>
-<p>Allows for <strong>type bindings</strong></p>
-<p>Convention: As types always start with Capital letters; Type bindings also start with capital letters.</p>
-<p>Binding types to names will allow to specify recursive types, which is required for many structures in nix.</p>
-<p>Binding types to intermediate variables makes it harder to see which declaration is related to the actual code.</p>
-<p>e.g.</p>
-<pre><code class="language-nix">
-/*
- Type: 
-   DerivationAttrs = { buildInputs :: [ Derivation ], ... }
-   MkDerivationAttrs = DerivationAttrs // { buildInputs :: String }
-   mkDerivation :: MkDerivationAttrs -&gt; Derivation
-*/
-mkDerivation = {pname, version, foo, ...}@args: let
-# ...
-
-</code></pre>
-<p>Those bindings should be scoped with an useful mechanism, which could be:</p>
-<ul>
-<li>File wide</li>
-<li>Project wide</li>
-<li>Declaration block</li>
-<li>Same scope as the referenced function binding has</li>
-</ul>
-<p>e.g.</p>
-<pre><code class="language-nix">  type:
-    Foo = Number
-</code></pre>
-<h3 id="prohibited-binding"><a class="header" href="#prohibited-binding">prohibited binding</a></h3>
-<p>To prevent conflicts and confusion.
-<strong>It is strictly prohibited to choose a name your custom type to be the same as:</strong></p>
-<ul>
-<li>One of the <a href="specification/./types.html">reserved types</a></li>
-</ul>
+<p>Precedence: 3</p>
+<h2 id="--arrow-operator"><a class="header" href="#--arrow-operator"><code>-&gt;</code> arrow operator</a></h2>
+<p>Allows for lambda types</p>
+<p>Precedence: 1</p>
+<h2 id="-concat-list-types"><a class="header" href="#-concat-list-types"><code>++</code> Concat list types</a></h2>
+<p>--e.g.  <code>[ Int ] ++ [ Float ]</code></p>
+<p>-&gt;  <code>[ Int | Float ]</code></p>
+<p>Note: The resulting type is <strong>always</strong> a union of all list item types.</p>
+<p>Precedence: 5</p>
 <h2 id="-optional-arguments-in-an-attrset"><a class="header" href="#-optional-arguments-in-an-attrset"><code>?</code> optional arguments in an AttrSet</a></h2>
 <p>--e.g.  <code>{ opt :: Int ? }</code></p>
 <p>Note: The <strong>very end</strong> of <code>type</code> side contains the <code>?</code> operator.</p>
@@ -789,6 +842,58 @@ In future it will be desirable to use the <code>?</code> as binary-operator to a
 <pre><code class="language-nix">{
   foo :: Int ? 1;
 }
+</code></pre>
+<p>Precedence: None</p>
+<h2 id="some-more-special-cases"><a class="header" href="#some-more-special-cases">Some more special cases</a></h2>
+<ul>
+<li>Inverted Types</li>
+<li>Omit types</li>
+<li>Pick types</li>
+</ul>
+<h3 id="-invert"><a class="header" href="#-invert"><code>!</code> Invert</a></h3>
+<p>Sometimes we don't know what type we have, we just know what we don't have, because we checked it, or filtered sth out.</p>
+<p>e.g.</p>
+<p>consider a function with the following signature:</p>
+<p>A function that takes anything and returns everything but never an Integer type.</p>
+<pre><code class="language-nix">a -&gt; !Int  
+</code></pre>
+<p>An attrsets that contains arbitrary keys. The only thing we know, it does not contain entry <code>foo</code></p>
+<pre><code class="language-nix">{
+  !foo;
+  ...
+}
+</code></pre>
+<p>We can also leave out the type of foo, because we don't need to specify the value of a key that doesn't exist.</p>
+<h3 id="-pick-types"><a class="header" href="#-pick-types"><code>.</code> pick types</a></h3>
+<p>consider the following example:</p>
+<pre><code class="language-nix">let 
+  set :: {
+    foo :: String;
+    bar :: String;
+    baz :: Float;
+    ...
+  };
+in 
+  {
+    foo :: set.foo;
+    bar :: set.bar;
+    bar :: set.baz;
+  }
+</code></pre>
+<p>This quickly becomes annoying and would be nice to have a simple way of writing
+nix as a language offers the <code>inherit</code> keyword to do that.</p>
+<p>So we propose to follow that approach</p>
+<pre><code class="language-nix">let 
+  set :: {
+    foo :: String;
+    bar :: String;
+    baz :: Float;
+    ...
+  };
+in 
+  {
+    inherit (set) foo bar baz;
+  }
 </code></pre>
 <h2 id="const-types"><a class="header" href="#const-types">Const types</a></h2>
 <p>Instead of assigning types it is allowed to assign a nix-value to the type. Which is then declared constant across that specific type.</p>
