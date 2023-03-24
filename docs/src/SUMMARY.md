@@ -7,6 +7,7 @@
 - [General Blocks](./general-blocks.md)
 - [Examples](./examples.md)
 - [Formals](./specification/formals.md)
+- [Grammar](./specification/grammar.md)
 - [Types](./specification/types.md)
     - [Primitives](./specification/basic.md)
     - [Complex](./specification/complex.md)

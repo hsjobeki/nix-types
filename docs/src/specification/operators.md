@@ -14,6 +14,8 @@ Parenthesis to clarify order of type evaluation
 
 e.g. `( a -> b ) | Bool`
 
+Precedence: (Highest)
+
 ## `,` Separator for subsequent entries (like in AttrSet)
 
 e.g. `{ foo :: Number, bar :: String }`
@@ -28,6 +30,8 @@ Then the `|` operator evaluates to either `T` or `U`.
 > Sometimes within this paper `|` is written as `{or}`
 >
 > This is only due to readability and not allowed in the real language
+
+Precedence: 2
 
 ### Examples
 
@@ -74,6 +78,8 @@ Foo = {bar, ...}@inp:
 #...
 ```
 
+Precedence: None
+
 ## `//` merge operator
 
 syntactically `merges` Types of AttrSets
@@ -86,51 +92,23 @@ Overwrites occur like in the nix language itself
 
 `{ foo :: String } // { foo :: Number }` => `{ foo :: Number }`
 
-## `=` equality operator
+Precedence: 3
 
-Allows for __type bindings__
+## `->` arrow operator
 
-Convention: As types always start with Capital letters; Type bindings also start with capital letters.
+Allows for lambda types
 
-Binding types to names will allow to specify recursive types, which is required for many structures in nix.
+Precedence: 1
 
-Binding types to intermediate variables makes it harder to see which declaration is related to the actual code.
+## `++` Concat list types
 
-e.g.
+--e.g.  `[ Int ] ++ [ Float ]`
 
-```nix
+->  `[ Int | Float ]`
 
-/*
- Type: 
-   DerivationAttrs = { buildInputs :: [ Derivation ], ... }
-   MkDerivationAttrs = DerivationAttrs // { buildInputs :: String }
-   mkDerivation :: MkDerivationAttrs -> Derivation
-*/
-mkDerivation = {pname, version, foo, ...}@args: let
-# ...
+Note: The resulting type is __always__ a union of all list item types.
 
-```
-
-Those bindings should be scoped with an useful mechanism, which could be:
-
-- File wide
-- Project wide
-- Declaration block
-- Same scope as the referenced function binding has
-
-e.g.
-
-```nix
-  type:
-    Foo = Number
-```
-
-### prohibited binding
-
-To prevent conflicts and confusion.
-__It is strictly prohibited to choose a name your custom type to be the same as:__
-
-- One of the [reserved types](./types.md)
+Precedence: 5
 
 ## `?` optional arguments in an AttrSet
 
@@ -147,6 +125,78 @@ e.g.
 {
   foo :: Int ? 1;
 }
+```
+
+Precedence: None
+
+## Some more special cases
+
+- Inverted Types
+- Omit types
+- Pick types
+
+### `!` Invert
+
+Sometimes we don't know what type we have, we just know what we don't have, because we checked it, or filtered sth out.
+
+e.g.
+
+consider a function with the following signature:
+
+A function that takes anything and returns everything but never an Integer type.
+
+```nix
+a -> !Int  
+```
+
+An attrsets that contains arbitrary keys. The only thing we know, it does not contain entry `foo`
+
+```nix
+{
+  !foo;
+  ...
+}
+```
+
+We can also leave out the type of foo, because we don't need to specify the value of a key that doesn't exist.
+
+### `.` pick types
+
+consider the following example:
+
+```nix
+let 
+  set :: {
+    foo :: String;
+    bar :: String;
+    baz :: Float;
+    ...
+  };
+in 
+  {
+    foo :: set.foo;
+    bar :: set.bar;
+    bar :: set.baz;
+  }
+```
+
+This quickly becomes annoying and would be nice to have a simple way of writing
+nix as a language offers the `inherit` keyword to do that.
+
+So we propose to follow that approach
+
+```nix
+let 
+  set :: {
+    foo :: String;
+    bar :: String;
+    baz :: Float;
+    ...
+  };
+in 
+  {
+    inherit (set) foo bar baz;
+  }
 ```
 
 ## Const types

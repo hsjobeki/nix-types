@@ -22,6 +22,7 @@
         "nixos",
         "nixpkgs",
         "noogle",
+        "Parens",
         "pkgs",
         "pname",
         "ruleset",
