@@ -575,7 +575,10 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 </div>
 <h2 id="_internal-context"><a class="header" href="#_internal-context">_Internal context</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Context</th><th>Purpose</th></tr></thead><tbody>
-<tr><td></td><td></td></tr>
+<tr><td>MultilineCommentBody</td><td>Initial Context, every character is just the content of the comment.</td></tr>
+<tr><td>TypeBlock</td><td>Started by <code>{whitespace}Type:</code>; Every following character is tokenized with the type grammar.</td></tr>
+<tr><td>ExampleBlock</td><td>Started by <code>{whitespace}Example:</code>; Everything followed is just a comment string content. Token may not be needed?</td></tr>
+<tr><td>StringBody; StringEnd; Interpol; InterpolStart; Path</td><td>Regular nix tokenization context</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
 <p>This chapter clarifies all types.</p>
