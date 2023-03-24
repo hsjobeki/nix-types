@@ -22,6 +22,25 @@
 | '' | String body (multi-line) | explicit string values |
 | `[0-9]*` | Integer | explicit integer values |
 
+### Tokens removed
+
+In contrast to the default nix language some
+tokens do not exist and may even result in an error.
+
+|Token | Name | Purpose|
+|---|---|---|
+| , | Comma | Originally used for separation in lambda-patterns, replaced by ; (Semicolon) |
+| : | Colon | Originally used for lambda, patterns; in Type context replaced by -> |
+| = | Assign | Does not exists, use :: (Double Colon) to declare |
+| ++ | Concat | Does not exists, use \| (Pipe) to create list unions |
+| / | Div | Not used |
+| /**/ | Multiline Comment | Not used |
+| + | Add | Not used |
+| * | Mul | Not used |
+| && | And | not used |
+| \|\| | Or | not used, use single `\|` (Pipe) |
+| < <=, =>, >  | Less, Less or equal, More or equal, More | comparison not used |
+
 ## The following keywords do exist
 
 Only the `let .. in` keyword are supported.
@@ -62,22 +81,6 @@ Some composed types are handled as native types as well. They are well defined i
 | Null |
 | Number |
 | Derivation |
-
-### Tokens removed
-
-|Token | Name | Purpose|
-|---|---|---|
-| , | Comma | Originally used for separation in lambda-patterns, replaced by ; (Semicolon) |
-| : | Colon | Originally used for lambda, patterns; in Type context replaced by -> |
-| = | Assign | Does not exists, use :: (Double Colon) to declare |
-| ++ | Concat | Does not exists, use \| (Pipe) to create list unions |
-| / | Div | Not used |
-| /**/ | Multiline Comment | Not used |
-| + | Add | Not used |
-| * | Mul | Not used |
-| && | And | not used |
-| \|\| | Or | not used, use single `\|` (Pipe) |
-| < <=, =>, >  | Less, Less or equal, More or equal, More | comparison not used |
 
 ## _Internal context
 
