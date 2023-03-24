@@ -83,4 +83,7 @@ Some composed types are handled as native types as well. They are well defined i
 
 |Context | Purpose |
 |---|---|
-| | |
+| MultilineCommentBody | Initial Context, every character is just the content of the comment. |
+| TypeBlock | Started by `{whitespace}Type:`; Every following character is tokenized with the type grammar. |
+| ExampleBlock | Started by `{whitespace}Example:`; Everything followed is just a comment string content. Token may not be needed? |
+| StringBody; StringEnd; Interpol; InterpolStart; Path | Regular nix tokenization context |
