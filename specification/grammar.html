@@ -155,11 +155,28 @@
 <tr><td>//</td><td>Update</td><td>Update Attribute Set Types. Can be used to partially update and insert name-value-types</td></tr>
 <tr><td>-</td><td>Sub</td><td>Used for explicit negative numbers (-2.0), subtraction is NOT supported (e.g 3 - 1)</td></tr>
 <tr><td>&lt;&gt;</td><td>Path</td><td>Define valid paths as explicit values</td></tr>
-<tr><td>|</td><td>Pipe</td><td>Create Type-Unions e.g. <code>Int \| Float</code></td></tr>
+<tr><td>|</td><td>Pipe</td><td>Create Type-Unions e.g. Int | Float</td></tr>
 <tr><td>${}</td><td>Interpolation</td><td>Used for naming / referring to dynamic names</td></tr>
 <tr><td>&quot;</td><td>String body (single-line)</td><td>explicit string values</td></tr>
 <tr><td>''</td><td>String body (multi-line)</td><td>explicit string values</td></tr>
 <tr><td><code>[0-9]*</code></td><td>Integer</td><td>explicit integer values</td></tr>
+</tbody></table>
+</div>
+<h3 id="tokens-removed"><a class="header" href="#tokens-removed">Tokens removed</a></h3>
+<p>In contrast to the default nix language some
+tokens do not exist and may even result in an error.</p>
+<div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>,</td><td>Comma</td><td>Originally used for separation in lambda-patterns, replaced by ; (Semicolon)</td></tr>
+<tr><td>:</td><td>Colon</td><td>Originally used for lambda, patterns; in Type context replaced by -&gt;</td></tr>
+<tr><td>=</td><td>Assign</td><td>Does not exists, use :: (Double Colon) to declare</td></tr>
+<tr><td>++</td><td>Concat</td><td>Does not exists, use | (Pipe) to create list unions</td></tr>
+<tr><td>/</td><td>Div</td><td>Not used</td></tr>
+<tr><td>/**/</td><td>Multiline Comment</td><td>Not used</td></tr>
+<tr><td>+</td><td>Add</td><td>Not used</td></tr>
+<tr><td>*</td><td>Mul</td><td>Not used</td></tr>
+<tr><td>&amp;&amp;</td><td>And</td><td>not used</td></tr>
+<tr><td>||</td><td>Or</td><td>not used, use single | (Pipe)</td></tr>
+<tr><td>&lt; &lt;=, =&gt;, &gt;</td><td>Less, Less or equal, More or equal, More</td><td>comparison not used</td></tr>
 </tbody></table>
 </div>
 <h2 id="the-following-keywords-do-exist"><a class="header" href="#the-following-keywords-do-exist">The following keywords do exist</a></h2>
@@ -196,21 +213,6 @@
 <tr><td>Derivation</td></tr>
 </tbody></table>
 </div>
-<h3 id="tokens-removed"><a class="header" href="#tokens-removed">Tokens removed</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
-<tr><td>,</td><td>Comma</td><td>Originally used for separation in lambda-patterns, replaced by ; (Semicolon)</td></tr>
-<tr><td>:</td><td>Colon</td><td>Originally used for lambda, patterns; in Type context replaced by -&gt;</td></tr>
-<tr><td>=</td><td>Assign</td><td>Does not exists, use :: (Double Colon) to declare</td></tr>
-<tr><td>++</td><td>Concat</td><td>Does not exists, use | (Pipe) to create list unions</td></tr>
-<tr><td>/</td><td>Div</td><td>Not used</td></tr>
-<tr><td>/**/</td><td>Multiline Comment</td><td>Not used</td></tr>
-<tr><td>+</td><td>Add</td><td>Not used</td></tr>
-<tr><td>*</td><td>Mul</td><td>Not used</td></tr>
-<tr><td>&amp;&amp;</td><td>And</td><td>not used</td></tr>
-<tr><td>||</td><td>Or</td><td>not used, use single <code>\|</code> (Pipe)</td></tr>
-<tr><td>&lt; &lt;=, =&gt;, &gt;</td><td>Less, Less or equal, More or equal, More</td><td>comparison not used</td></tr>
-</tbody></table>
-</div>
 <h2 id="_internal-context"><a class="header" href="#_internal-context">_Internal context</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Context</th><th>Purpose</th></tr></thead><tbody>
 <tr><td>MultilineCommentBody</td><td>Initial Context, every character is just the content of the comment.</td></tr>
@@ -219,6 +221,58 @@
 <tr><td>StringBody; StringEnd; Interpol; InterpolStart; Path</td><td>Regular nix tokenization context</td></tr>
 </tbody></table>
 </div>
+<h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
+<p>-- under construction --</p>
+<p>The syntax very closely follows the nix syntax to make writing types intuitive for nix users. Although the language is inspired by haskell, not every nix user may be familiar with haskell.</p>
+<h3 id="legacy-let"><a class="header" href="#legacy-let">Legacy let</a></h3>
+<p>Did you know the <code>legacy let</code> ? If not don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language btw.</p>
+<p>In general every type is defined in a type-expression.</p>
+<p>e.g.</p>
+<pre><code class="language-hs">Int | Bool
+</code></pre>
+<p>is a type expression; - but also</p>
+<pre><code class="language-hs">let
+Foo :: Int;
+in
+Foo | Bool
+</code></pre>
+<p>Those two examples contain essentially almost every rule for writing type expressions.</p>
+<p>As shown in general there are two levels of type expression.</p>
+<ul>
+<li>Type-expression</li>
+<li>Simple Type-expression</li>
+</ul>
+<p>The everything is a <code>Type Expression</code> but at certain places you can only write <code>simple type expression</code>. This behavior is not invented with the type language; it is actually derived from nix.
+Where the same principles apply.</p>
+<p>For example: Simple type expressions do not ally writing <code>let ... in</code>.</p>
+<pre><code class="language-hs">[ let T :: Int in T ]
+</code></pre>
+<p>is just NOT allowed.
+There are certain places within the syntax where you can only write simple expressions such as:</p>
+<pre><code class="language-hs">[ {SIMPLE} ] -&gt; [ Int | String ]
+</code></pre>
+<h2 id="legacy-root-ident"><a class="header" href="#legacy-root-ident">Legacy Root Ident</a></h2>
+<p>Currently there are many so called root ident nodes.
+Example:</p>
+<pre><code class="language-hs">mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<p>used in</p>
+<pre><code class="language-nix">#lib/attrsets.nix
+  #...
+  /* 
+     Type:
+       mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
+  */
+  mapAttrs = #...
+</code></pre>
+<p>Ignore the fact that this syntax is not conform to the type language yet.</p>
+<p>The <code>mapAttrs</code> is essentially an Ident token, at the root level of the syntax tree. This is not supported by default compared to the nix language this is essentially equal to a file containing:</p>
+<pre><code class="language-nix"># invalid.nix
+a = 1;
+</code></pre>
+<p>We thought it may be a good choice to allow those root ident tokens. In a legacy feature, with optional warnings about usage. So nixpkgs can remove those gradually.
+The Type language doesn't need those names at the root level because by definition the type-expression always applies to the next neighboring node in the syntax tree.</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

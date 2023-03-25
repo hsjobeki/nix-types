@@ -149,8 +149,12 @@
 <p>Parenthesis to clarify order of type evaluation</p>
 <p>e.g. <code>( a -&gt; b ) | Bool</code></p>
 <p>Precedence: (Highest)</p>
-<h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>,</code> Separator for subsequent entries (like in AttrSet)</a></h2>
-<p>e.g. <code>{ foo :: Number, bar :: String }</code></p>
+<h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>;</code> Separator for subsequent entries (like in AttrSet)</a></h2>
+<p>e.g. <code>{ foo :: Number; bar :: String }</code></p>
+<blockquote>
+<p>Important: This is a syntax rule!</p>
+<p>Currently this is very inconsistent in nixpkgs.</p>
+</blockquote>
 <h2 id="-syntactic-or"><a class="header" href="#-syntactic-or"><code>|</code> syntactic or</a></h2>
 <p>syntactic <code>Or</code> can be used for composition or enums</p>
 <p>Let <code>T</code> and <code>U</code> be different Types.
@@ -196,19 +200,14 @@ Foo = {bar, ...}@inp:
 <p>Precedence: None</p>
 <h2 id="-merge-operator"><a class="header" href="#-merge-operator"><code>//</code> merge operator</a></h2>
 <p>syntactically <code>merges</code> Types of AttrSets</p>
-<p><code>{ foo :: String } // { bar :: Number }</code> =&gt; <code>{ foo :: String, bar :: Number }</code></p>
-<p><code>{ foo :: String } // { ${names} :: a }</code> =&gt; <code>{ foo :: String, ${names} :: a  }</code></p>
+<p><code>{ foo :: String } // { bar :: Number }</code> =&gt; <code>{ foo :: String; bar :: Number }</code></p>
+<p><code>{ foo :: String } // { ${names} :: a }</code> =&gt; <code>{ foo :: String; ${names} :: a  }</code></p>
 <p>Overwrites occur like in the nix language itself</p>
 <p><code>{ foo :: String } // { foo :: Number }</code> =&gt; <code>{ foo :: Number }</code></p>
 <p>Precedence: 3</p>
 <h2 id="--arrow-operator"><a class="header" href="#--arrow-operator"><code>-&gt;</code> arrow operator</a></h2>
 <p>Allows for lambda types</p>
 <p>Precedence: 1</p>
-<h2 id="-concat-list-types"><a class="header" href="#-concat-list-types"><code>++</code> Concat list types</a></h2>
-<p>--e.g.  <code>[ Int ] ++ [ Float ]</code></p>
-<p>-&gt;  <code>[ Int | Float ]</code></p>
-<p>Note: The resulting type is <strong>always</strong> a union of all list item types.</p>
-<p>Precedence: 5</p>
 <h2 id="-optional-arguments-in-an-attrset"><a class="header" href="#-optional-arguments-in-an-attrset"><code>?</code> optional arguments in an AttrSet</a></h2>
 <p>--e.g.  <code>{ opt :: Int ? }</code></p>
 <p>Note: The <strong>very end</strong> of <code>type</code> side contains the <code>?</code> operator.</p>
@@ -220,75 +219,11 @@ In future it will be desirable to use the <code>?</code> as binary-operator to a
 }
 </code></pre>
 <p>Precedence: None</p>
-<h2 id="some-more-special-cases"><a class="header" href="#some-more-special-cases">Some more special cases</a></h2>
-<ul>
-<li>Inverted Types</li>
-<li>Omit types</li>
-<li>Pick types</li>
-</ul>
-<h3 id="-invert"><a class="header" href="#-invert"><code>!</code> Invert</a></h3>
-<p>Sometimes we don't know what type we have, we just know what we don't have, because we checked it, or filtered sth out.</p>
-<p>e.g.</p>
-<p>consider a function with the following signature:</p>
-<p>A function that takes anything and returns everything but never an Integer type.</p>
-<pre><code class="language-nix">a -&gt; !Int  
-</code></pre>
-<p>An attrsets that contains arbitrary keys. The only thing we know, it does not contain entry <code>foo</code></p>
-<pre><code class="language-nix">{
-  !foo;
-  ...
-}
-</code></pre>
-<p>We can also leave out the type of foo, because we don't need to specify the value of a key that doesn't exist.</p>
-<h3 id="-pick-types"><a class="header" href="#-pick-types"><code>.</code> pick types</a></h3>
-<p>consider the following example:</p>
-<pre><code class="language-nix">let 
-  set :: {
-    foo :: String;
-    bar :: String;
-    baz :: Float;
-    ...
-  };
-in 
-  {
-    foo :: set.foo;
-    bar :: set.bar;
-    bar :: set.baz;
-  }
-</code></pre>
-<p>This quickly becomes annoying and would be nice to have a simple way of writing
-nix as a language offers the <code>inherit</code> keyword to do that.</p>
-<p>So we propose to follow that approach</p>
-<pre><code class="language-nix">let 
-  set :: {
-    foo :: String;
-    bar :: String;
-    baz :: Float;
-    ...
-  };
-in 
-  {
-    inherit (set) foo bar baz;
-  }
-</code></pre>
-<h2 id="const-types"><a class="header" href="#const-types">Const types</a></h2>
-<p>Instead of assigning types it is allowed to assign a nix-value to the type. Which is then declared constant across that specific type.</p>
-<p>e.g. <code>{ foo :: &quot;bar&quot;, bar :: 1 }</code> specifies the name <code>foo</code> to be of value &quot;bar&quot;</p>
-<pre><code class="language-nix">{
-  foo = &quot;bar&quot;;
-  bar = 1;
-}
-</code></pre>
-<p>concrete use-case</p>
-<pre><code class="language-nix">/*
-    type:
-        derivation :: { 
-            type: &quot;derivation&quot;,
-            ...
-        }
-*/
-derivation = ...
-</code></pre>
+<h2 id="precedence"><a class="header" href="#precedence">Precedence</a></h2>
+<p>Precedence is just taken from the official nix operators.
+To make usage as intuitive as possible.
+However the type language only uses a tight subset of the operator available in nix.</p>
+<p>-&gt; see <a href="./grammar.html">grammar</a></p>
 
                     </main>
 

@@ -517,11 +517,28 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 <tr><td>//</td><td>Update</td><td>Update Attribute Set Types. Can be used to partially update and insert name-value-types</td></tr>
 <tr><td>-</td><td>Sub</td><td>Used for explicit negative numbers (-2.0), subtraction is NOT supported (e.g 3 - 1)</td></tr>
 <tr><td>&lt;&gt;</td><td>Path</td><td>Define valid paths as explicit values</td></tr>
-<tr><td>|</td><td>Pipe</td><td>Create Type-Unions e.g. <code>Int \| Float</code></td></tr>
+<tr><td>|</td><td>Pipe</td><td>Create Type-Unions e.g. Int | Float</td></tr>
 <tr><td>${}</td><td>Interpolation</td><td>Used for naming / referring to dynamic names</td></tr>
 <tr><td>&quot;</td><td>String body (single-line)</td><td>explicit string values</td></tr>
 <tr><td>''</td><td>String body (multi-line)</td><td>explicit string values</td></tr>
 <tr><td><code>[0-9]*</code></td><td>Integer</td><td>explicit integer values</td></tr>
+</tbody></table>
+</div>
+<h3 id="tokens-removed"><a class="header" href="#tokens-removed">Tokens removed</a></h3>
+<p>In contrast to the default nix language some
+tokens do not exist and may even result in an error.</p>
+<div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>,</td><td>Comma</td><td>Originally used for separation in lambda-patterns, replaced by ; (Semicolon)</td></tr>
+<tr><td>:</td><td>Colon</td><td>Originally used for lambda, patterns; in Type context replaced by -&gt;</td></tr>
+<tr><td>=</td><td>Assign</td><td>Does not exists, use :: (Double Colon) to declare</td></tr>
+<tr><td>++</td><td>Concat</td><td>Does not exists, use | (Pipe) to create list unions</td></tr>
+<tr><td>/</td><td>Div</td><td>Not used</td></tr>
+<tr><td>/**/</td><td>Multiline Comment</td><td>Not used</td></tr>
+<tr><td>+</td><td>Add</td><td>Not used</td></tr>
+<tr><td>*</td><td>Mul</td><td>Not used</td></tr>
+<tr><td>&amp;&amp;</td><td>And</td><td>not used</td></tr>
+<tr><td>||</td><td>Or</td><td>not used, use single | (Pipe)</td></tr>
+<tr><td>&lt; &lt;=, =&gt;, &gt;</td><td>Less, Less or equal, More or equal, More</td><td>comparison not used</td></tr>
 </tbody></table>
 </div>
 <h2 id="the-following-keywords-do-exist"><a class="header" href="#the-following-keywords-do-exist">The following keywords do exist</a></h2>
@@ -558,21 +575,6 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 <tr><td>Derivation</td></tr>
 </tbody></table>
 </div>
-<h3 id="tokens-removed"><a class="header" href="#tokens-removed">Tokens removed</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
-<tr><td>,</td><td>Comma</td><td>Originally used for separation in lambda-patterns, replaced by ; (Semicolon)</td></tr>
-<tr><td>:</td><td>Colon</td><td>Originally used for lambda, patterns; in Type context replaced by -&gt;</td></tr>
-<tr><td>=</td><td>Assign</td><td>Does not exists, use :: (Double Colon) to declare</td></tr>
-<tr><td>++</td><td>Concat</td><td>Does not exists, use | (Pipe) to create list unions</td></tr>
-<tr><td>/</td><td>Div</td><td>Not used</td></tr>
-<tr><td>/**/</td><td>Multiline Comment</td><td>Not used</td></tr>
-<tr><td>+</td><td>Add</td><td>Not used</td></tr>
-<tr><td>*</td><td>Mul</td><td>Not used</td></tr>
-<tr><td>&amp;&amp;</td><td>And</td><td>not used</td></tr>
-<tr><td>||</td><td>Or</td><td>not used, use single <code>\|</code> (Pipe)</td></tr>
-<tr><td>&lt; &lt;=, =&gt;, &gt;</td><td>Less, Less or equal, More or equal, More</td><td>comparison not used</td></tr>
-</tbody></table>
-</div>
 <h2 id="_internal-context"><a class="header" href="#_internal-context">_Internal context</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Context</th><th>Purpose</th></tr></thead><tbody>
 <tr><td>MultilineCommentBody</td><td>Initial Context, every character is just the content of the comment.</td></tr>
@@ -580,7 +582,59 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 <tr><td>ExampleBlock</td><td>Started by <code>{whitespace}Example:</code>; Everything followed is just a comment string content. Token may not be needed?</td></tr>
 <tr><td>StringBody; StringEnd; Interpol; InterpolStart; Path</td><td>Regular nix tokenization context</td></tr>
 </tbody></table>
-</div><div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
+</div>
+<h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
+<p>-- under construction --</p>
+<p>The syntax very closely follows the nix syntax to make writing types intuitive for nix users. Although the language is inspired by haskell, not every nix user may be familiar with haskell.</p>
+<h3 id="legacy-let"><a class="header" href="#legacy-let">Legacy let</a></h3>
+<p>Did you know the <code>legacy let</code> ? If not don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language btw.</p>
+<p>In general every type is defined in a type-expression.</p>
+<p>e.g.</p>
+<pre><code class="language-hs">Int | Bool
+</code></pre>
+<p>is a type expression; - but also</p>
+<pre><code class="language-hs">let
+Foo :: Int;
+in
+Foo | Bool
+</code></pre>
+<p>Those two examples contain essentially almost every rule for writing type expressions.</p>
+<p>As shown in general there are two levels of type expression.</p>
+<ul>
+<li>Type-expression</li>
+<li>Simple Type-expression</li>
+</ul>
+<p>The everything is a <code>Type Expression</code> but at certain places you can only write <code>simple type expression</code>. This behavior is not invented with the type language; it is actually derived from nix.
+Where the same principles apply.</p>
+<p>For example: Simple type expressions do not ally writing <code>let ... in</code>.</p>
+<pre><code class="language-hs">[ let T :: Int in T ]
+</code></pre>
+<p>is just NOT allowed.
+There are certain places within the syntax where you can only write simple expressions such as:</p>
+<pre><code class="language-hs">[ {SIMPLE} ] -&gt; [ Int | String ]
+</code></pre>
+<h2 id="legacy-root-ident"><a class="header" href="#legacy-root-ident">Legacy Root Ident</a></h2>
+<p>Currently there are many so called root ident nodes.
+Example:</p>
+<pre><code class="language-hs">mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
+</code></pre>
+<p>used in</p>
+<pre><code class="language-nix">#lib/attrsets.nix
+  #...
+  /* 
+     Type:
+       mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
+  */
+  mapAttrs = #...
+</code></pre>
+<p>Ignore the fact that this syntax is not conform to the type language yet.</p>
+<p>The <code>mapAttrs</code> is essentially an Ident token, at the root level of the syntax tree. This is not supported by default compared to the nix language this is essentially equal to a file containing:</p>
+<pre><code class="language-nix"># invalid.nix
+a = 1;
+</code></pre>
+<p>We thought it may be a good choice to allow those root ident tokens. In a legacy feature, with optional warnings about usage. So nixpkgs can remove those gradually.
+The Type language doesn't need those names at the root level because by definition the type-expression always applies to the next neighboring node in the syntax tree.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
 <p>This chapter clarifies all types.</p>
 <p>To Pickup the overview more quickly they can be viewed in the following list.</p>
 <p>Every decision and further specification are explained in the corresponding sub-chapters respectively.</p>
@@ -666,7 +720,9 @@ getAttrs = names: attrs: genAttrs names (name: attrs.${name});
 <p>Then a List of a specific Type <code>[ T ]</code> is a list where all elements <code>a</code> fullfil the type constraint <code>T</code></p>
 <blockquote>
 <p>A list <code>[]</code> can contain <strong>no</strong>, <strong>one</strong> or <strong>multiple</strong> elements. (0...n)</p>
+<p>However the List-type can only contain one simple type expression.</p>
 </blockquote>
+<p>See syntax rules to learn what a simple type expression is.</p>
 <h2 id="examples-1"><a class="header" href="#examples-1">Examples</a></h2>
 <h3 id="list-of-string"><a class="header" href="#list-of-string">list of string</a></h3>
 <p><code>[ String ]</code></p>
@@ -776,8 +832,12 @@ packageMap = {
 <p>Parenthesis to clarify order of type evaluation</p>
 <p>e.g. <code>( a -&gt; b ) | Bool</code></p>
 <p>Precedence: (Highest)</p>
-<h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>,</code> Separator for subsequent entries (like in AttrSet)</a></h2>
-<p>e.g. <code>{ foo :: Number, bar :: String }</code></p>
+<h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>;</code> Separator for subsequent entries (like in AttrSet)</a></h2>
+<p>e.g. <code>{ foo :: Number; bar :: String }</code></p>
+<blockquote>
+<p>Important: This is a syntax rule!</p>
+<p>Currently this is very inconsistent in nixpkgs.</p>
+</blockquote>
 <h2 id="-syntactic-or"><a class="header" href="#-syntactic-or"><code>|</code> syntactic or</a></h2>
 <p>syntactic <code>Or</code> can be used for composition or enums</p>
 <p>Let <code>T</code> and <code>U</code> be different Types.
@@ -823,19 +883,14 @@ Foo = {bar, ...}@inp:
 <p>Precedence: None</p>
 <h2 id="-merge-operator"><a class="header" href="#-merge-operator"><code>//</code> merge operator</a></h2>
 <p>syntactically <code>merges</code> Types of AttrSets</p>
-<p><code>{ foo :: String } // { bar :: Number }</code> =&gt; <code>{ foo :: String, bar :: Number }</code></p>
-<p><code>{ foo :: String } // { ${names} :: a }</code> =&gt; <code>{ foo :: String, ${names} :: a  }</code></p>
+<p><code>{ foo :: String } // { bar :: Number }</code> =&gt; <code>{ foo :: String; bar :: Number }</code></p>
+<p><code>{ foo :: String } // { ${names} :: a }</code> =&gt; <code>{ foo :: String; ${names} :: a  }</code></p>
 <p>Overwrites occur like in the nix language itself</p>
 <p><code>{ foo :: String } // { foo :: Number }</code> =&gt; <code>{ foo :: Number }</code></p>
 <p>Precedence: 3</p>
 <h2 id="--arrow-operator"><a class="header" href="#--arrow-operator"><code>-&gt;</code> arrow operator</a></h2>
 <p>Allows for lambda types</p>
 <p>Precedence: 1</p>
-<h2 id="-concat-list-types"><a class="header" href="#-concat-list-types"><code>++</code> Concat list types</a></h2>
-<p>--e.g.  <code>[ Int ] ++ [ Float ]</code></p>
-<p>-&gt;  <code>[ Int | Float ]</code></p>
-<p>Note: The resulting type is <strong>always</strong> a union of all list item types.</p>
-<p>Precedence: 5</p>
 <h2 id="-optional-arguments-in-an-attrset"><a class="header" href="#-optional-arguments-in-an-attrset"><code>?</code> optional arguments in an AttrSet</a></h2>
 <p>--e.g.  <code>{ opt :: Int ? }</code></p>
 <p>Note: The <strong>very end</strong> of <code>type</code> side contains the <code>?</code> operator.</p>
@@ -847,75 +902,11 @@ In future it will be desirable to use the <code>?</code> as binary-operator to a
 }
 </code></pre>
 <p>Precedence: None</p>
-<h2 id="some-more-special-cases"><a class="header" href="#some-more-special-cases">Some more special cases</a></h2>
-<ul>
-<li>Inverted Types</li>
-<li>Omit types</li>
-<li>Pick types</li>
-</ul>
-<h3 id="-invert"><a class="header" href="#-invert"><code>!</code> Invert</a></h3>
-<p>Sometimes we don't know what type we have, we just know what we don't have, because we checked it, or filtered sth out.</p>
-<p>e.g.</p>
-<p>consider a function with the following signature:</p>
-<p>A function that takes anything and returns everything but never an Integer type.</p>
-<pre><code class="language-nix">a -&gt; !Int  
-</code></pre>
-<p>An attrsets that contains arbitrary keys. The only thing we know, it does not contain entry <code>foo</code></p>
-<pre><code class="language-nix">{
-  !foo;
-  ...
-}
-</code></pre>
-<p>We can also leave out the type of foo, because we don't need to specify the value of a key that doesn't exist.</p>
-<h3 id="-pick-types"><a class="header" href="#-pick-types"><code>.</code> pick types</a></h3>
-<p>consider the following example:</p>
-<pre><code class="language-nix">let 
-  set :: {
-    foo :: String;
-    bar :: String;
-    baz :: Float;
-    ...
-  };
-in 
-  {
-    foo :: set.foo;
-    bar :: set.bar;
-    bar :: set.baz;
-  }
-</code></pre>
-<p>This quickly becomes annoying and would be nice to have a simple way of writing
-nix as a language offers the <code>inherit</code> keyword to do that.</p>
-<p>So we propose to follow that approach</p>
-<pre><code class="language-nix">let 
-  set :: {
-    foo :: String;
-    bar :: String;
-    baz :: Float;
-    ...
-  };
-in 
-  {
-    inherit (set) foo bar baz;
-  }
-</code></pre>
-<h2 id="const-types"><a class="header" href="#const-types">Const types</a></h2>
-<p>Instead of assigning types it is allowed to assign a nix-value to the type. Which is then declared constant across that specific type.</p>
-<p>e.g. <code>{ foo :: &quot;bar&quot;, bar :: 1 }</code> specifies the name <code>foo</code> to be of value &quot;bar&quot;</p>
-<pre><code class="language-nix">{
-  foo = &quot;bar&quot;;
-  bar = 1;
-}
-</code></pre>
-<p>concrete use-case</p>
-<pre><code class="language-nix">/*
-    type:
-        derivation :: { 
-            type: &quot;derivation&quot;,
-            ...
-        }
-*/
-derivation = ...
-</code></pre>
+<h2 id="precedence"><a class="header" href="#precedence">Precedence</a></h2>
+<p>Precedence is just taken from the official nix operators.
+To make usage as intuitive as possible.
+However the type language only uses a tight subset of the operator available in nix.</p>
+<p>-&gt; see <a href="specification/./grammar.html">grammar</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="type-variables"><a class="header" href="#type-variables">Type Variables</a></h1>
 <h2 id="abstract-1"><a class="header" href="#abstract-1">Abstract</a></h2>
 <p>As the explicit <code>Any</code> keyword is prohibited. Even there is no such <code>Any</code> type.</p>
