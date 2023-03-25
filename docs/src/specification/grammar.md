@@ -16,7 +16,7 @@
 | // | Update | Update Attribute Set Types. Can be used to partially update and insert name-value-types |
 | - | Sub | Used for explicit negative numbers (-2.0), subtraction is NOT supported (e.g 3 - 1) |
 | <> | Path | Define valid paths as explicit values |
-| \| | Pipe | Create Type-Unions e.g. `Int \| Float` |
+| \| | Pipe | Create Type-Unions e.g. Int \| Float |
 | ${} | Interpolation | Used for naming / referring to dynamic names |
 | " | String body (single-line) | explicit string values |
 | '' | String body (multi-line) | explicit string values |
@@ -38,7 +38,7 @@ tokens do not exist and may even result in an error.
 | + | Add | Not used |
 | * | Mul | Not used |
 | && | And | not used |
-| \|\| | Or | not used, use single `\|` (Pipe) |
+| \|\| | Or | not used, use single \| (Pipe) |
 | < <=, =>, >  | Less, Less or equal, More or equal, More | comparison not used |
 
 ## The following keywords do exist
@@ -90,3 +90,86 @@ Some composed types are handled as native types as well. They are well defined i
 | TypeBlock | Started by `{whitespace}Type:`; Every following character is tokenized with the type grammar. |
 | ExampleBlock | Started by `{whitespace}Example:`; Everything followed is just a comment string content. Token may not be needed? |
 | StringBody; StringEnd; Interpol; InterpolStart; Path | Regular nix tokenization context |
+
+## Syntax
+
+-- under construction --
+
+The syntax very closely follows the nix syntax to make writing types intuitive for nix users. Although the language is inspired by haskell, not every nix user may be familiar with haskell.
+
+### Legacy let
+
+Did you know the `legacy let` ? If not don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language btw.
+
+In general every type is defined in a type-expression.
+
+e.g.
+
+```hs
+Int | Bool
+```
+
+is a type expression; - but also
+
+```hs
+let
+Foo :: Int;
+in
+Foo | Bool
+```
+
+Those two examples contain essentially almost every rule for writing type expressions.
+
+As shown in general there are two levels of type expression.
+
+- Type-expression
+- Simple Type-expression
+
+The everything is a `Type Expression` but at certain places you can only write `simple type expression`. This behavior is not invented with the type language; it is actually derived from nix.
+Where the same principles apply.
+
+For example: Simple type expressions do not ally writing `let ... in`.
+
+```hs
+[ let T :: Int in T ]
+```
+
+is just NOT allowed.
+There are certain places within the syntax where you can only write simple expressions such as:
+
+```hs
+[ {SIMPLE} ] -> [ Int | String ]
+```
+
+## Legacy Root Ident
+
+Currently there are many so called root ident nodes.
+Example:
+
+```hs
+mapAttrs :: (String -> Any -> Any) -> AttrSet -> AttrSet
+```
+
+used in
+
+```nix
+#lib/attrsets.nix
+  #...
+  /* 
+     Type:
+       mapAttrs :: (String -> Any -> Any) -> AttrSet -> AttrSet
+  */
+  mapAttrs = #...
+```
+
+Ignore the fact that this syntax is not conform to the type language yet.
+
+The `mapAttrs` is essentially an Ident token, at the root level of the syntax tree. This is not supported by default compared to the nix language this is essentially equal to a file containing:
+
+```nix
+# invalid.nix
+a = 1;
+```
+
+We thought it may be a good choice to allow those root ident tokens. In a legacy feature, with optional warnings about usage. So nixpkgs can remove those gradually.
+The Type language doesn't need those names at the root level because by definition the type-expression always applies to the next neighboring node in the syntax tree.

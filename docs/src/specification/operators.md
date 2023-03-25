@@ -16,9 +16,13 @@ e.g. `( a -> b ) | Bool`
 
 Precedence: (Highest)
 
-## `,` Separator for subsequent entries (like in AttrSet)
+## `;` Separator for subsequent entries (like in AttrSet)
 
-e.g. `{ foo :: Number, bar :: String }`
+e.g. `{ foo :: Number; bar :: String }`
+
+> Important: This is a syntax rule!
+>
+> Currently this is very inconsistent in nixpkgs.
 
 ## `|` syntactic or
 
@@ -84,9 +88,9 @@ Precedence: None
 
 syntactically `merges` Types of AttrSets
 
-`{ foo :: String } // { bar :: Number }` => `{ foo :: String, bar :: Number }`
+`{ foo :: String } // { bar :: Number }` => `{ foo :: String; bar :: Number }`
 
-`{ foo :: String } // { ${names} :: a }` => `{ foo :: String, ${names} :: a  }`
+`{ foo :: String } // { ${names} :: a }` => `{ foo :: String; ${names} :: a  }`
 
 Overwrites occur like in the nix language itself
 
@@ -99,16 +103,6 @@ Precedence: 3
 Allows for lambda types
 
 Precedence: 1
-
-## `++` Concat list types
-
---e.g.  `[ Int ] ++ [ Float ]`
-
-->  `[ Int | Float ]`
-
-Note: The resulting type is __always__ a union of all list item types.
-
-Precedence: 5
 
 ## `?` optional arguments in an AttrSet
 
@@ -129,98 +123,10 @@ e.g.
 
 Precedence: None
 
-## Some more special cases
+## Precedence
 
-- Inverted Types
-- Omit types
-- Pick types
+Precedence is just taken from the official nix operators.
+To make usage as intuitive as possible.
+However the type language only uses a tight subset of the operator available in nix.
 
-### `!` Invert
-
-Sometimes we don't know what type we have, we just know what we don't have, because we checked it, or filtered sth out.
-
-e.g.
-
-consider a function with the following signature:
-
-A function that takes anything and returns everything but never an Integer type.
-
-```nix
-a -> !Int  
-```
-
-An attrsets that contains arbitrary keys. The only thing we know, it does not contain entry `foo`
-
-```nix
-{
-  !foo;
-  ...
-}
-```
-
-We can also leave out the type of foo, because we don't need to specify the value of a key that doesn't exist.
-
-### `.` pick types
-
-consider the following example:
-
-```nix
-let 
-  set :: {
-    foo :: String;
-    bar :: String;
-    baz :: Float;
-    ...
-  };
-in 
-  {
-    foo :: set.foo;
-    bar :: set.bar;
-    bar :: set.baz;
-  }
-```
-
-This quickly becomes annoying and would be nice to have a simple way of writing
-nix as a language offers the `inherit` keyword to do that.
-
-So we propose to follow that approach
-
-```nix
-let 
-  set :: {
-    foo :: String;
-    bar :: String;
-    baz :: Float;
-    ...
-  };
-in 
-  {
-    inherit (set) foo bar baz;
-  }
-```
-
-## Const types
-
-Instead of assigning types it is allowed to assign a nix-value to the type. Which is then declared constant across that specific type.
-
-e.g. `{ foo :: "bar", bar :: 1 }` specifies the name `foo` to be of value "bar"
-
-```nix
-{
-  foo = "bar";
-  bar = 1;
-}
-```
-
-concrete use-case
-
-```nix
-/*
-    type:
-        derivation :: { 
-            type: "derivation",
-            ...
-        }
-*/
-derivation = ...
-```
+-> see [grammar](./grammar.md)
