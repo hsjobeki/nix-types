@@ -147,6 +147,7 @@
 <p>One of the biggest issues and working points in the nix ecosystem is <strong>Documentation</strong>. Although documentation is available on different platforms and also on the official pages of nix and nixpkgs.
 Most beginners and advanced users still struggle and need unnecessary time to find the right starting point.</p>
 <p>__By specifying doc-strings I hope to improve the quality of in-code-comments so we can automagically build different formats of documentation.</p>
+<p>Especially <strong>function / api documentation</strong>. Things like 'Getting Started' and 'How to do xy...z' are not covered from this.</p>
 <p>Specifying syntax rules for type annotations in comments is also very important as those need to be parsed consistently. To provide analysis over those types.</p>
 <p>External tool like: <a href="https://noogle.dev">noogle.dev</a> already utilize and demonstrate the enormous potential that lies in understanding <code>type</code> abstractions.</p>
 <h2 id="goal-standardize-current-comment-syntax"><a class="header" href="#goal-standardize-current-comment-syntax">Goal: standardize current comment syntax</a></h2>
@@ -168,7 +169,7 @@ in
 <p>There is the opinion that it follows the haskell syntax, but nix is not haskell and has some differences that must also be reflected in the type-syntax.</p>
 </blockquote>
 <h2 id="standardizing-the-format-of-doc-comments-to-make-them-parsable"><a class="header" href="#standardizing-the-format-of-doc-comments-to-make-them-parsable">Standardizing the format of doc-comments to make them parsable</a></h2>
-<h3 id="big-vision-feature-rich-doc-strings-that-allow-automatic-rich-documentation"><a class="header" href="#big-vision-feature-rich-doc-strings-that-allow-automatic-rich-documentation">Big vision: Feature-rich doc-strings. That allow automatic rich-documentation</a></h3>
+<h3 id="big-vision-feature-rich-doc-strings-that-allow-automatic-interface-documentation"><a class="header" href="#big-vision-feature-rich-doc-strings-that-allow-automatic-interface-documentation">Big vision: Feature-rich doc-strings. That allow automatic interface-documentation</a></h3>
 <p>Steps toward that vision:</p>
 <ul>
 <li>Type syntax; such as: <code>signatures</code>, <code>attrsets</code>, <code>type everything</code>
@@ -221,7 +222,7 @@ The dynamic approach should transparently communicate what it really does: &quot
 <p>But this project does not discuss those. Instead i propose that &quot;types&quot; in whatever form do make total sense. And will give much value to dynamic languages.
 Which can undoubtedly be seen on the above examples (Python, Javascript).</p>
 <p><strong>Discussion about</strong>
-<code>Does typing make sense in a dynamic Language</code>
+<code>Does static typing make sense in a dynamic Language</code>
 <strong>is open, but history has a clear answer to that.</strong></p>
 <p>By specifying the comments and not directly integrating types
 into the nix language this project stays downwards compatible
@@ -233,6 +234,17 @@ and allows an intermediate phase of transition and validation.</p>
 Change the nix language to natively support type annotations. (Even if they are not real static types)
 <code>Types</code> could then be built from the findings of this project.</p>
 </blockquote>
+<h2 id="why-having-interface-declarations-is-good"><a class="header" href="#why-having-interface-declarations-is-good">Why having interface declarations is good</a></h2>
+<p>In general developers must break complex parts into modules.
+Allowing them to follow the SOLID principles. Where you could write the interface definition and then develop or refactor the module behind that interface.
+As long as the interface stays the same or is downwards compatible nothing in your software breaks.
+This property is a very essential feature for writing stable and extendable code.</p>
+<p>Nix offers nixos-modules to write such modules and interface declarations. However those declarations are boilerplate code that may run during evaluation time.
+And also increases complexity as there is a lot going on with <code>merge behavior</code> <code>priority (e.g. mkForce)</code> and so on. Also it is not really clear what is actually validated and how much it costs.</p>
+<p>With type annotations this can be avoided. It is not considered mutually exclusive but rather inclusive to use both worlds together.
+Validate at runtime what cannot be known statically (before runtime) and validate statically once you are sure about something in a static context.
+A good type system would offer both and even detect automatically when to run the check.</p>
+<p>Thanks to @roberth and @theophane to point me towards this.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="goal--scope"><a class="header" href="#goal--scope">Goal / Scope</a></h1>
 <p><strong>Disclaimer: While <code>types</code> are great. This doesn't introduce any types into nix.</strong></p>
 <h2 id="the-goal--scope"><a class="header" href="#the-goal--scope">The Goal / Scope</a></h2>
