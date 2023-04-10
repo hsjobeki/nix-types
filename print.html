@@ -79,7 +79,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="use-case.html"><strong aria-hidden="true">1.1.</strong> Use-cases</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,243 +142,78 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>This RFC prioritizes in the first place how documentation of nix can consistently be improved.</p>
-<p>By specifying the doc-string format for nix this opens a wide range of possibilities.</p>
-<p>One of the biggest issues and working points in the nix ecosystem is <strong>Documentation</strong>. Although documentation is available on different platforms and also on the official pages of nix and nixpkgs.
-Most beginners and advanced users still struggle and need unnecessary time to find the right starting point.</p>
-<p>__By specifying doc-strings I hope to improve the quality of in-code-comments so we can automagically build different formats of documentation.</p>
-<p>Especially <strong>function / api documentation</strong>. Things like 'Getting Started' and 'How to do xy...z' are not covered from this.</p>
-<p>Specifying syntax rules for type annotations in comments is also very important as those need to be parsed consistently. To provide analysis over those types.</p>
-<p>External tool like: <a href="https://noogle.dev">noogle.dev</a> already utilize and demonstrate the enormous potential that lies in understanding <code>type</code> abstractions.</p>
-<h2 id="goal-standardize-current-comment-syntax"><a class="header" href="#goal-standardize-current-comment-syntax">Goal: standardize current comment syntax</a></h2>
-<p>Currently there is no <code>strict ruleset</code> for how to write type comments.</p>
-<p>There is the following convention:</p>
-<pre><code class="language-nix">/*
-  Type:
-  foo :: AttrSet -&gt; Any
-*/
-let
-foo = arg: ;#....
-in
-{
-  # ....
-}
-</code></pre>
-<p><strong>However that convention is very inconsistent and not written down yet.</strong></p>
-<blockquote>
-<p>There is the opinion that it follows the haskell syntax, but nix is not haskell and has some differences that must also be reflected in the type-syntax.</p>
-</blockquote>
-<h2 id="standardizing-the-format-of-doc-comments-to-make-them-parsable"><a class="header" href="#standardizing-the-format-of-doc-comments-to-make-them-parsable">Standardizing the format of doc-comments to make them parsable</a></h2>
-<h3 id="big-vision-feature-rich-doc-strings-that-allow-automatic-interface-documentation"><a class="header" href="#big-vision-feature-rich-doc-strings-that-allow-automatic-interface-documentation">Big vision: Feature-rich doc-strings. That allow automatic interface-documentation</a></h3>
-<p>Steps toward that vision:</p>
+<p>This (Draft/Future) RFC targets the <code># Type</code> field declared in <a href="https://github.com/NixOS/rfcs/pull/145">RFC-145</a></p>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>By specifying the syntax of the type section within nix this opens a wide range of possibilities.</p>
 <ul>
-<li>Type syntax; such as: <code>signatures</code>, <code>attrsets</code>, <code>type everything</code>
-<ul>
-<li>Properly render the type signature of different things</li>
-<li>Default Values of optional attributes</li>
-<li>Description field for attributes</li>
+<li>consistent function / api documentation.</li>
+<li>Type checking - whether you call a function with the expected types.</li>
+<li>Language Server (LSP) support - display inline or hover type signatures.</li>
+<li>Encourage Modular architectures, with well defined and documented interfaces.</li>
+<li>Static type checking (Partial)</li>
 </ul>
-</li>
-<li>Code Examples</li>
-<li>General Description</li>
-</ul>
-<h3 id="generally-there-are-two-type-systems"><a class="header" href="#generally-there-are-two-type-systems">Generally there are two type systems</a></h3>
-<ul>
-<li>
-<p><strong>Static</strong>
-checked during 'compile' time or development time.
-So errors can be caught while writing code.</p>
-<p><strong>Does not exist in nix</strong></p>
-</li>
-<li>
-<p><strong>Dynamic</strong></p>
-<ul>
-<li>Fails execution of code based on conditionals.</li>
-<li>Used in <code>lib/types.nix</code></li>
-<li>Used in <code>YANTS</code></li>
-<li>Used in Contracts</li>
-</ul>
-</li>
-</ul>
-<h2 id="proposal-type-hints"><a class="header" href="#proposal-type-hints">Proposal: Type hints</a></h2>
-<p>I propose to build a set of simple yet effective <code>type hints</code>, which would mimic <code>static types</code> instead of investing to much into the dynamic types approach,
-or trying to bring static types into the dynamic nix language.</p>
-<p>By using <code>type hints</code> many additional possibilities even for dynamically typed languages arise.</p>
-<ul>
-<li>determine whether a program would actually work or not, just by looking at the types.</li>
-<li>provide autocompletion on typed variable- and function-bindings.</li>
-<li>automatically generate good documentation directly from code.</li>
-<li>...</li>
-</ul>
-<h2 id="dynamic-type-validations-are-still-needed"><a class="header" href="#dynamic-type-validations-are-still-needed">Dynamic type validations are still needed</a></h2>
-<p>As type hints cannot provide any runtime assurances it is still needed to place guards in critical places.
-But instead of trying to represent a non-existent static type system;
-The dynamic approach should transparently communicate what it really does: &quot;Runtime validation&quot;.</p>
-<h2 id="analogy-to-other-dynamic-languages"><a class="header" href="#analogy-to-other-dynamic-languages">Analogy to other dynamic languages</a></h2>
-<p><img src="./assets/Other-dynamic-languages.drawio.png" alt="other-dynamic-languages" /></p>
-<h2 id="vision"><a class="header" href="#vision">Vision</a></h2>
-<p>This project can be seen as a first step of possibly many.</p>
-<p>There are many opinions about whether static types make sense at all in nix.</p>
-<p>But this project does not discuss those. Instead i propose that &quot;types&quot; in whatever form do make total sense. And will give much value to dynamic languages.
-Which can undoubtedly be seen on the above examples (Python, Javascript).</p>
-<p><strong>Discussion about</strong>
-<code>Does static typing make sense in a dynamic Language</code>
-<strong>is open, but history has a clear answer to that.</strong></p>
-<p>By specifying the comments and not directly integrating types
-into the nix language this project stays downwards compatible
-and allows an intermediate phase of transition and validation.</p>
-<p>In that validation phase the system can obtain feedback and corrections.</p>
-<p>It could then be made so good, that it really represents nix's type behavior.</p>
-<blockquote>
-<p>NOTE: Currently out of scope of this project.
-Change the nix language to natively support type annotations. (Even if they are not real static types)
-<code>Types</code> could then be built from the findings of this project.</p>
-</blockquote>
-<h2 id="why-having-interface-declarations-is-good"><a class="header" href="#why-having-interface-declarations-is-good">Why having interface declarations is good</a></h2>
+<h2 id="detailed-implementation"><a class="header" href="#detailed-implementation">Detailed implementation</a></h2>
+<p>We propose to formulate a syntax for the <code># Type</code> section.
+This RFC may be the only valid ruleset that applies to that section.</p>
+<h3 id="no-need-to-use-code-brackets"><a class="header" href="#no-need-to-use-code-brackets">No need to use code brackets</a></h3>
+<p>using single or triple ``` (backticks) is not necessary. The complete <code># Type</code> section allows writing one single <code>type expression</code>. The syntax of that is specified in the following.</p>
+<h3 id="builds-on-top-of-dynamic-types"><a class="header" href="#builds-on-top-of-dynamic-types">Builds on top of dynamic types</a></h3>
+<p>Type information from comments can; just like in the latest js-docs; be used as a source for checking correctness of code.
+We could imagine static type checking working in symbiotic ways with dynamic type checking, such as YANTS (by TVL).</p>
+<h3 id="syntax-follows-nix"><a class="header" href="#syntax-follows-nix">Syntax follows nix</a></h3>
+<p>The syntax is mainly inspired and as close as possible to the nix language. Everyone who knows nix can easily learn the type-language for it.
+There are only very few modifications that are self explaining and intuitive. While we could imagine a way more complex language, that allows expressing every last detailed relationship.
+We think it is more important to provide a good abstraction and find the right compromise between simplicity and expressiveness.</p>
+<h2 id="comparison-nixos-modules-system"><a class="header" href="#comparison-nixos-modules-system">Comparison nixOS-modules system</a></h2>
 <p>In general developers must break complex parts into modules.
 Allowing them to follow the SOLID principles. Where you could write the interface definition and then develop or refactor the module behind that interface.
 As long as the interface stays the same or is downwards compatible nothing in your software breaks.
 This property is a very essential feature for writing stable and extendable code.</p>
 <p>Nix offers nixos-modules to write such modules and interface declarations. However those declarations are boilerplate code that may run during evaluation time.
-And also increases complexity as there is a lot going on with <code>merge behavior</code> <code>priority (e.g. mkForce)</code> and so on. Also it is not really clear what is actually validated and how much it costs.</p>
-<p>With type annotations this can be avoided. It is not considered mutually exclusive but rather inclusive to use both worlds together.
-Validate at runtime what cannot be known statically (before runtime) and validate statically once you are sure about something in a static context.
+And also increases complexity as there is a lot going on with <code>merge behavior</code> <code>priority (e.g. mkForce)</code> and so on.
+Also it is not really clear what is actually validated and how much it costs in terms of additional runtime overhead.</p>
+<p>With type annotations this can be improved. It is not considered mutually exclusive but rather inclusive to use both worlds together.
+Validate at runtime what cannot be known statically (before runtime) and validate statically once you are sure about something in a static context. (This is essential called a 'gradual' type system)
 A good type system would offer both and even detect automatically when to run the check.</p>
 <p>Thanks to @roberth and @theophane to point me towards this.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="goal--scope"><a class="header" href="#goal--scope">Goal / Scope</a></h1>
-<p><strong>Disclaimer: While <code>types</code> are great. This doesn't introduce any types into nix.</strong></p>
-<h2 id="the-goal--scope"><a class="header" href="#the-goal--scope">The Goal / Scope</a></h2>
-<h3 id="introduce-a-type-annotation-system-for-the-doc-strings"><a class="header" href="#introduce-a-type-annotation-system-for-the-doc-strings">Introduce a type annotation system for the doc-strings</a></h3>
-<p>Which can be seen as the first step towards static types.</p>
-<h3 id="enhance-the-system-so-it-is-possible-to-annotate-the-type-of-everything-in-nix"><a class="header" href="#enhance-the-system-so-it-is-possible-to-annotate-the-type-of-everything-in-nix">Enhance the system so it is possible to annotate the type of everything in nix</a></h3>
+<h2 id="future-work"><a class="header" href="#future-work">Future Work</a></h2>
 <ul>
-<li>Write down <em>convention</em> of the current typing system in nix. (<code>Type:</code> doc-stings)</li>
-<li>Let the convention be so, that we can parse the <code>Type:</code> into an useful <code>AST</code> (Abstract Syntax Tree).</li>
-<li>Provide a type-system that could proof correctness of code before runtime.</li>
-<li>Provide a Parser and AST Specification for that type system.</li>
+<li>
+<p>In some fictional Future the syntax could be integrated into the nix language. With optional typings; Just like in Python or Javascript.</p>
+</li>
+<li>
+<p>Also Interface documentations could then be generated from the nix language itself, if types where specified.</p>
+</li>
 </ul>
-<p>Currently there is the <code>type:</code> pattern which can be parsed from nixdoc. Which is a good start but not enough.
-The goal is to build more accurate type comments and have a consistent convention on what is actually allowed and what is not.</p>
-<p>Although nix doesn't have a type system, it has types. (See <a href="https://nixos.org/manual/nix/stable/language/values.html">here</a>)</p>
-<p>Because there are different ways for developers to express typings they are very inconsistent</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="inconsistencies"><a class="header" href="#inconsistencies">Inconsistencies</a></h1>
-<p>When ready through <strong>nixpkgs</strong> there are many comments that document functions and variables like this:</p>
-<pre><code class="language-nix">  /* Construct a Unix-style, colon-separated search path consisting of
-     the given `subDir` appended to each of the given paths.
-     Type: makeSearchPath :: string -&gt; [string] -&gt; string
-     Example:
-       makeSearchPath &quot;bin&quot; [&quot;/root&quot; &quot;/usr&quot; &quot;/usr/local&quot;]
-       =&gt; &quot;/root/bin:/usr/bin:/usr/local/bin&quot;
-       makeSearchPath &quot;bin&quot; [&quot;&quot;]
-       =&gt; &quot;/bin&quot;
-  */
-  makeSearchPath = ...
+<div style="break-before: page; page-break-before: always;"></div><h1 id="use-cases"><a class="header" href="#use-cases">Use-cases</a></h1>
+<h2 id="standardized-parsable-format-to-communicate-type"><a class="header" href="#standardized-parsable-format-to-communicate-type">Standardized (parsable) format to communicate type</a></h2>
+<p>There are simple functions with only few and basic arguments.</p>
+<pre><code class="language-nix">Number -&gt; Number -&gt; Number
 </code></pre>
-<p>Unfortunately those comments are very inconsistent.</p>
-<p>And cause problems if you want to process them with <strong>external tools</strong> or even try to <strong>parse</strong>
-them into an Type-AST which could be used <strong>for linting</strong> and other possible features like
-<strong>autocompletion</strong>, <strong>typed documentation</strong> or other use-cases of <strong>static code analysis</strong>.</p>
-<blockquote>
-<p>For simplicity <code>Type:</code> prefixes have been omitted. in the following examples</p>
-</blockquote>
-<h2 id="type-variables-vs-explicit-any"><a class="header" href="#type-variables-vs-explicit-any">Type variables vs explicit <code>Any</code></a></h2>
-<ul>
-<li><code>singleton :: a -&gt; [a]</code></li>
-<li><code>singleton :: Any -&gt; [Any]</code></li>
-<li><code>imap0 :: (int -&gt; a -&gt; b) -&gt; [a] -&gt; [b]</code></li>
-</ul>
-<blockquote>
-<p>Type variables are better than the explicit <code>Any</code> this Project highly recommends to PROHIBIT the use of explicit <code>Any</code> and force users to use type variables.</p>
-</blockquote>
-<h2 id="lowercase-pascalcase-vs-camelcase"><a class="header" href="#lowercase-pascalcase-vs-camelcase">Lowercase, PascalCase, vs camelCase</a></h2>
-<ul>
-<li><code>imap0 :: (int -&gt; a -&gt; b) -&gt; [a] -&gt; [b]</code></li>
-<li><code>hasAttrByPath :: [String] -&gt; AttrSet -&gt; Bool</code></li>
-</ul>
-<h2 id="what-types-are-there"><a class="header" href="#what-types-are-there">What types are there</a></h2>
-<p>What type is <code>ComparableVal</code>?</p>
-<ul>
-<li><code>assertOneOf :: String -&gt; ComparableVal -&gt; List ComparableVal -&gt; Bool</code></li>
-</ul>
-<p>What type is <code>package</code>?</p>
-<ul>
-<li><code>string -&gt; string -&gt; [package] -&gt; string</code></li>
-</ul>
-<p>what type is a <code>Derivation</code>?
-Is it different from <code>package</code>?</p>
-<ul>
-<li><code>toDerivation :: Path -&gt; Derivation</code></li>
-</ul>
-<p>also there is <code>derivation</code> which is written lowercase, is that a typo, or the same type?</p>
-<h2 id="are-function-names-required"><a class="header" href="#are-function-names-required">Are function names required?</a></h2>
-<p>nixdoc by default maps the <code>Type:</code> comment to the corresponding function.
-Sometimes the type-comment didn't include the functions name.</p>
-<ul>
-<li><code>toDerivation :: Path -&gt; Derivation</code></li>
-<li><code>makeSearchPathOutput :: toDerivation :: Path -&gt; Derivation</code></li>
-</ul>
-<h2 id="should-types-start-in-newlines"><a class="header" href="#should-types-start-in-newlines">Should types start in newlines?</a></h2>
-<pre><code class="language-nix">Type: assertOneOf :: String -&gt; ComparableVal -&gt; List ComparableVal -&gt; Bool
+<p>But there are also complex functions, that other functions or nested attrsets as arguments.
+Communicate the rules those structures may have to follow is crucial.</p>
+<pre><code class="language-nix">String -&gt; [ { ${name} :: a } ] -&gt; [a]
 </code></pre>
-<pre><code class="language-nix">Type:
-    assertOneOf :: String -&gt; ComparableVal -&gt; List ComparableVal -&gt; Bool
-</code></pre>
-<h2 id="many-more"><a class="header" href="#many-more">Many more</a></h2>
-<p>All those different subjective opinions on how to write proper docstrings have already let to high inconsistency across <strong>nixpkgs</strong>.</p>
-<h2 id="possible-impact"><a class="header" href="#possible-impact">Possible Impact</a></h2>
-<p>This project aims to reduce those and provide a consistent ruleset for that.</p>
-<p>If it accurately represents the code problems accurate enough,
-it might even be valid candidate for static type systems in future nix language versions.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="impact"><a class="header" href="#impact">Impact</a></h1>
-<p>If some first tools adopt and use the convention we could have</p>
+<p>We think; Understanding those <code>type</code> signatures with automated tooling is significant.
+For that to work we need a syntax that follows strict rules.</p>
+<h2 id="provide-hover-and-autocomplete-informations-on-expressions"><a class="header" href="#provide-hover-and-autocomplete-informations-on-expressions">Provide hover and autocomplete information's on expressions</a></h2>
+<p>As a developer i'd like to get suggestions like:</p>
 <ul>
-<li>documentation</li>
-<li>auto-completion on actual code</li>
-<li>enhance linting by types</li>
-<li>code analysis</li>
-<li>tell the developer if his code would not work</li>
-<li>many more....</li>
+<li>How many arguments does a certain function take?</li>
+<li>Type of the arguments?</li>
+<li>In case of Attribute-set arguments:
+<ul>
+<li>Which attributes of the required attributes are still missing?</li>
+<li>Which optional attributes can i specify additionally?</li>
 </ul>
+</li>
+<li>In general describe the type of an expression</li>
+</ul>
+<h2 id="provide-static-type-checks-at-development-time"><a class="header" href="#provide-static-type-checks-at-development-time">Provide static type checks at development time</a></h2>
+<p>A static tool could check the actual type of the documented expression against the specified type.
+It is unclear how this would work, but it could certainly be done.</p>
+<p>We think an approach would also include pre-evaluation of certain points, that are very hard to analyze statically.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="general-blocks"><a class="header" href="#general-blocks">General Blocks</a></h1>
-<p>Currently there are two main blocks available</p>
-<ul>
-<li>{Description}</li>
-<li>Example</li>
-<li>Type</li>
-</ul>
-<p>I think we should keep the current general structure but clarify the rules for usage a bit.</p>
-<h2 id="general-rules"><a class="header" href="#general-rules">General Rules</a></h2>
-<ul>
-<li>[N000] - This ruleset only applies to multiline comments. Thus it makes it much easier to use and to parse later on.</li>
-<li>[N001] - Every block start with the appropriate (case-sensitive) <code>keyword</code> followed by a colon (:). e.g. <code>Type:</code> (see full list of <code>keywords</code>)</li>
-<li>[N002] - There can only be one &quot;Type:&quot; statement, but multiple &quot;Example:&quot; statements.</li>
-<li>[N002] - The <code>keyword</code> must be the first word in the <code>line</code>. e.g. the following token sequence starts a block: <code>[\n, {Whitespace(N)} {Keyword} {Colon} ]</code>.</li>
-<li>[N002] - Every block is continued until the next block starts. To the very end of the comment otherwise.</li>
-<li>[N003] - <code>Type:</code> blocks are validated using the custom parser provided by this project.</li>
-<li>[N003] - Any block can be inspected by using the custom parser provided by this project.</li>
-</ul>
-<h2 id="list-of-keywords"><a class="header" href="#list-of-keywords">List of Keywords</a></h2>
-<p>Current</p>
-<ul>
-<li><code>Type:</code></li>
-<li><code>Example:</code></li>
-</ul>
-<p>The: &quot;Description&quot; is everything before the first statement.</p>
-<p>Example:</p>
-<pre><code class="language-txt">/*
-Description
-....
-
-Example:
-
-- Some examples
-
-.....
-
-Type:
- someType :: Int
-*/
-</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
 <p>This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.</p>
 <h2 id="short-preview-of-the-basic-syntax"><a class="header" href="#short-preview-of-the-basic-syntax">Short preview of the basic syntax</a></h2>
@@ -386,134 +221,33 @@ Type:
 
 /* 
     Type: 
-        any :: ( a -&gt; Bool ) -&gt; [ a ] -&gt; Bool
-         ↑   ↑        ↑        ↑             ↑
-         |   |        |        |             └── final return value is a Bool
-         |   |        |        └── The first function returns a function that takes a list of type 'a'      
-         |   |        └── function that takes an 'a' and returns True or False (Boolean)
-         |   └── declares the type as follows
-         └── referenced binding name
+       ( a -&gt; Bool ) -&gt; [ a ] -&gt; Bool
+        └──────────┘  ↑          ↑           
+             |        |          └── final return value is a Bool
+             |        └── The function returns a function that takes a list of type 'a'      
+             └── function that takes an 'a' and returns True or False (Boolean)
+
 */
 any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
 </code></pre>
-<h2 id="first-examples"><a class="header" href="#first-examples">first examples</a></h2>
-<pre><code class="language-nix"># lib.lists.remove
-
-/*
-    Type:
-        remove :: a -&gt; [ a ] -&gt; [ a ]
-*/
-remove = #...
-</code></pre>
-<pre><code class="language-nix"># lib.attrsets.hasAttrByPath
-
-/*
-Type:
-    hasAttrByPath :: [ String ] -&gt; { ... } -&gt; Bool
-*/
-hasAttrByPath = # ...
-</code></pre>
-<pre><code class="language-nix">/*
-# example file from the dream2nix framework
-
-type:
-    depsTree :: DependencyTree
-
-    DependencyTree = { ${name} :: { ${version} :: DependencyAttrs } }
-    DependencyAttrs = { { deps :: DependencyTree, derivation :: Derivation } }
-*/
-depsTree = let 
-# ...
-</code></pre>
-<pre><code class="language-nix">/*
-Type:
-    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
-*/
-getAttrs = names: attrs: genAttrs names (name: attrs.${name});
-</code></pre>
-<h2 id="advanced"><a class="header" href="#advanced">Advanced</a></h2>
-<h3 id="open-points"><a class="header" href="#open-points">Open points</a></h3>
-<p>With <code>Any</code> there is no indication if all arguments must contain the same single type <code>a</code> thus it would be more precise with <strong>type variable</strong> instead of the explicit <code>Any</code> type.</p>
-<pre><code class="language-nix"># lib.lists.remove
-
-/*
-    Type:
-        remove :: a -&gt; [ a ] -&gt; [ a ]
-*/
-remove = #...
-</code></pre>
-<p>The following is a hard one. We are not sure yet how to present that type <code>b</code> is present somewhere in a nested set.</p>
-<p>It gets returned, if the referenced value is present in the attrSet; default value of type <code>a</code> otherwise.</p>
-<p><code>a</code> can be equal to <code>b</code> but generally speaking it doesn't have to.</p>
-<pre><code class="language-nix"># lib.attrsets.attrByPath
-
-/* Return an attribute from nested attribute sets.
-
-    Type:
-    attrByPath :: [ String ] -&gt; a -&gt; { ... } -&gt; b | a
-*/
-attrByPath = # ...
-</code></pre>
-<p>We are not able yet to dynamically create members of an AttrSet from a given type signature.</p>
-<pre><code class="language-nix">/*
-Type:
-    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
-                    ↑                      ↑
-                    └──────────────────────┴─ The list of String matches the member name of the returned AttrSet
-
-*/
-getAttrs = names: attrs: genAttrs names (name: attrs.${name});
-</code></pre>
-<p>Thus it might make sense to generally allow context on ListItems as follows. (Optional Context)</p>
-<pre><code class="language-nix">    getAttrs :: [ name :: String ] -&gt; { ... } -&gt; { [ name :: String ] :: Any }
-                    ↑                                 ↑
-                    └─────────────────────────────────┴─ The list of String matches the member-names of the returned AttrSet
-</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="formals"><a class="header" href="#formals">Formals</a></h1>
-<p>The following section specifies how to write <code>type hints</code> as comments</p>
-<blockquote>
-<p><code>type:</code> Type</p>
-</blockquote>
-<p>Every specified formal rule has the following format:</p>
-<blockquote>
-<p>[NT000] - Rule description</p>
-</blockquote>
-<h2 id="the-rules"><a class="header" href="#the-rules">The rules</a></h2>
-<ul>
-<li>[NT000] - The Language rules MUST be followed (described in this project)</li>
-<li>[NT001] - <code>Type hints</code> can only occur within multiline comments <code>/* */</code></li>
-<li>[NT002] - <code>Type:</code> starts the type block. Followed by at least one line-break (case sensitive)</li>
-<li>[NT003] - Within one block multiple declarations are allowed.</li>
-<li>[NT004] - All notations are <code>PascalCase</code>; starting with capital letters.</li>
-<li>[NT005] - Types MUST be chosen from the existing list. see <a href="specification/./basic.html">primitives</a></li>
-<li>[NT006] - Operators MUST be chosen from the existing list. see <a href="specification/./operators.html">operators</a></li>
-<li>[NT007] - explicit <code>AttrSet</code> and <code>List</code> keywords are PROHIBITED. See the correct usage <a href="specification/./complex.html">here</a></li>
-<li>[NT007] - explicit <code>Any</code> is PROHIBITED. Correct usage with type variables see <a href="specification/./type-variables.html">here</a></li>
-<li>[NT008] - <a href="specification/./complex.html">complex types</a> MUST include their members explicitly.</li>
-<li>[NT009] - Allowing arbitrary values within <a href="specification/./complex.html">complex-types</a> is possible but requires explicit statements.</li>
-<li>[NT009] - <code>Type variables</code> must be written in LOWERCASE to prevent confusion.</li>
-<li>[NT010] - When using <a href="specification/./operators.html#type-binding">Type bindings</a> it is PROHIBITED to choose names from the <a href="specification/./types.html">reserved list</a></li>
-<li>[NT011] - Spaces between Operators (recommended)</li>
-<li>... more concrete rules may follow when implementation has started</li>
-</ul>
-<blockquote>
-<p>Hint: The type block is never terminated and expands till to the bottom of the <code>/* multiline comment */</code>. This is actually very close to how comments are parsed today.</p>
-</blockquote>
-<h3 id="example-of-a-valid-and-nicely-formatted-type-hint"><a class="header" href="#example-of-a-valid-and-nicely-formatted-type-hint">Example of a valid and nicely formatted <code>type hint</code></a></h3>
-<blockquote>
-<p>Usage of operators will be explained in the following chapters</p>
-</blockquote>
-<pre><code class="language-nix">  /* Return an attribute from nested attribute sets.
-    ...
-    Free Text goes here 
-    ...
-    
-    Type:
-        attrByPath :: [ String ] -&gt; a -&gt; { ${path} :: b } -&gt; ( a | b )
-  */
-  attrByPath = ...
-</code></pre>
-<p>This function takes a path as list of strings and then traverses the attrSet until it may find a value of type 'b' otherwise it returns the default value of type 'a'.</p>
+<h2 id="as-the-doc-comment-references-to-exactly-one-expression-there-is-only-one-type-expression-possible"><a class="header" href="#as-the-doc-comment-references-to-exactly-one-expression-there-is-only-one-type-expression-possible">As the doc-comment references to exactly one expression. There is only one type expression possible.</a></h2>
+<h2 id="all-notations-are-pascalcase"><a class="header" href="#all-notations-are-pascalcase">All notations are PascalCase</a></h2>
+<h2 id="types-must-be-chosen-from-the-existing-list"><a class="header" href="#types-must-be-chosen-from-the-existing-list">Types MUST be chosen from the existing list</a></h2>
+<p>see <a href="specification/./basic.html">primitives</a></p>
+<h2 id="operators-must-be-chosen-from-the-existing-list"><a class="header" href="#operators-must-be-chosen-from-the-existing-list">Operators MUST be chosen from the existing list</a></h2>
+<p>see <a href="specification/./operators.html">operators</a></p>
+<h2 id="explicit-attrset-and-list-keywords-are-prohibited"><a class="header" href="#explicit-attrset-and-list-keywords-are-prohibited">explicit <code>AttrSet</code> and <code>List</code> keywords are PROHIBITED</a></h2>
+<p>See the correct usage <a href="specification/./complex.html">here</a></p>
+<h2 id="complex-types-must-include-their-members-explicitly"><a class="header" href="#complex-types-must-include-their-members-explicitly"><a href="specification/./complex.html">complex types</a> MUST include their members explicitly</a></h2>
+<h2 id="explicit-any-is-prohibited"><a class="header" href="#explicit-any-is-prohibited">explicit <code>Any</code> is PROHIBITED</a></h2>
+<p>Correct usage with type variables see <a href="specification/./type-variables.html">here</a></p>
+<h2 id="allowing-arbitrary-values-within-complex-types"><a class="header" href="#allowing-arbitrary-values-within-complex-types">Allowing arbitrary values within <a href="specification/./complex.html">complex-types</a></a></h2>
+<p>is possible but requires explicit statements.</p>
+<h2 id="type-variables-must-be-written-in-lowercase-to-prevent-confusion"><a class="header" href="#type-variables-must-be-written-in-lowercase-to-prevent-confusion"><code>Type variables</code> must be written in LOWERCASE to prevent confusion.</a></h2>
+<h2 id="type-bindings-it-is-prohibited-to-choose-names-from-the-reserved-list"><a class="header" href="#type-bindings-it-is-prohibited-to-choose-names-from-the-reserved-list"><a href="specification/./operators.html#type-binding">Type bindings</a> it is PROHIBITED to choose names from the <a href="specification/./types.html">reserved list</a></a></h2>
+<h2 id="spaces-between-operators-are-recommended"><a class="header" href="#spaces-between-operators-are-recommended">Spaces between Operators are recommended</a></h2>
+<p>This follows the nix syntax rules. The symbols and grammar rules of the nix language are adopted.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tokens"><a class="header" href="#tokens">Tokens</a></h1>
 <h2 id="the-following-tokens-do-exist"><a class="header" href="#the-following-tokens-do-exist">The following tokens do exist</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
@@ -625,27 +359,11 @@ Where the same principles apply.</p>
 There are certain places within the syntax where you can only write simple expressions such as:</p>
 <pre><code class="language-hs">[ {SIMPLE} ] -&gt; [ Int | String ]
 </code></pre>
-<h2 id="legacy-root-ident"><a class="header" href="#legacy-root-ident">Legacy Root Ident</a></h2>
-<p>Currently there are many so called root ident nodes.
-Example:</p>
-<pre><code class="language-hs">mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
+<h2 id="root-ident"><a class="header" href="#root-ident">Root Ident</a></h2>
+<p>Currently there are many so called root ident nodes.</p>
+<p>Example:</p>
+<pre><code class="language-nix">    mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
 </code></pre>
-<p>used in</p>
-<pre><code class="language-nix">#lib/attrsets.nix
-  #...
-  /* 
-     Type:
-       mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
-  */
-  mapAttrs = #...
-</code></pre>
-<p>Ignore the fact that this syntax is not conform to the type language yet.</p>
-<p>The <code>mapAttrs</code> is essentially an Ident token, at the root level of the syntax tree. This is not supported by default compared to the nix language this is essentially equal to a file containing:</p>
-<pre><code class="language-nix"># invalid.nix
-a = 1;
-</code></pre>
-<p>We thought it may be a good choice to allow those root ident tokens. In a legacy feature, with optional warnings about usage. So nixpkgs can remove those gradually.
-The Type language doesn't need those names at the root level because by definition the type-expression always applies to the next neighboring node in the syntax tree.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="types"><a class="header" href="#types">Types</a></h1>
 <p>This chapter clarifies all types.</p>
 <p>To Pickup the overview more quickly they can be viewed in the following list.</p>

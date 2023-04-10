@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="goals.html"><strong aria-hidden="true">1.1.</strong> Goal / Scope</a></li><li class="chapter-item expanded "><a href="problems.html"><strong aria-hidden="true">1.2.</strong> Inconsistencies</a></li><li class="chapter-item expanded "><a href="impact.html"><strong aria-hidden="true">1.3.</strong> Impact</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html" class="active"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="use-case.html"><strong aria-hidden="true">1.1.</strong> Use-cases</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html" class="active"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,88 +147,14 @@
 
 /* 
     Type: 
-        any :: ( a -&gt; Bool ) -&gt; [ a ] -&gt; Bool
-         ↑   ↑        ↑        ↑             ↑
-         |   |        |        |             └── final return value is a Bool
-         |   |        |        └── The first function returns a function that takes a list of type 'a'      
-         |   |        └── function that takes an 'a' and returns True or False (Boolean)
-         |   └── declares the type as follows
-         └── referenced binding name
+       ( a -&gt; Bool ) -&gt; [ a ] -&gt; Bool
+        └──────────┘  ↑          ↑           
+             |        |          └── final return value is a Bool
+             |        └── The function returns a function that takes a list of type 'a'      
+             └── function that takes an 'a' and returns True or False (Boolean)
+
 */
 any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
-</code></pre>
-<h2 id="first-examples"><a class="header" href="#first-examples">first examples</a></h2>
-<pre><code class="language-nix"># lib.lists.remove
-
-/*
-    Type:
-        remove :: a -&gt; [ a ] -&gt; [ a ]
-*/
-remove = #...
-</code></pre>
-<pre><code class="language-nix"># lib.attrsets.hasAttrByPath
-
-/*
-Type:
-    hasAttrByPath :: [ String ] -&gt; { ... } -&gt; Bool
-*/
-hasAttrByPath = # ...
-</code></pre>
-<pre><code class="language-nix">/*
-# example file from the dream2nix framework
-
-type:
-    depsTree :: DependencyTree
-
-    DependencyTree = { ${name} :: { ${version} :: DependencyAttrs } }
-    DependencyAttrs = { { deps :: DependencyTree, derivation :: Derivation } }
-*/
-depsTree = let 
-# ...
-</code></pre>
-<pre><code class="language-nix">/*
-Type:
-    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
-*/
-getAttrs = names: attrs: genAttrs names (name: attrs.${name});
-</code></pre>
-<h2 id="advanced"><a class="header" href="#advanced">Advanced</a></h2>
-<h3 id="open-points"><a class="header" href="#open-points">Open points</a></h3>
-<p>With <code>Any</code> there is no indication if all arguments must contain the same single type <code>a</code> thus it would be more precise with <strong>type variable</strong> instead of the explicit <code>Any</code> type.</p>
-<pre><code class="language-nix"># lib.lists.remove
-
-/*
-    Type:
-        remove :: a -&gt; [ a ] -&gt; [ a ]
-*/
-remove = #...
-</code></pre>
-<p>The following is a hard one. We are not sure yet how to present that type <code>b</code> is present somewhere in a nested set.</p>
-<p>It gets returned, if the referenced value is present in the attrSet; default value of type <code>a</code> otherwise.</p>
-<p><code>a</code> can be equal to <code>b</code> but generally speaking it doesn't have to.</p>
-<pre><code class="language-nix"># lib.attrsets.attrByPath
-
-/* Return an attribute from nested attribute sets.
-
-    Type:
-    attrByPath :: [ String ] -&gt; a -&gt; { ... } -&gt; b | a
-*/
-attrByPath = # ...
-</code></pre>
-<p>We are not able yet to dynamically create members of an AttrSet from a given type signature.</p>
-<pre><code class="language-nix">/*
-Type:
-    getAttrs :: [ String ] -&gt; { ... } -&gt; { ... }
-                    ↑                      ↑
-                    └──────────────────────┴─ The list of String matches the member name of the returned AttrSet
-
-*/
-getAttrs = names: attrs: genAttrs names (name: attrs.${name});
-</code></pre>
-<p>Thus it might make sense to generally allow context on ListItems as follows. (Optional Context)</p>
-<pre><code class="language-nix">    getAttrs :: [ name :: String ] -&gt; { ... } -&gt; { [ name :: String ] :: Any }
-                    ↑                                 ↑
-                    └─────────────────────────────────┴─ The list of String matches the member-names of the returned AttrSet
 </code></pre>
 
                     </main>
