@@ -141,35 +141,12 @@ There are certain places within the syntax where you can only write simple expre
 [ {SIMPLE} ] -> [ Int | String ]
 ```
 
-## Legacy Root Ident
+## Root Ident
 
 Currently there are many so called root ident nodes.
+
 Example:
 
-```hs
-mapAttrs :: (String -> Any -> Any) -> AttrSet -> AttrSet
+```nix  
+    mapAttrs :: (String -> Any -> Any) -> AttrSet -> AttrSet
 ```
-
-used in
-
-```nix
-#lib/attrsets.nix
-  #...
-  /* 
-     Type:
-       mapAttrs :: (String -> Any -> Any) -> AttrSet -> AttrSet
-  */
-  mapAttrs = #...
-```
-
-Ignore the fact that this syntax is not conform to the type language yet.
-
-The `mapAttrs` is essentially an Ident token, at the root level of the syntax tree. This is not supported by default compared to the nix language this is essentially equal to a file containing:
-
-```nix
-# invalid.nix
-a = 1;
-```
-
-We thought it may be a good choice to allow those root ident tokens. In a legacy feature, with optional warnings about usage. So nixpkgs can remove those gradually.
-The Type language doesn't need those names at the root level because by definition the type-expression always applies to the next neighboring node in the syntax tree.
