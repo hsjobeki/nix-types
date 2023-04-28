@@ -1,14 +1,15 @@
 [package]
-name = "nix-types"
-version = "0.1.0"
-authors = ["Johannes Kirschbauer <hsjobeki@gmail.com>"]
+authors = ["hsjobeki <hsjobeki@gmail.com>", "jD91mZM2 <me@krake.one>"]
+description = ""
 edition = "2021"
+license = "MIT"
+name = "tnix"
+version = "0.11.0"
 
 [dependencies]
-structopt = "0.2"
-serde_json = "1.0.89"
-serde = { version = "1.0.148", features = ["derive"] }
+rnix = "0.11.0"
+rowan = "0.15.0"
 
-[dependencies.rnix]
-git = "https://gitlab.com/jD91mZM2/rnix.git"
-rev = "10b86c94291b4864470158ef8750de85ddd8d4ba"
+[dev-dependencies]
+criterion = "0.3.0"
+expect-test = "1.4.0"

@@ -1,48 +1,68 @@
 {
+  description = "Rust-based parser for nix files";
+
   inputs = {
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    flake-utils.follows = "rust-overlay/flake-utils";
+    utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    import-cargo.url = "github:edolstra/import-cargo";
   };
-  outputs = { self, flake-utils, nixpkgs, ... }@inp:
-    flake-utils.lib.eachDefaultSystem (system:
+
+  # first comment
+  # second comment
+  outputs = { self, nixpkgs, utils, import-cargo }:
+    {
+      overlay = final: prev:
+        let
+          target = final.rust.toRustTarget final.stdenv.hostPlatform;
+          flags = "--release --offline --target ${target}";
+          inherit (import-cargo.builders) importCargo;
+        in
+        {
+          tnix-parser = final.stdenv.mkDerivation {
+            pname = "tnix-parser";
+            version = (builtins.fromTOML (builtins.readFile ./Cargo.toml)).package.version;
+            src = final.lib.cleanSource ./.;
+            nativeBuildInputs = with final; [
+              rustc
+              cargo
+              (importCargo { lockFile = ./Cargo.lock; inherit (final) pkgs; }).cargoHome
+            ];
+
+            outputs = [ "out" "doc" ];
+            doCheck = true;
+
+            buildPhase = ''
+              cargo build ${flags}
+              cargo doc ${flags}
+            '';
+
+            checkPhase = ''
+              cargo test ${flags}
+              cargo bench
+            '';
+
+            installPhase = ''
+              mkdir -p $out/lib
+              mkdir -p $doc/share/doc/tnix
+
+              cp -r ./target/${target}/doc $doc/share/doc/tnix
+              cp ./target/${target}/release/libtnix.rlib $out/lib/
+            '';
+          };
+        };
+    }
+    // utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs { inherit system; overlays = [ self.overlay ]; };
       in
       rec {
+        # `nix develop`
         devShell = pkgs.mkShell {
-          inputsFrom = [ packages.nix-types ];
-
+          buildInputs = with pkgs; [ rustfmt rustc cargo clippy ];
         };
-        packages = {
-          nix-types = pkgs.rustPlatform.buildRustPackage {
-            pname = "nix-types";
-            version = "0.1.0";
-            src = ./.;
 
-            cargoLock = {
-              lockFile = ./Cargo.lock;
-              outputHashes = {
-                "arenatree-0.1.1" = "sha256-b3VVbYnWsjSjFMxvkfpJt13u+VC6baOIWD4qm1Gco4Q=";
-                "rnix-0.4.1" = "sha256-C1L/qXk6AimH7COrBlqpUA3giftaOYm/qNxs7rQgETA=";
-              };
-            };
-            nativeBuildInputs = [ pkgs.pkg-config ];
-          };
-          # currently use nixpkgs/lib as test source
-          parsed = pkgs.stdenv.mkDerivation {
-            name = "test-data";
-            src = nixpkgs;
-            nativeBuildInputs = [ packages.nix-types ];
-            buildPhase = ''
-              echo "running nix metadata collect in nixpkgs/lib"
-              ${packages.nix-types}/bin/nix-types --dir ./lib
-            '';
-            installPhase = ''
-              cat data.json > $out  
-            '';
-          };
-          default = packages.parsed;
-        };
+        packages.tnix-parser = pkgs.tnix-parser;
+        defaultPackage = packages.tnix-parser;
       }
     );
 }

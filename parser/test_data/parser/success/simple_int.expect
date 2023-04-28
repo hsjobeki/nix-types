@@ -1,0 +1,4 @@
+NODE_ROOT@0..3
+  NODE_TYPE@0..3
+    TOKEN_TYPE@0..3 "Int"
+

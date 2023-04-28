@@ -24,8 +24,7 @@
 
 ### Tokens removed
 
-In contrast to the default nix language some
-tokens do not exist and may even result in an error.
+In contrast to the default nix language, some tokens do not exist and may even result in an error.
 
 |Token | Name | Purpose|
 |---|---|---|
@@ -43,7 +42,7 @@ tokens do not exist and may even result in an error.
 
 ## The following keywords do exist
 
-Only the `let .. in` keyword are supported.
+Only the `let .. in` keywords are supported.
 
 |Keyword |  Purpose |
 |---|---|
@@ -67,9 +66,9 @@ As complexity is already quite high. It is considered best to not support the fo
 
 ### Reserved Types
 
-All types are written Uppercase by convention to visually distinguish them from variables and actual values.
+All types are written in Uppercase by convention to visually distinguish them from variables and actual values.
 
-Some composed types are handled as native types as well. They are well defined internally, but can be used natively in the type language.
+Some composed types are handled as native types as well. They are well-defined internally but can be used natively in the type language.
 
 |Keyword |
 |---|
@@ -95,13 +94,12 @@ Some composed types are handled as native types as well. They are well defined i
 
 -- under construction --
 
-The syntax very closely follows the nix syntax to make writing types intuitive for nix users. Although the language is inspired by haskell, not every nix user may be familiar with haskell.
+The syntax very closely follows the Nix syntax to make writing types intuitive for Nix users. Although the language is inspired by Haskell, not every Nix user may be familiar with Haskell.
 
 ### Legacy let
 
-Did you know the `legacy let` ? If not don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language btw.
-
-In general every type is defined in a type-expression.
+Did you know the `legacy let`? Don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language.
+In general, every type is defined in a type expression.
 
 e.g.
 
@@ -125,10 +123,10 @@ As shown in general there are two levels of type expression.
 - Type-expression
 - Simple Type-expression
 
-The everything is a `Type Expression` but at certain places you can only write `simple type expression`. This behavior is not invented with the type language; it is actually derived from nix.
+The everything is a `Type Expression` but in certain places you can only write `simple type expression`. This behavior is not invented with the type language; it is derived from nix.
 Where the same principles apply.
 
-For example: Simple type expressions do not ally writing `let ... in`.
+For example Simple type expressions do not ally writing `let ... in`.
 
 ```hs
 [ let T :: Int in T ]
@@ -143,7 +141,7 @@ There are certain places within the syntax where you can only write simple expre
 
 ## Root Ident
 
-Currently there are many so called root ident nodes.
+Currently, there are many so-called root ident nodes.
 
 Example:
 

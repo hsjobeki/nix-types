@@ -1,0 +1,9 @@
+NODE_ROOT@0..10
+  NODE_IDENT@0..10
+    TOKEN_IDENT@0..3 "map"
+    TOKEN_WHITESPACE@3..4 " "
+    TOKEN_DOUBLE_COLON@4..6 "::"
+    TOKEN_WHITESPACE@6..7 " "
+    NODE_TYPE@7..10
+      TOKEN_TYPE@7..10 "Int"
+

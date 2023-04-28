@@ -1,0 +1,643 @@
+//! The parser: turns a series of tokens into an AST
+
+use std::{collections::VecDeque, fmt};
+
+use rowan::{Checkpoint, GreenNode, GreenNodeBuilder, Language, TextRange, TextSize};
+
+use crate::{
+    tokenizer::Token,
+    NixLanguage,
+    SyntaxKind::{self, *},
+    TokenSet,
+};
+
+/// An error that occurred during parsing
+#[derive(Clone, Debug, PartialEq)]
+#[non_exhaustive]
+pub enum ParseError {
+    /// Unexpected is used when the cause cannot be specified further
+    Unexpected(TextRange),
+    /// UnexpectedExtra is used when there are additional tokens to the root in the tree
+    UnexpectedExtra(TextRange),
+    /// UnexpectedWanted is used when specific tokens are expected, but different one is found
+    UnexpectedWanted(SyntaxKind, TextRange, Box<[SyntaxKind]>),
+    /// UnexpectedDoubleBind is used when a pattern is bound twice
+    UnexpectedDoubleBind(TextRange),
+    /// UnexpectedEOF is used when the end of file is reached, while tokens are still expected
+    UnexpectedEOF,
+    /// UnexpectedEOFWanted is used when specific tokens are expected, but the end of file is reached
+    UnexpectedEOFWanted(Box<[SyntaxKind]>),
+    /// DuplicatedArgs is used when formal arguments are duplicated, e.g. `{ a, a }`
+    DuplicatedArgs(TextRange, String),
+    /// RecursionLimitExceeded is used when we're unable to parse further due to likely being close to
+    /// a stack overflow.
+    RecursionLimitExceeded,
+}
+
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ParseError::Unexpected(range) => {
+                write!(
+                    f,
+                    "error node at {}..{}",
+                    usize::from(range.start()),
+                    usize::from(range.end())
+                )
+            }
+            ParseError::UnexpectedExtra(range) => {
+                write!(
+                    f,
+                    "unexpected token at {}..{}",
+                    usize::from(range.start()),
+                    usize::from(range.end())
+                )
+            }
+            ParseError::UnexpectedWanted(got, range, kinds) => write!(
+                f,
+                "unexpected {:?} at {}..{}, wanted any of {:?}",
+                got,
+                usize::from(range.start()),
+                usize::from(range.end()),
+                kinds
+            ),
+            ParseError::UnexpectedDoubleBind(range) => {
+                write!(
+                    f,
+                    "unexpected double bind at {}..{}",
+                    usize::from(range.start()),
+                    usize::from(range.end())
+                )
+            }
+            ParseError::UnexpectedEOF => write!(f, "unexpected end of file"),
+            ParseError::UnexpectedEOFWanted(kinds) => {
+                write!(f, "unexpected end of file, wanted any of {:?}", kinds)
+            }
+            ParseError::DuplicatedArgs(range, ident) => {
+                write!(
+                    f,
+                    "argument `{}` is duplicated in {}..{}",
+                    ident,
+                    usize::from(range.start()),
+                    usize::from(range.end())
+                )
+            }
+            ParseError::RecursionLimitExceeded => write!(f, "recursion limit exceeded"),
+        }
+    }
+}
+
+impl std::error::Error for ParseError {}
+
+struct Parser<'a, I>
+where
+    I: Iterator<Item = Token<'a>>,
+{
+    // GreenNodeBuilder from 'rowan' crate
+    builder: GreenNodeBuilder<'static>,
+    // List of ParseErrors
+    errors: Vec<ParseError>,
+
+    //List of Tokens (trivia)
+    trivia_buffer: Vec<Token<'a>>,
+    // TwoSided Queue for Tokens
+    buffer: VecDeque<Token<'a>>,
+    // An Iterator over Tokens
+    iter: I,
+    // Tracks the amount of consumed Tokens
+    consumed: TextSize,
+
+    // Recursion depth, used for avoiding stack overflows. This may be incremented
+    // by any method as long as it is decremented when that method returns.
+    depth: u32,
+}
+impl<'a, I> Parser<'a, I>
+where
+    I: Iterator<Item = Token<'a>>,
+{
+    fn new(iter: I) -> Self {
+        Self {
+            builder: GreenNodeBuilder::new(),
+            errors: Vec::new(),
+
+            trivia_buffer: Vec::with_capacity(1),
+            buffer: VecDeque::with_capacity(1),
+            iter,
+            consumed: TextSize::from(0),
+
+            depth: 0,
+        }
+    }
+
+    fn get_text_position(&self) -> TextSize {
+        self.consumed
+    }
+
+    fn peek_raw(&mut self) -> Option<&Token<'a>> {
+        if self.buffer.is_empty() {
+            if let Some(token) = self.iter.next() {
+                self.buffer.push_back(token);
+            }
+        }
+        self.buffer.front()
+    }
+    fn drain_trivia_buffer(&mut self) {
+        for (t, s) in self.trivia_buffer.drain(..) {
+            self.consumed += TextSize::of(s);
+            self.builder.token(NixLanguage::kind_to_raw(t), s);
+        }
+    }
+    fn eat_trivia(&mut self) {
+        self.peek();
+        self.drain_trivia_buffer();
+    }
+    fn start_node(&mut self, kind: SyntaxKind) {
+        self.eat_trivia();
+        self.builder.start_node(NixLanguage::kind_to_raw(kind));
+    }
+    fn checkpoint(&mut self) -> Checkpoint {
+        self.eat_trivia();
+        self.builder.checkpoint()
+    }
+    fn start_node_at(&mut self, checkpoint: Checkpoint, kind: SyntaxKind) {
+        self.builder.start_node_at(checkpoint, NixLanguage::kind_to_raw(kind));
+    }
+    fn finish_node(&mut self) {
+        self.builder.finish_node();
+    }
+    fn start_error_node(&mut self) -> TextSize {
+        self.start_node(NODE_ERROR);
+        self.get_text_position()
+    }
+    fn finish_error_node(&mut self) -> TextSize {
+        self.finish_node();
+        self.get_text_position()
+    }
+    fn bump(&mut self) {
+        match self.try_next() {
+            Some((token, s)) => {
+                if token.is_trivia() {
+                    self.trivia_buffer.push((token, s))
+                } else {
+                    self.drain_trivia_buffer();
+                    self.manual_bump(s, token);
+                }
+            }
+            None => self.errors.push(ParseError::UnexpectedEOF),
+        }
+    }
+    fn try_next(&mut self) -> Option<Token<'a>> {
+        self.buffer.pop_front().or_else(|| self.iter.next())
+    }
+    fn manual_bump(&mut self, s: &str, token: SyntaxKind) {
+        self.consumed += TextSize::of(s);
+        self.builder.token(NixLanguage::kind_to_raw(token), s)
+    }
+
+    fn peek_data(&mut self) -> Option<&Token<'a>> {
+        while self.peek_raw().map(|&(t, _)| t.is_trivia()).unwrap_or(false) {
+            self.bump();
+        }
+        self.peek_raw()
+    }
+    fn peek(&mut self) -> Option<SyntaxKind> {
+        self.peek_data().map(|&(t, _)| t)
+    }
+    fn expect_peek_any(&mut self, allowed_slice: &[SyntaxKind]) -> Option<SyntaxKind> {
+        let allowed = TokenSet::from_slice(allowed_slice);
+
+        let next = match self.peek() {
+            None => None,
+            Some(kind) if allowed.contains(kind) => Some(kind),
+            Some(kind) => {
+                let start = self.start_error_node();
+                loop {
+                    self.bump();
+                    if self.peek().map(|kind| allowed.contains(kind)).unwrap_or(true) {
+                        break;
+                    }
+                }
+                let end = self.finish_error_node();
+                self.errors.push(ParseError::UnexpectedWanted(
+                    kind,
+                    TextRange::new(start, end),
+                    allowed_slice.to_vec().into_boxed_slice(),
+                ));
+
+                self.peek()
+            }
+        };
+        if next.is_none() {
+            self.errors
+                .push(ParseError::UnexpectedEOFWanted(allowed_slice.to_vec().into_boxed_slice()));
+        }
+        next
+    }
+    fn expect(&mut self, expected: SyntaxKind) {
+        if self.expect_peek_any(&[expected]).is_some() {
+            self.bump();
+        }
+    }
+
+    fn expect_ident(&mut self) {
+        if self.expect_peek_any(&[TOKEN_IDENT]).is_some() {
+            self.start_node(NODE_IDENT);
+            self.bump();
+            self.finish_node()
+        }
+    }
+
+    fn parse_string(&mut self) {
+        self.start_node(NODE_STRING);
+        self.expect(TOKEN_STRING_START);
+
+        loop {
+            match self.expect_peek_any(&[TOKEN_STRING_END, TOKEN_STRING_CONTENT]) {
+                Some(TOKEN_STRING_CONTENT) => self.bump(),
+                _ => break,
+            }
+        }
+        self.expect(TOKEN_STRING_END);
+
+        self.finish_node();
+    }
+    //parse interpolation
+    //can only have ident node inside
+    fn parse_dynamic(&mut self) {
+        self.start_node(NODE_DYNAMIC);
+        self.bump();
+        self.expect_ident();
+        self.bump();
+        self.finish_node();
+    }
+
+    fn parse_attr(&mut self) {
+        match self.peek() {
+            Some(TOKEN_INTERPOL_START) => self.parse_dynamic(),
+            Some(TOKEN_STRING_START) => self.parse_string(),
+            _ => {
+                if self.expect_peek_any(&[TOKEN_IDENT]).is_some() {
+                    self.start_node(NODE_IDENT);
+                    let (_, s) = self.try_next().unwrap();
+                    self.manual_bump(s, TOKEN_IDENT);
+                    self.finish_node();
+                }
+            }
+        }
+    }
+
+    fn parse_left_assoc(&mut self, next: fn(&mut Self) -> Checkpoint, ops: TokenSet) -> Checkpoint {
+        let checkpoint = next(self);
+        while self.peek().map(|t| ops.contains(t)).unwrap_or(false) {
+            self.start_node_at(checkpoint, NODE_BIN_OP);
+            self.bump();
+            next(self);
+            self.finish_node();
+        }
+        checkpoint
+    }
+    fn parse_right_assoc(
+        &mut self,
+        next: fn(&mut Self) -> Checkpoint,
+        ops: TokenSet,
+    ) -> Checkpoint {
+        let checkpoint = next(self);
+        if self.peek().map(|t| ops.contains(t)).unwrap_or(false) {
+            self.start_node_at(checkpoint, NODE_BIN_OP);
+            self.bump();
+            self.parse_right_assoc(next, ops);
+            self.finish_node();
+        }
+        checkpoint
+    }
+
+    fn parse_negate(&mut self) -> Checkpoint {
+        if self.peek() == Some(T![-]) {
+            let checkpoint = self.checkpoint();
+            self.start_node(NODE_UNARY_OP);
+            self.bump();
+            self.parse_negate();
+            self.finish_node();
+            checkpoint
+        } else {
+            self.parse_trivial()
+        }
+    }
+    fn parse_concat(&mut self) -> Checkpoint {
+        self.parse_right_assoc(Self::parse_negate, T![++] | ())
+    }
+    fn parse_merge(&mut self) -> Checkpoint {
+        self.parse_right_assoc(Self::parse_concat, T!["//"] | ())
+    }
+    fn parse_or(&mut self) -> Checkpoint {
+        self.parse_left_assoc(Self::parse_merge, T![|] | ())
+    }
+    fn parse_implication(&mut self) -> Checkpoint {
+        self.parse_right_assoc(Self::parse_or, T![->] | ())
+    }
+    #[inline(always)]
+    fn parse_math(&mut self) -> Checkpoint {
+        // Always point this to the lowest-level math function there is
+        self.parse_implication()
+    }
+
+    fn parse_attrpath(&mut self) {
+        self.start_node(NODE_ATTRPATH);
+        loop {
+            self.parse_attr();
+            if self.peek() == Some(T![.]) {
+                self.bump();
+            } else {
+                break;
+            }
+        }
+        self.finish_node();
+    }
+
+    fn parse_set(&mut self, until: SyntaxKind) {
+        loop {
+            match self.peek() {
+                None => break,
+                token if token == Some(until) => break,
+                Some(T![...]) if until == T!['}'] => {
+                    self.start_node(NODE_TYPE);
+                    self.bump();
+                    self.finish_node();
+                    match self.peek() {
+                        Some(T!['}']) => (),
+                        Some(kind) => {
+                            let start = self.start_error_node();
+                            self.bump();
+                            let end = self.finish_error_node();
+                            self.errors.push(ParseError::UnexpectedWanted(
+                                kind,
+                                TextRange::new(start, end),
+                                [T!['}']].to_vec().into_boxed_slice(),
+                            ))
+                        }
+                        None => self.errors.push(ParseError::UnexpectedEOFWanted(
+                            [T!['}']].to_vec().into_boxed_slice(),
+                        )),
+                    }
+                }
+                _ => {
+                    self.start_node(NODE_ATTRPATH_VALUE);
+                    self.parse_attrpath();
+                    self.expect(T![::]);
+                    let checkpoint = self.checkpoint();
+                    self.parse_expr();
+                    match self.peek() {
+                        Some(T![;]) => self.bump(),
+                        Some(T![?]) => {
+                            self.start_node_at(checkpoint, NODE_UNARY_OP);
+                            self.bump();
+                            self.expect(T![;]);
+                            self.finish_node();
+                        }
+                        Some(kind) => {
+                            let start = self.start_error_node();
+                            self.bump();
+                            let end = self.finish_error_node();
+                            self.errors.push(ParseError::UnexpectedWanted(
+                                kind,
+                                TextRange::new(start, end),
+                                [T![;], T![?]].to_vec().into_boxed_slice(),
+                            ))
+                        }
+                        None => self.errors.push(ParseError::UnexpectedEOFWanted(
+                            [T![;], T![?]].to_vec().into_boxed_slice(),
+                        )),
+                    }
+                    self.finish_node();
+                }
+            }
+        }
+        self.bump(); // the final close, like '}'
+    }
+    pub fn parse_trivial(&mut self) -> Checkpoint {
+        let peek = match self.peek() {
+            Some(it) => it,
+            None => {
+                self.errors.push(ParseError::UnexpectedEOF);
+                // NB: we don't use `self.checkpoint()` here in order to avoid
+                // eating the whitespace. The actual checkpoint doesn't matter
+                // in this case and, ideally, should be returning `None`, but
+                // that makes code slightly more complex for little real
+                // benefit.
+                return self.builder.checkpoint();
+            }
+        };
+        let checkpoint = self.checkpoint();
+        match peek {
+            T!['('] => {
+                self.start_node(NODE_PAREN);
+                self.bump();
+                self.parse_expr();
+                self.bump();
+                self.finish_node();
+            }
+            T!['['] => {
+                self.start_node(NODE_LIST);
+                self.bump();
+                self.parse_trivial();
+                self.expect(T![']']);
+                self.finish_node();
+            }
+            T!['{'] => {
+                self.start_node(NODE_ATTR_SET);
+                self.bump();
+                self.parse_set(T!['}']);
+                self.finish_node();
+            }
+            TOKEN_TYPE => {
+                //wrap the type token into a node_type
+                self.start_node(NODE_TYPE);
+                self.bump();
+                self.finish_node();
+
+                match self.peek() {
+                    Some(T![|]) => {
+                        self.start_node_at(checkpoint, NODE_BIN_OP);
+                        self.bump();
+                        self.parse_trivial();
+                        self.finish_node();
+                    }
+                    _ => (),
+                }
+            }
+            TOKEN_STRING_START => {
+                self.parse_string();
+
+                match self.peek() {
+                    Some(T![|]) => {
+                        self.start_node_at(checkpoint, NODE_BIN_OP);
+                        self.bump();
+                        self.parse_trivial();
+                        self.finish_node();
+                    }
+                    _ => (),
+                }
+            }
+            //support native nix literal tokens
+            //without TOKEN_URI which is very confusing (use type String instead)
+            t if t.is_literal() && t != TOKEN_URI => {
+                self.start_node(NODE_LITERAL);
+                self.bump();
+                self.finish_node();
+                match self.peek() {
+                    Some(T![|]) => {
+                        self.start_node_at(checkpoint, NODE_BIN_OP);
+                        self.bump();
+                        self.parse_trivial();
+                        self.finish_node();
+                    }
+                    _ => (),
+                }
+            }
+            // Explicitly handle token uri as error case
+            TOKEN_URI => {
+                let start = self.start_error_node();
+                self.bump();
+                let end = self.finish_error_node();
+                self.errors.push(ParseError::UnexpectedWanted(
+                    TOKEN_URI,
+                    TextRange::new(start, end),
+                    [TOKEN_STRING_START].to_vec().into_boxed_slice(),
+                ))
+            }
+
+            TOKEN_IDENT => {
+                self.expect_ident();
+
+                match self.peek() {
+                    Some(T![|]) => {
+                        self.start_node_at(checkpoint, NODE_BIN_OP);
+                        self.bump();
+                        self.parse_trivial();
+                        self.finish_node();
+                    }
+                    Some(T![@]) => {
+                        self.start_node_at(checkpoint, NODE_PATTERN);
+                        self.start_node_at(checkpoint, NODE_PAT_BIND);
+                        self.bump();
+                        self.finish_node(); // PatBind
+                        self.parse_trivial();
+                        self.finish_node(); // Pattern
+                    }
+                    _ => (),
+                }
+            }
+            // TOKEN_ELLIPSIS
+            kind => {
+                println!("unhandled trivial token {kind:?}");
+                let start = self.start_error_node();
+                self.bump();
+                let end = self.finish_error_node();
+                self.errors.push(ParseError::UnexpectedWanted(
+                    kind,
+                    TextRange::new(start, end),
+                    [T!['('], T!['{'], T!['['], TOKEN_STRING_START, TOKEN_IDENT]
+                        .to_vec()
+                        .into_boxed_slice(),
+                ));
+            }
+        }
+        checkpoint
+    }
+
+    pub fn parse_expr(&mut self) -> Checkpoint {
+        // Limit chosen somewhat arbitrarily
+        if self.depth >= 512 {
+            self.errors.push(ParseError::RecursionLimitExceeded);
+            // Consume tokens to the end of the file. Erroring without bumping might cause
+            // infinite looping elsewhere.
+            self.start_error_node();
+            while self.peek().is_some() {
+                self.bump()
+            }
+            self.finish_error_node();
+            return self.checkpoint();
+        }
+        self.depth += 1;
+        let out = match self.peek() {
+            Some(T![let]) => {
+                let checkpoint = self.checkpoint();
+                self.bump();
+
+                self.start_node_at(checkpoint, NODE_LET_IN);
+                self.parse_set(T![in]);
+                self.parse_expr();
+                self.finish_node();
+
+                checkpoint
+            }
+            // possible legacy root ident
+            // if the next token is a double colon
+            // else continue to parse the expression
+            Some(TOKEN_IDENT) if self.depth == 1 => {
+                //Get the next non_trivial token
+                let next = loop {
+                    let token = self.iter.next();
+                    let kind = token.as_ref().map(|&(t, _)| t);
+                    if let Some(token) = token {
+                        self.buffer.push_back(token);
+                    }
+                    if kind.map(|t| !t.is_trivia()).unwrap_or(true) {
+                        break kind;
+                    }
+                };
+
+                let checkpoint = self.checkpoint();
+                match next {
+                    Some(T![::]) => {
+                        self.start_node_at(checkpoint, NODE_IDENT);
+                        // bump TOKEN_IDENT
+                        self.bump();
+
+                        // bump TOKEN_DOUBLE_COLON
+                        // eat from buffer
+                        self.bump();
+                        // eat from iterator
+                        self.bump();
+
+                        // parse the expression after ::
+                        self.parse_expr();
+                        self.finish_node();
+                    }
+                    _ => {
+                        self.parse_expr();
+                    }
+                }
+                checkpoint
+            }
+            _ => self.parse_math(),
+        };
+        self.depth -= 1;
+        out
+    }
+}
+
+/// Parse tokens into an AST
+pub fn parse<'s, I>(iter: I) -> (GreenNode, Vec<ParseError>)
+where
+    I: Iterator<Item = Token<'s>>,
+{
+    let mut parser = Parser::new(iter);
+    parser.builder.start_node(NixLanguage::kind_to_raw(NODE_ROOT));
+    parser.parse_expr();
+    parser.eat_trivia();
+
+    if parser.peek().is_some() {
+        println!("Type parse: unhandled tokens");
+
+        let start = parser.start_error_node();
+        while parser.peek().is_some() {
+            parser.bump();
+        }
+        let end = parser.finish_error_node();
+        parser.errors.push(ParseError::UnexpectedExtra(TextRange::new(start, end)));
+        parser.eat_trivia();
+    }
+    parser.builder.finish_node();
+    (parser.builder.finish(), parser.errors)
+}

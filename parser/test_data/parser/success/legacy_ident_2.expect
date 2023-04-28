@@ -1,0 +1,15 @@
+NODE_ROOT@0..15
+  NODE_IDENT@0..15
+    TOKEN_IDENT@0..3 "map"
+    TOKEN_WHITESPACE@3..4 " "
+    TOKEN_DOUBLE_COLON@4..6 "::"
+    TOKEN_WHITESPACE@6..7 " "
+    NODE_BIN_OP@7..15
+      NODE_IDENT@7..8
+        TOKEN_IDENT@7..8 "a"
+      TOKEN_WHITESPACE@8..9 " "
+      TOKEN_PIPE@9..10 "|"
+      TOKEN_WHITESPACE@10..11 " "
+      NODE_TYPE@11..15
+        TOKEN_TYPE@11..15 "Bool"
+
