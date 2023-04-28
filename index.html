@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="use-case.html"><strong aria-hidden="true">1.1.</strong> Use-cases</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">4.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">8.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="use-case.html"><strong aria-hidden="true">10.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -145,10 +145,10 @@
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
 <p>By specifying the syntax of the type section within nix this opens a wide range of possibilities.</p>
 <ul>
-<li>consistent function / api documentation.</li>
+<li>consistent function / API documentation.</li>
 <li>Type checking - whether you call a function with the expected types.</li>
 <li>Language Server (LSP) support - display inline or hover type signatures.</li>
-<li>Encourage Modular architectures, with well defined and documented interfaces.</li>
+<li>Encourage Modular architectures, with well-defined and documented interfaces.</li>
 <li>Static type checking (Partial)</li>
 </ul>
 <h2 id="detailed-implementation"><a class="header" href="#detailed-implementation">Detailed implementation</a></h2>
@@ -157,39 +157,35 @@ This RFC may be the only valid ruleset that applies to that section.</p>
 <h3 id="no-need-to-use-code-brackets"><a class="header" href="#no-need-to-use-code-brackets">No need to use code brackets</a></h3>
 <p>using single or triple ``` (backticks) is not necessary. The complete <code># Type</code> section allows writing one single <code>type expression</code>. The syntax of that is specified in the following.</p>
 <h3 id="builds-on-top-of-dynamic-types"><a class="header" href="#builds-on-top-of-dynamic-types">Builds on top of dynamic types</a></h3>
-<p>Type information from comments can; just like in the latest js-docs; be used as a source for checking correctness of code.
-We could imagine static type checking working in symbiotic ways with dynamic type checking, such as YANTS (by TVL).</p>
+<p>Type information from comments can; just like in the latest js-docs; be used as a source for checking the correctness of code.
+We could imagine static type checking to work in symbiotic ways with dynamic type checking, such as YANTS (by TVL).</p>
 <h3 id="syntax-follows-nix"><a class="header" href="#syntax-follows-nix">Syntax follows nix</a></h3>
-<p>The syntax is mainly inspired and as close as possible to the nix language. Everyone who knows nix can easily learn the type-language for it.
-There are only very few modifications that are self explaining and intuitive. While we could imagine a way more complex language, that allows expressing every last detailed relationship.
+<p>The syntax is mainly inspired and as close as possible to the Nix language. Everyone who knows Nix can easily learn the type-language for it.
+There are only very few modifications that are self-explaining and intuitive. While we could imagine a way more complex language, that allows expressing every last detailed relationship.
 We think it is more important to provide a good abstraction and find the right compromise between simplicity and expressiveness.</p>
 <h2 id="comparison-nixos-modules-system"><a class="header" href="#comparison-nixos-modules-system">Comparison nixOS-modules system</a></h2>
-<p>In general developers must break complex parts into modules.
+<p>In general, developers must break complex parts into modules.
 Allowing them to follow the SOLID principles. Where you could write the interface definition and then develop or refactor the module behind that interface.
 As long as the interface stays the same or is downwards compatible nothing in your software breaks.
 This property is a very essential feature for writing stable and extendable code.</p>
-<p>Nix offers nixos-modules to write such modules and interface declarations. However those declarations are boilerplate code that may run during evaluation time.
-And also increases complexity as there is a lot going on with <code>merge behavior</code> <code>priority (e.g. mkForce)</code> and so on.
-Also it is not really clear what is actually validated and how much it costs in terms of additional runtime overhead.</p>
-<p>With type annotations this can be improved. It is not considered mutually exclusive but rather inclusive to use both worlds together.
-Validate at runtime what cannot be known statically (before runtime) and validate statically once you are sure about something in a static context. (This is essential called a 'gradual' type system)
+<p>Nix offers nixos-modules to write such modules and interface declarations. However, those declarations are boilerplate codes that may run during evaluation time.
+And also increases complexity as a lot is going on with <code>merge behavior</code> <code>priority (e.g. mkForce)</code> and so on.
+Also, it is not clear what is validated and how much it costs in terms of additional runtime overhead.
+With type annotations, this can be improved. It is not considered mutually exclusive but rather inclusive to use both worlds together.
+Validate at runtime what cannot be known statically (before runtime) and validate statically once you are sure about something in a static context. (This is essentially called a 'gradual' type system)
 A good type system would offer both and even detect automatically when to run the check.</p>
 <p>Thanks to @roberth and @theophane to point me towards this.</p>
 <h2 id="future-work"><a class="header" href="#future-work">Future Work</a></h2>
 <ul>
-<li>
-<p>In some fictional Future the syntax could be integrated into the nix language. With optional typings; Just like in Python or Javascript.</p>
-</li>
-<li>
-<p>Also Interface documentations could then be generated from the nix language itself, if types where specified.</p>
-</li>
+<li>In the Future, the syntax could be integrated into the Nix language. With optional typings; Just like in Python or Javascript.</li>
+<li>Interface documentation could then be generated from the nix language itself if types were specified.</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="next" href="use-case.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="getting-started.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -198,7 +194,7 @@ A good type system would offer both and even detect automatically when to run th
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="next" href="use-case.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="getting-started.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

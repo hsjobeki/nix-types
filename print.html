@@ -79,7 +79,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="use-case.html"><strong aria-hidden="true">1.1.</strong> Use-cases</a></li></ol></li><li class="chapter-item expanded "><a href="general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="specification/grammar.html"><strong aria-hidden="true">4.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="nix/index.html"><strong aria-hidden="true">8.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="use-case.html"><strong aria-hidden="true">10.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -146,10 +146,10 @@
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
 <p>By specifying the syntax of the type section within nix this opens a wide range of possibilities.</p>
 <ul>
-<li>consistent function / api documentation.</li>
+<li>consistent function / API documentation.</li>
 <li>Type checking - whether you call a function with the expected types.</li>
 <li>Language Server (LSP) support - display inline or hover type signatures.</li>
-<li>Encourage Modular architectures, with well defined and documented interfaces.</li>
+<li>Encourage Modular architectures, with well-defined and documented interfaces.</li>
 <li>Static type checking (Partial)</li>
 </ul>
 <h2 id="detailed-implementation"><a class="header" href="#detailed-implementation">Detailed implementation</a></h2>
@@ -158,81 +158,37 @@ This RFC may be the only valid ruleset that applies to that section.</p>
 <h3 id="no-need-to-use-code-brackets"><a class="header" href="#no-need-to-use-code-brackets">No need to use code brackets</a></h3>
 <p>using single or triple ``` (backticks) is not necessary. The complete <code># Type</code> section allows writing one single <code>type expression</code>. The syntax of that is specified in the following.</p>
 <h3 id="builds-on-top-of-dynamic-types"><a class="header" href="#builds-on-top-of-dynamic-types">Builds on top of dynamic types</a></h3>
-<p>Type information from comments can; just like in the latest js-docs; be used as a source for checking correctness of code.
-We could imagine static type checking working in symbiotic ways with dynamic type checking, such as YANTS (by TVL).</p>
+<p>Type information from comments can; just like in the latest js-docs; be used as a source for checking the correctness of code.
+We could imagine static type checking to work in symbiotic ways with dynamic type checking, such as YANTS (by TVL).</p>
 <h3 id="syntax-follows-nix"><a class="header" href="#syntax-follows-nix">Syntax follows nix</a></h3>
-<p>The syntax is mainly inspired and as close as possible to the nix language. Everyone who knows nix can easily learn the type-language for it.
-There are only very few modifications that are self explaining and intuitive. While we could imagine a way more complex language, that allows expressing every last detailed relationship.
+<p>The syntax is mainly inspired and as close as possible to the Nix language. Everyone who knows Nix can easily learn the type-language for it.
+There are only very few modifications that are self-explaining and intuitive. While we could imagine a way more complex language, that allows expressing every last detailed relationship.
 We think it is more important to provide a good abstraction and find the right compromise between simplicity and expressiveness.</p>
 <h2 id="comparison-nixos-modules-system"><a class="header" href="#comparison-nixos-modules-system">Comparison nixOS-modules system</a></h2>
-<p>In general developers must break complex parts into modules.
+<p>In general, developers must break complex parts into modules.
 Allowing them to follow the SOLID principles. Where you could write the interface definition and then develop or refactor the module behind that interface.
 As long as the interface stays the same or is downwards compatible nothing in your software breaks.
 This property is a very essential feature for writing stable and extendable code.</p>
-<p>Nix offers nixos-modules to write such modules and interface declarations. However those declarations are boilerplate code that may run during evaluation time.
-And also increases complexity as there is a lot going on with <code>merge behavior</code> <code>priority (e.g. mkForce)</code> and so on.
-Also it is not really clear what is actually validated and how much it costs in terms of additional runtime overhead.</p>
-<p>With type annotations this can be improved. It is not considered mutually exclusive but rather inclusive to use both worlds together.
-Validate at runtime what cannot be known statically (before runtime) and validate statically once you are sure about something in a static context. (This is essential called a 'gradual' type system)
+<p>Nix offers nixos-modules to write such modules and interface declarations. However, those declarations are boilerplate codes that may run during evaluation time.
+And also increases complexity as a lot is going on with <code>merge behavior</code> <code>priority (e.g. mkForce)</code> and so on.
+Also, it is not clear what is validated and how much it costs in terms of additional runtime overhead.
+With type annotations, this can be improved. It is not considered mutually exclusive but rather inclusive to use both worlds together.
+Validate at runtime what cannot be known statically (before runtime) and validate statically once you are sure about something in a static context. (This is essentially called a 'gradual' type system)
 A good type system would offer both and even detect automatically when to run the check.</p>
 <p>Thanks to @roberth and @theophane to point me towards this.</p>
 <h2 id="future-work"><a class="header" href="#future-work">Future Work</a></h2>
 <ul>
-<li>
-<p>In some fictional Future the syntax could be integrated into the nix language. With optional typings; Just like in Python or Javascript.</p>
-</li>
-<li>
-<p>Also Interface documentations could then be generated from the nix language itself, if types where specified.</p>
-</li>
+<li>In the Future, the syntax could be integrated into the Nix language. With optional typings; Just like in Python or Javascript.</li>
+<li>Interface documentation could then be generated from the nix language itself if types were specified.</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="use-cases"><a class="header" href="#use-cases">Use-cases</a></h1>
-<h2 id="standardized-parsable-format-to-communicate-type"><a class="header" href="#standardized-parsable-format-to-communicate-type">Standardized (parsable) format to communicate type</a></h2>
-<p>There are simple functions with only few and basic arguments.</p>
-<pre><code class="language-nix">Number -&gt; Number -&gt; Number
-</code></pre>
-<p>But there are also complex functions, that other functions or nested attrsets as arguments.
-Communicate the rules those structures may have to follow is crucial.</p>
-<pre><code class="language-nix">String -&gt; [ { ${name} :: a } ] -&gt; [a]
-</code></pre>
-<p>We think; Understanding those <code>type</code> signatures with automated tooling is significant.
-For that to work we need a syntax that follows strict rules.</p>
-<h2 id="provide-hover-and-autocomplete-informations-on-expressions"><a class="header" href="#provide-hover-and-autocomplete-informations-on-expressions">Provide hover and autocomplete information's on expressions</a></h2>
-<p>As a developer i'd like to get suggestions like:</p>
-<ul>
-<li>How many arguments does a certain function take?</li>
-<li>Type of the arguments?</li>
-<li>In case of Attribute-set arguments:
-<ul>
-<li>Which attributes of the required attributes are still missing?</li>
-<li>Which optional attributes can i specify additionally?</li>
-</ul>
-</li>
-<li>In general describe the type of an expression</li>
-</ul>
-<h2 id="provide-static-type-checks-at-development-time"><a class="header" href="#provide-static-type-checks-at-development-time">Provide static type checks at development time</a></h2>
-<p>A static tool could check the actual type of the documented expression against the specified type.
-It is unclear how this would work, but it could certainly be done.</p>
-<p>We think an approach would also include pre-evaluation of certain points, that are very hard to analyze statically.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="general-blocks"><a class="header" href="#general-blocks">General Blocks</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
-<p>This section contains some illustrative examples that show how to practically apply the specification in concrete use-case-scenarios.</p>
-<h2 id="short-preview-of-the-basic-syntax"><a class="header" href="#short-preview-of-the-basic-syntax">Short preview of the basic syntax</a></h2>
-<pre><code class="language-nix"># lib.lists.any
-
-/* 
-    Type: 
-       ( a -&gt; Bool ) -&gt; [ a ] -&gt; Bool
-        └──────────┘  ↑          ↑           
-             |        |          └── final return value is a Bool
-             |        └── The function returns a function that takes a list of type 'a'      
-             └── function that takes an 'a' and returns True or False (Boolean)
-
-*/
-any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
-</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting started</a></h1>
+<p>This repo will soon provide a syntax checker. Which will check the type syntax.</p>
+<p>Type-checking itself will not happen yet.</p>
+<p>TODO: Fill this section to embrace consistent documentation.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="formals"><a class="header" href="#formals">Formals</a></h1>
-<h2 id="as-the-doc-comment-references-to-exactly-one-expression-there-is-only-one-type-expression-possible"><a class="header" href="#as-the-doc-comment-references-to-exactly-one-expression-there-is-only-one-type-expression-possible">As the doc-comment references to exactly one expression. There is only one type expression possible.</a></h2>
+<h2 id="as-the-annotation-references-to-exactly-one-expression-there-is-only-one-type-expression-possible"><a class="header" href="#as-the-annotation-references-to-exactly-one-expression-there-is-only-one-type-expression-possible">As the annotation references to exactly one expression. There is only one type expression possible</a></h2>
 <h2 id="all-notations-are-pascalcase"><a class="header" href="#all-notations-are-pascalcase">All notations are PascalCase</a></h2>
+<p>PascalCase with a starting uppercase letter. This is also in other languages a known convention for <code>types</code> or <code>classes</code></p>
 <h2 id="types-must-be-chosen-from-the-existing-list"><a class="header" href="#types-must-be-chosen-from-the-existing-list">Types MUST be chosen from the existing list</a></h2>
 <p>see <a href="specification/./basic.html">primitives</a></p>
 <h2 id="operators-must-be-chosen-from-the-existing-list"><a class="header" href="#operators-must-be-chosen-from-the-existing-list">Operators MUST be chosen from the existing list</a></h2>
@@ -240,14 +196,24 @@ any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
 <h2 id="explicit-attrset-and-list-keywords-are-prohibited"><a class="header" href="#explicit-attrset-and-list-keywords-are-prohibited">explicit <code>AttrSet</code> and <code>List</code> keywords are PROHIBITED</a></h2>
 <p>See the correct usage <a href="specification/./complex.html">here</a></p>
 <h2 id="complex-types-must-include-their-members-explicitly"><a class="header" href="#complex-types-must-include-their-members-explicitly"><a href="specification/./complex.html">complex types</a> MUST include their members explicitly</a></h2>
+<p>There is no <code>AttrSet</code> and no <code>List</code> keyword.</p>
 <h2 id="explicit-any-is-prohibited"><a class="header" href="#explicit-any-is-prohibited">explicit <code>Any</code> is PROHIBITED</a></h2>
 <p>Correct usage with type variables see <a href="specification/./type-variables.html">here</a></p>
 <h2 id="allowing-arbitrary-values-within-complex-types"><a class="header" href="#allowing-arbitrary-values-within-complex-types">Allowing arbitrary values within <a href="specification/./complex.html">complex-types</a></a></h2>
-<p>is possible but requires explicit statements.</p>
-<h2 id="type-variables-must-be-written-in-lowercase-to-prevent-confusion"><a class="header" href="#type-variables-must-be-written-in-lowercase-to-prevent-confusion"><code>Type variables</code> must be written in LOWERCASE to prevent confusion.</a></h2>
-<h2 id="type-bindings-it-is-prohibited-to-choose-names-from-the-reserved-list"><a class="header" href="#type-bindings-it-is-prohibited-to-choose-names-from-the-reserved-list"><a href="specification/./operators.html#type-binding">Type bindings</a> it is PROHIBITED to choose names from the <a href="specification/./types.html">reserved list</a></a></h2>
-<h2 id="spaces-between-operators-are-recommended"><a class="header" href="#spaces-between-operators-are-recommended">Spaces between Operators are recommended</a></h2>
+<p>It is possible to allow arbitrary values within complex types, but it requires an explicit statement.</p>
+<blockquote>
+<p>There is no implicit any.</p>
+</blockquote>
+<h2 id="type-variables-must-be-written-in-lowercase-to-prevent-confusion"><a class="header" href="#type-variables-must-be-written-in-lowercase-to-prevent-confusion"><code>Type variables</code> must be written in LOWERCASE to prevent confusion</a></h2>
+<p>They are used instead of the <code>Any</code> Keyword.</p>
+<h2 id="for-type-bindings-it-is-prohibited-to-choose-names-from-the-reserved-list"><a class="header" href="#for-type-bindings-it-is-prohibited-to-choose-names-from-the-reserved-list">For <a href="specification/./operators.html#type-binding">Type bindings</a> it is PROHIBITED to choose names from the <a href="specification/./types.html">reserved list</a></a></h2>
+<p>This will help to keep the code clean. Reduces complexity, resolves for shadowing and namespace conflicts, with global names.</p>
+<h2 id="optional-spaces-between-operators-are-recommended"><a class="header" href="#optional-spaces-between-operators-are-recommended">[Optional] Spaces between Operators are recommended</a></h2>
 <p>This follows the nix syntax rules. The symbols and grammar rules of the nix language are adopted.</p>
+<blockquote>
+<p>Spaces are required where they would be required in valid nix syntax.
+This will be quite intuitive</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tokens"><a class="header" href="#tokens">Tokens</a></h1>
 <h2 id="the-following-tokens-do-exist"><a class="header" href="#the-following-tokens-do-exist">The following tokens do exist</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
@@ -271,8 +237,7 @@ any = builtins.any or (pred: foldr (x: y: if pred x then true else y) false);
 </tbody></table>
 </div>
 <h3 id="tokens-removed"><a class="header" href="#tokens-removed">Tokens removed</a></h3>
-<p>In contrast to the default nix language some
-tokens do not exist and may even result in an error.</p>
+<p>In contrast to the default nix language, some tokens do not exist and may even result in an error.</p>
 <div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
 <tr><td>,</td><td>Comma</td><td>Originally used for separation in lambda-patterns, replaced by ; (Semicolon)</td></tr>
 <tr><td>:</td><td>Colon</td><td>Originally used for lambda, patterns; in Type context replaced by -&gt;</td></tr>
@@ -288,7 +253,7 @@ tokens do not exist and may even result in an error.</p>
 </tbody></table>
 </div>
 <h2 id="the-following-keywords-do-exist"><a class="header" href="#the-following-keywords-do-exist">The following keywords do exist</a></h2>
-<p>Only the <code>let .. in</code> keyword are supported.</p>
+<p>Only the <code>let .. in</code> keywords are supported.</p>
 <div class="table-wrapper"><table><thead><tr><th>Keyword</th><th>Purpose</th></tr></thead><tbody>
 <tr><td>let</td><td>declaration block</td></tr>
 <tr><td>in</td><td>what is yielded</td></tr>
@@ -308,8 +273,8 @@ tokens do not exist and may even result in an error.</p>
 </tbody></table>
 </div>
 <h3 id="reserved-types"><a class="header" href="#reserved-types">Reserved Types</a></h3>
-<p>All types are written Uppercase by convention to visually distinguish them from variables and actual values.</p>
-<p>Some composed types are handled as native types as well. They are well defined internally, but can be used natively in the type language.</p>
+<p>All types are written in Uppercase by convention to visually distinguish them from variables and actual values.</p>
+<p>Some composed types are handled as native types as well. They are well-defined internally but can be used natively in the type language.</p>
 <div class="table-wrapper"><table><thead><tr><th>Keyword</th></tr></thead><tbody>
 <tr><td>Bool</td></tr>
 <tr><td>Int</td></tr>
@@ -331,10 +296,10 @@ tokens do not exist and may even result in an error.</p>
 </div>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
 <p>-- under construction --</p>
-<p>The syntax very closely follows the nix syntax to make writing types intuitive for nix users. Although the language is inspired by haskell, not every nix user may be familiar with haskell.</p>
+<p>The syntax very closely follows the Nix syntax to make writing types intuitive for Nix users. Although the language is inspired by Haskell, not every Nix user may be familiar with Haskell.</p>
 <h3 id="legacy-let"><a class="header" href="#legacy-let">Legacy let</a></h3>
-<p>Did you know the <code>legacy let</code> ? If not don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language btw.</p>
-<p>In general every type is defined in a type-expression.</p>
+<p>Did you know the <code>legacy let</code>? Don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language.
+In general, every type is defined in a type expression.</p>
 <p>e.g.</p>
 <pre><code class="language-hs">Int | Bool
 </code></pre>
@@ -350,9 +315,9 @@ Foo | Bool
 <li>Type-expression</li>
 <li>Simple Type-expression</li>
 </ul>
-<p>The everything is a <code>Type Expression</code> but at certain places you can only write <code>simple type expression</code>. This behavior is not invented with the type language; it is actually derived from nix.
+<p>The everything is a <code>Type Expression</code> but in certain places you can only write <code>simple type expression</code>. This behavior is not invented with the type language; it is derived from nix.
 Where the same principles apply.</p>
-<p>For example: Simple type expressions do not ally writing <code>let ... in</code>.</p>
+<p>For example Simple type expressions do not ally writing <code>let ... in</code>.</p>
 <pre><code class="language-hs">[ let T :: Int in T ]
 </code></pre>
 <p>is just NOT allowed.
@@ -360,7 +325,7 @@ There are certain places within the syntax where you can only write simple expre
 <pre><code class="language-hs">[ {SIMPLE} ] -&gt; [ Int | String ]
 </code></pre>
 <h2 id="root-ident"><a class="header" href="#root-ident">Root Ident</a></h2>
-<p>Currently there are many so called root ident nodes.</p>
+<p>Currently, there are many so-called root ident nodes.</p>
 <p>Example:</p>
 <pre><code class="language-nix">    mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
 </code></pre>
@@ -380,7 +345,31 @@ There are certain places within the syntax where you can only write simple expre
 <tr><td>Path</td><td>Path referencing a location or a file. With no assumptions on the existence of that</td></tr>
 <tr><td>Null</td><td>The value null</td></tr>
 </tbody></table>
-</div><!-- markdownlint-disable MD041 -->
+</div>
+<h2 id="the-any-type"><a class="header" href="#the-any-type">The <code>Any</code> type</a></h2>
+<p>The <code>Any</code> type is often used to explicitly allow arbitrary values. However,
+the Any type is complex and doesn't add much value to a type system. Instead, we should use type variables whenever possible.</p>
+<p>Interestingly there are two different <code>Any</code> types:</p>
+<p>e.g. If we look at CUE-lang (which is also inspired by nix)</p>
+<blockquote>
+<p>CUE defines the values bottom, or error, (denoted <em>|</em>) that is an instance of all types and top, or any, (denoted _) of which all types are an instance.</p>
+</blockquote>
+<ul>
+<li>
+<p><code>TOP any</code> all types are an instance of that. You can imagine it as the TOP-most set, that includes every type. But no value has that type.</p>
+</li>
+<li>
+<p><code>Bottom any</code> which is an instance of all types. This is kind of the imaginary value that has
+the any type. Still, doesn't contain any value. Which could also be denoted: <code>Never</code> or <code>Empty Type</code> it is a type that is the subtype of any type.</p>
+</li>
+</ul>
+<p>The following is a nice quote from the Typescript world</p>
+<blockquote>
+<p>The any type is so dangerous because it exists outside of the type tree.
+It is both a top and bottom type.
+Everything can be assigned to it and it can be assigned to everything else. ...</p>
+</blockquote>
+<!-- markdownlint-disable MD041 -->
 <h3 id="complex"><a class="header" href="#complex">Complex</a></h3>
 <blockquote>
 <p><code>T</code>, <code>U</code>, ...; are placeholders for any types, those MUST be specifically declared on usage</p>
@@ -425,7 +414,31 @@ There are certain places within the syntax where you can only write simple expre
 <tr><td>Path</td><td>Path referencing a location or a file. With no assumptions on the existence of that</td></tr>
 <tr><td>Null</td><td>The value null</td></tr>
 </tbody></table>
-</div><div style="break-before: page; page-break-before: always;"></div><h1 id="complex-1"><a class="header" href="#complex-1">Complex</a></h1>
+</div>
+<h2 id="the-any-type-1"><a class="header" href="#the-any-type-1">The <code>Any</code> type</a></h2>
+<p>The <code>Any</code> type is often used to explicitly allow arbitrary values. However,
+the Any type is complex and doesn't add much value to a type system. Instead, we should use type variables whenever possible.</p>
+<p>Interestingly there are two different <code>Any</code> types:</p>
+<p>e.g. If we look at CUE-lang (which is also inspired by nix)</p>
+<blockquote>
+<p>CUE defines the values bottom, or error, (denoted <em>|</em>) that is an instance of all types and top, or any, (denoted _) of which all types are an instance.</p>
+</blockquote>
+<ul>
+<li>
+<p><code>TOP any</code> all types are an instance of that. You can imagine it as the TOP-most set, that includes every type. But no value has that type.</p>
+</li>
+<li>
+<p><code>Bottom any</code> which is an instance of all types. This is kind of the imaginary value that has
+the any type. Still, doesn't contain any value. Which could also be denoted: <code>Never</code> or <code>Empty Type</code> it is a type that is the subtype of any type.</p>
+</li>
+</ul>
+<p>The following is a nice quote from the Typescript world</p>
+<blockquote>
+<p>The any type is so dangerous because it exists outside of the type tree.
+It is both a top and bottom type.
+Everything can be assigned to it and it can be assigned to everything else. ...</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="complex-1"><a class="header" href="#complex-1">Complex</a></h1>
 <h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
 <p>The following complex types have been identified.</p>
 <p>All complex types can be composed from Any other types even from themselves by using those and the <a href="specification/./operators.html">operators</a>.</p>
@@ -453,7 +466,7 @@ There are certain places within the syntax where you can only write simple expre
 <p>However the List-type can only contain one simple type expression.</p>
 </blockquote>
 <p>See syntax rules to learn what a simple type expression is.</p>
-<h2 id="examples-1"><a class="header" href="#examples-1">Examples</a></h2>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
 <h3 id="list-of-string"><a class="header" href="#list-of-string">list of string</a></h3>
 <p><code>[ String ]</code></p>
 <h3 id="list-of-string-or-bool"><a class="header" href="#list-of-string-or-bool">list of string or bool</a></h3>
@@ -493,7 +506,7 @@ There are certain places within the syntax where you can only write simple expre
     [ N :: T ] :: V 
   }
 </code></pre>
-<h3 id="examples-2"><a class="header" href="#examples-2">Examples</a></h3>
+<h3 id="examples-1"><a class="header" href="#examples-1">Examples</a></h3>
 <pre><code class="language-nix">  # member '.foo' references a value of type string
   # all other members `*` are of type string and each member reference value of any variable Type.
   { 
@@ -539,7 +552,7 @@ packageMap = {
 <blockquote>
 <p>In <code>lambda</code> notations arguments do not have names like in e.g. <code>AttrSet</code> because they are positional arguments.</p>
 </blockquote>
-<h2 id="examples-3"><a class="header" href="#examples-3">Examples</a></h2>
+<h2 id="examples-2"><a class="header" href="#examples-2">Examples</a></h2>
 <h3 id="lambda-that-takes-a-string-and-returns-string"><a class="header" href="#lambda-that-takes-a-string-and-returns-string">Lambda that takes a <code>String</code> and returns <code>String</code></a></h3>
 <p><code>String -&gt; String</code></p>
 <h3 id="function-that-takes-string-and-number-and-finally-returns-string"><a class="header" href="#function-that-takes-string-and-number-and-finally-returns-string">Function that takes <code>String</code> and <code>Number</code> and finally returns <code>String</code></a></h3>
@@ -577,7 +590,7 @@ Then the <code>|</code> operator evaluates to either <code>T</code> or <code>U</
 <p>This is only due to readability and not allowed in the real language</p>
 </blockquote>
 <p>Precedence: 2</p>
-<h3 id="examples-4"><a class="header" href="#examples-4">Examples</a></h3>
+<h3 id="examples-3"><a class="header" href="#examples-3">Examples</a></h3>
 <p><code>Float | Int</code></p>
 <p><code>( Number | Bool ) | Int</code></p>
 <p><code>{ opt :: Int | String }</code></p>
@@ -646,7 +659,7 @@ However the type language only uses a tight subset of the operator available in 
 <blockquote>
 <p><code>Type variables</code> must be written in LOWERCASE to prevent confusion.</p>
 </blockquote>
-<h2 id="examples-5"><a class="header" href="#examples-5">Examples</a></h2>
+<h2 id="examples-4"><a class="header" href="#examples-4">Examples</a></h2>
 <p>The following function signatures from <code>nix</code> and <code>nixpkgs</code> are written most clearly with <code>type variables</code></p>
 <h3 id="builtinsmap"><a class="header" href="#builtinsmap">builtins.map</a></h3>
 <pre><code class="language-nix">( a -&gt; b ) -&gt; [a] -&gt; [b]
@@ -1105,6 +1118,34 @@ let
 in
     act: applyIt act
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="use-cases"><a class="header" href="#use-cases">Use-cases</a></h1>
+<h2 id="standardized-parsable-format-to-communicate-type"><a class="header" href="#standardized-parsable-format-to-communicate-type">Standardized (parsable) format to communicate type</a></h2>
+<p>There are simple functions with only few and basic arguments.</p>
+<pre><code class="language-nix">Number -&gt; Number -&gt; Number
+</code></pre>
+<p>But there are also complex functions, that other functions or nested attrsets as arguments.
+Communicate the rules those structures may have to follow is crucial.</p>
+<pre><code class="language-nix">String -&gt; [ { ${name} :: a } ] -&gt; [a]
+</code></pre>
+<p>We think; Understanding those <code>type</code> signatures with automated tooling is significant.
+For that to work we need a syntax that follows strict rules.</p>
+<h2 id="provide-hover-and-autocomplete-informations-on-expressions"><a class="header" href="#provide-hover-and-autocomplete-informations-on-expressions">Provide hover and autocomplete information's on expressions</a></h2>
+<p>As a developer i'd like to get suggestions like:</p>
+<ul>
+<li>How many arguments does a certain function take?</li>
+<li>Type of the arguments?</li>
+<li>In case of Attribute-set arguments:
+<ul>
+<li>Which attributes of the required attributes are still missing?</li>
+<li>Which optional attributes can i specify additionally?</li>
+</ul>
+</li>
+<li>In general describe the type of an expression</li>
+</ul>
+<h2 id="provide-static-type-checks-at-development-time"><a class="header" href="#provide-static-type-checks-at-development-time">Provide static type checks at development time</a></h2>
+<p>A static tool could check the actual type of the documented expression against the specified type.
+It is unclear how this would work, but it could certainly be done.</p>
+<p>We think an approach would also include pre-evaluation of certain points, that are very hard to analyze statically.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="contributors"><a class="header" href="#contributors">Contributors</a></h1>
 <p>Thanks to all people who contributed to this project. (if agreed) github handles will be published here.</p>
 

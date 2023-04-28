@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">1.1.</strong> Use-cases</a></li></ol></li><li class="chapter-item expanded "><a href="../general-blocks.html"><strong aria-hidden="true">2.</strong> General Blocks</a></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">4.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html" class="active"><strong aria-hidden="true">5.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">6.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">6.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">6.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">6.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">6.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">6.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">7.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">8.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">9.</strong> Nix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">9.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">9.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">10.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../getting-started.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html" class="active"><strong aria-hidden="true">4.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">8.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">10.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,8 +163,7 @@
 </tbody></table>
 </div>
 <h3 id="tokens-removed"><a class="header" href="#tokens-removed">Tokens removed</a></h3>
-<p>In contrast to the default nix language some
-tokens do not exist and may even result in an error.</p>
+<p>In contrast to the default nix language, some tokens do not exist and may even result in an error.</p>
 <div class="table-wrapper"><table><thead><tr><th>Token</th><th>Name</th><th>Purpose</th></tr></thead><tbody>
 <tr><td>,</td><td>Comma</td><td>Originally used for separation in lambda-patterns, replaced by ; (Semicolon)</td></tr>
 <tr><td>:</td><td>Colon</td><td>Originally used for lambda, patterns; in Type context replaced by -&gt;</td></tr>
@@ -180,7 +179,7 @@ tokens do not exist and may even result in an error.</p>
 </tbody></table>
 </div>
 <h2 id="the-following-keywords-do-exist"><a class="header" href="#the-following-keywords-do-exist">The following keywords do exist</a></h2>
-<p>Only the <code>let .. in</code> keyword are supported.</p>
+<p>Only the <code>let .. in</code> keywords are supported.</p>
 <div class="table-wrapper"><table><thead><tr><th>Keyword</th><th>Purpose</th></tr></thead><tbody>
 <tr><td>let</td><td>declaration block</td></tr>
 <tr><td>in</td><td>what is yielded</td></tr>
@@ -200,8 +199,8 @@ tokens do not exist and may even result in an error.</p>
 </tbody></table>
 </div>
 <h3 id="reserved-types"><a class="header" href="#reserved-types">Reserved Types</a></h3>
-<p>All types are written Uppercase by convention to visually distinguish them from variables and actual values.</p>
-<p>Some composed types are handled as native types as well. They are well defined internally, but can be used natively in the type language.</p>
+<p>All types are written in Uppercase by convention to visually distinguish them from variables and actual values.</p>
+<p>Some composed types are handled as native types as well. They are well-defined internally but can be used natively in the type language.</p>
 <div class="table-wrapper"><table><thead><tr><th>Keyword</th></tr></thead><tbody>
 <tr><td>Bool</td></tr>
 <tr><td>Int</td></tr>
@@ -223,10 +222,10 @@ tokens do not exist and may even result in an error.</p>
 </div>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
 <p>-- under construction --</p>
-<p>The syntax very closely follows the nix syntax to make writing types intuitive for nix users. Although the language is inspired by haskell, not every nix user may be familiar with haskell.</p>
+<p>The syntax very closely follows the Nix syntax to make writing types intuitive for Nix users. Although the language is inspired by Haskell, not every Nix user may be familiar with Haskell.</p>
 <h3 id="legacy-let"><a class="header" href="#legacy-let">Legacy let</a></h3>
-<p>Did you know the <code>legacy let</code> ? If not don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language btw.</p>
-<p>In general every type is defined in a type-expression.</p>
+<p>Did you know the <code>legacy let</code>? Don't bother it is legacy ^^ ;-). Legacy let is not supported by the type language.
+In general, every type is defined in a type expression.</p>
 <p>e.g.</p>
 <pre><code class="language-hs">Int | Bool
 </code></pre>
@@ -242,9 +241,9 @@ Foo | Bool
 <li>Type-expression</li>
 <li>Simple Type-expression</li>
 </ul>
-<p>The everything is a <code>Type Expression</code> but at certain places you can only write <code>simple type expression</code>. This behavior is not invented with the type language; it is actually derived from nix.
+<p>The everything is a <code>Type Expression</code> but in certain places you can only write <code>simple type expression</code>. This behavior is not invented with the type language; it is derived from nix.
 Where the same principles apply.</p>
-<p>For example: Simple type expressions do not ally writing <code>let ... in</code>.</p>
+<p>For example Simple type expressions do not ally writing <code>let ... in</code>.</p>
 <pre><code class="language-hs">[ let T :: Int in T ]
 </code></pre>
 <p>is just NOT allowed.
@@ -252,7 +251,7 @@ There are certain places within the syntax where you can only write simple expre
 <pre><code class="language-hs">[ {SIMPLE} ] -&gt; [ Int | String ]
 </code></pre>
 <h2 id="root-ident"><a class="header" href="#root-ident">Root Ident</a></h2>
-<p>Currently there are many so called root ident nodes.</p>
+<p>Currently, there are many so-called root ident nodes.</p>
 <p>Example:</p>
 <pre><code class="language-nix">    mapAttrs :: (String -&gt; Any -&gt; Any) -&gt; AttrSet -&gt; AttrSet
 </code></pre>
