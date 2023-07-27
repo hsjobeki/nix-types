@@ -1,6 +1,6 @@
 # Introduction
 
-This (Draft/Future) RFC targets the `# Type` field declared in [RFC-145](https://github.com/NixOS/rfcs/pull/145)
+This (Draft) targets the `# Type` field declared in [RFC-145](https://github.com/NixOS/rfcs/pull/145)
 
 ## Motivation
 
@@ -14,8 +14,7 @@ By specifying the syntax of the type section within nix this opens a wide range 
 
 ## Detailed implementation
 
-We propose to formulate a syntax for the `# Type` section.
-This RFC may be the only valid ruleset that applies to that section.
+I propose to formulate a syntax for the `# Type` section.
 
 ### No need to use code brackets
 

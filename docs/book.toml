@@ -3,12 +3,12 @@ authors = ["@hsjobeki:Johannes Kirschbauer"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Nix Types - a first step in the right direction"
+title = "Nix Types - first considerations"
 
 [output.html]
 mathjax-support = true
 default-theme = "light"
 preferred-dark-theme = "navy"
 additional-css = ["theme/highlight-dark.css"]
-git-repository-url = "https://gitlab.com/hsjobeki/nix-types"
+git-repository-url = "https://github.com/hsjobeki/nix-types"
 git-repository-icon = "fa-code-fork"
