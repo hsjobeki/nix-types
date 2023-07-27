@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Nix Types - a first step in the right direction</title>
+        <title>Nix Types - first considerations</title>
         <meta name="robots" content="noindex" />
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -108,13 +108,13 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Nix Types - a first step in the right direction</h1>
+                    <h1 class="menu-title">Nix Types - first considerations</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://gitlab.com/hsjobeki/nix-types" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/hsjobeki/nix-types" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-code-fork"></i>
                         </a>
                     </div>
@@ -142,7 +142,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>This (Draft/Future) RFC targets the <code># Type</code> field declared in <a href="https://github.com/NixOS/rfcs/pull/145">RFC-145</a></p>
+<p>This (Draft) targets the <code># Type</code> field declared in <a href="https://github.com/NixOS/rfcs/pull/145">RFC-145</a></p>
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
 <p>By specifying the syntax of the type section within nix this opens a wide range of possibilities.</p>
 <ul>
@@ -153,8 +153,7 @@
 <li>Static type checking (Partial)</li>
 </ul>
 <h2 id="detailed-implementation"><a class="header" href="#detailed-implementation">Detailed implementation</a></h2>
-<p>We propose to formulate a syntax for the <code># Type</code> section.
-This RFC may be the only valid ruleset that applies to that section.</p>
+<p>I propose to formulate a syntax for the <code># Type</code> section.</p>
 <h3 id="no-need-to-use-code-brackets"><a class="header" href="#no-need-to-use-code-brackets">No need to use code brackets</a></h3>
 <p>using single or triple ``` (backticks) is not necessary. The complete <code># Type</code> section allows writing one single <code>type expression</code>. The syntax of that is specified in the following.</p>
 <h3 id="builds-on-top-of-dynamic-types"><a class="header" href="#builds-on-top-of-dynamic-types">Builds on top of dynamic types</a></h3>
