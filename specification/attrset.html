@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>AttrSet - Nix Types - first considerations</title>
+        <title>AttrSet - Nix Types - Convention considerations</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../getting-started.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">4.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html" class="active"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">8.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">10.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">3.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html" class="active"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">7.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">7.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">7.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">9.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -107,7 +107,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Nix Types - first considerations</h1>
+                    <h1 class="menu-title">Nix Types - Convention considerations</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -152,7 +152,6 @@
 </code></pre>
 <p>when you reference a specific <strong>name</strong> on an AttrSet; You basically implicitly apply a <code>filter</code> or <code>find</code> operation on that list where the <code>fst</code> of the <code>mapped entry</code> equals the referenced <strong>name</strong></p>
 <p>For simplicity this is called a <code>member name</code> from now on, if that name exists.</p>
-<p>If that name does not exist it is called <code>non-existing member name</code>.</p>
 <h2 id="redefining-some-operators"><a class="header" href="#redefining-some-operators">Redefining some operators</a></h2>
 <p><code>::</code>-operator within <code>AttrSet</code> contexts</p>
 <p>The <code>::</code>-operator maps the Type of its <code>RHS</code> over the <code>Type</code> on its <code>LHS</code>. It can take an <code>Iterable</code> or a <code>single element</code> on its LHS.</p>
@@ -166,21 +165,21 @@
 <p>The <code>[ N :: T ]</code>-operator maps over all <code>member names</code> of an AttrSet <code>[N]</code> and applies the type <code>T</code> to each member name <code>N</code> if not already done by explicit member__ declaration (see above).</p>
 <p>When there are AttrSets with dynamic members it is possible to declare all those members at once with the <code>[ N :: T ]</code> and <code>::</code> operator.</p>
 <p>Then an AttrSet with list of dynamic members where each member-name <code>N</code> references a <strong>value of type</strong> <code>V</code> can be written as.</p>
-<pre><code class="language-nix">  { 
-    [ N :: T ] :: V 
+<pre><code class="language-nix">  {
+    [ N :: T ] :: V
   }
 </code></pre>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
 <pre><code class="language-nix">  # member '.foo' references a value of type string
   # all other members `*` are of type string and each member reference value of any variable Type.
-  { 
-    [ name :: String ] :: a, 
-    foo :: String 
+  {
+    [ name :: String ] :: a,
+    foo :: String
   }
 </code></pre>
-<pre><code class="language-nix">  { foo :: a } 
+<pre><code class="language-nix">  { foo :: a }
 </code></pre>
-<pre><code class="language-nix">   {} 
+<pre><code class="language-nix">   {}
 </code></pre>
 <p>where the member names `[ N :: T ] are an empty list.</p>
 <h2 id="useful--shortcut"><a class="header" href="#useful--shortcut">useful <code>${}</code> Shortcut</a></h2>
@@ -189,7 +188,7 @@
 <p>That rule allows for intuitive usage of names within type definitions of an AttrSet</p>
 <pre><code class="language-nix">/*
 type:
-  packageMap :: { 
+  packageMap :: {
     ${pname} :: {
       ${version} :: Derivation
     }

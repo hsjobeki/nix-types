@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Types - Nix Types - first considerations</title>
+        <title>Types - Nix Types - Convention considerations</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../getting-started.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">4.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html" class="active"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">8.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">10.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">3.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html" class="active"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">7.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">7.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">7.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">9.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -107,7 +107,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Nix Types - first considerations</h1>
+                    <h1 class="menu-title">Nix Types - Convention considerations</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -157,7 +157,7 @@
 <tr><td>Null</td><td>The value null</td></tr>
 </tbody></table>
 </div>
-<h2 id="the-any-type"><a class="header" href="#the-any-type">The <code>Any</code> type</a></h2>
+<h2 id="the-any-type-upper-boundary"><a class="header" href="#the-any-type-upper-boundary">The <code>Any</code> type (upper boundary)</a></h2>
 <p>The <code>Any</code> type is often used to explicitly allow arbitrary values. However,
 the Any type is complex and doesn't add much value to a type system. Instead, we should use type variables whenever possible.</p>
 <p>Interestingly there are two different <code>Any</code> types:</p>
@@ -180,6 +180,28 @@ the any type. Still, doesn't contain any value. Which could also be denoted: <co
 It is both a top and bottom type.
 Everything can be assigned to it and it can be assigned to everything else. ...</p>
 </blockquote>
+<p>I think it might make most sense to define <code>Any</code> as <code>TOP</code> in our type system.
+This means it is the upper boundary of our type system. All types within the system are a subtype of <code>Any</code>.</p>
+<h2 id="never-lower-boundary"><a class="header" href="#never-lower-boundary"><code>Never</code> (lower boundary)</a></h2>
+<p>I think it makes most sense to have a distinct <code>Bottom</code> type.
+Other type systems call this: <code>Bottom any</code> or <code>Empty Type</code>. This is the lower boundary of our type system. All types are a supertype of <code>Never</code> and that is true for all types that may eventualy exist in this type system.</p>
+<p>The easiest way of thinking about <code>Never</code> is this example:</p>
+<pre><code class="language-nix">let
+ # a -&gt; Never
+ f = x: abort &quot;now&quot;;
+ # Never &lt;- f 42
+ result = f 42;
+in
+ # result :: Never
+ result
+</code></pre>
+<p>A function <code>f</code> that takes <code>Any</code> argument and since it aborts the evaluation it returns <code>Never</code>.</p>
+<p><code>Never</code> might need its own chapter since it requires understanding lazyness in the language to determine which expression returns never during evaluation.</p>
+<h2 id="the-bool-type"><a class="header" href="#the-bool-type">The Bool type</a></h2>
+<p>As the Bool type can only have two values (true/false)</p>
+<p>The following is the definition of the Bool type</p>
+<pre><code class="language-hs">Bool :: true | false
+</code></pre>
 <!-- markdownlint-disable MD041 -->
 <h3 id="complex"><a class="header" href="#complex">Complex</a></h3>
 <blockquote>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Operations - Nix Types - first considerations</title>
+        <title>Operations - Nix Types - Convention considerations</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../getting-started.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">4.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">8.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html" class="active"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">10.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">3.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">7.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html" class="active"><strong aria-hidden="true">7.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">7.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">9.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -107,7 +107,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Nix Types - first considerations</h1>
+                    <h1 class="menu-title">Nix Types - Convention considerations</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -172,11 +172,11 @@
 </tbody></table>
 </div>
 <h2 id="type-signatures"><a class="header" href="#type-signatures">Type signatures</a></h2>
-<p>From a type perspective those operators can be seen as lambda functions. Every operator takes arguments of one type and returns a type.
+<p>From a type perspective those operators can be seen as lambda functions. Every operator takes (one or more) arguments of a type and returns a type.
 The following list was created to clarify the type signatures.</p>
 <p>Some operators take one or two arguments, they can either take them from left or right hand side.</p>
 <h3 id="some-formals"><a class="header" href="#some-formals">Some formals</a></h3>
-<p>for simplicity</p>
+<p>for simplicity this document follows these conventions:</p>
 <ul>
 <li><code>R</code> is used as <code>Right hand side</code> type.</li>
 <li><code>L</code> is used as <code>Left hand side</code> type.</li>
@@ -185,16 +185,29 @@ The following list was created to clarify the type signatures.</p>
 <li><code>a</code>,<code>b</code>,... can be of any type. They are type variables.</li>
 <li><code>x</code> is a functions input value</li>
 <li><code>y</code> is a functions return value</li>
+<li><code>f</code>, <code>g</code>, <code>h</code> are used to give names to functions.</li>
 </ul>
 <h3 id="---attribute-selection"><a class="header" href="#---attribute-selection">'.' - Attribute selection</a></h3>
 <p>Usage of the (<code>.</code>) operator:</p>
-<p><code>L</code> must be an AttrSet, and <code>R</code> must evaluate to type <code>String</code></p>
-<p>If R itself contains an expression this is parenthesized with the <code>${ }</code> operator.
-This operator tells the parser to evaluate the expression in <code>R</code> before passing it to the (<code>.</code>) function.</p>
-<pre><code class="language-nix"> L(.)R = L.R 
+<p><code>L</code> must be an AttrSet, and <code>R</code> must be of type <code>String</code></p>
+<pre><code class="language-nix"> L(.)R = L.R
 </code></pre>
+<p>Since attribute sets are defined as <code>lists of pairs</code>. The <code>.</code> operation simply finds the matching <code>first pair</code> and returns the <code>second pair</code> (which is the value).
+If the value doesn't exist it raises an Error in the value world which means it returns type <code>Never</code> in the type world.</p>
 <pre><code class="language-nix"> L(.)R = L -&gt; R -&gt; T
- L(.)R :: { ${name} :: a } -&gt; String -&gt; a
+ L(.)R :: { ${name} :: a } -&gt; String -&gt; a | Never
+</code></pre>
+<p>If <code>R</code> itself contains an expression this must be parenthesized with the <code>( )</code> operator.
+This operator tells us to evaluate the expression in <code>R</code> before passing it to the (<code>.</code>) operator.</p>
+<p>Examples:</p>
+<pre><code class="language-nix"> { &quot;car&quot; :: String; &quot;bus&quot; :: Int }.(&quot;car&quot; | &quot;bus&quot;)
+ # Evaluates to
+ String | Int
+</code></pre>
+<h4 id="attribute-selection-in-conjunction-with-or"><a class="header" href="#attribute-selection-in-conjunction-with-or">Attribute selection in conjunction with <code>or</code></a></h4>
+<p>The <code>or</code> operator simply narrows out the <code>Never</code> type and instead returns a fallback value with the type of <code>b</code>.</p>
+<pre><code class="language-nix"> L.R (`or`) b = L.R or b
+ L.R (`or`) b :: { ${name} :: a } -&gt; String -&gt; a | b
 </code></pre>
 <h3 id="function-application"><a class="header" href="#function-application">Function application</a></h3>
 <p>Let <code>f</code> be a function; <code>x</code> its applied argument and <code>y</code> the applied function result.</p>
@@ -203,26 +216,18 @@ This operator tells the parser to evaluate the expression in <code>R</code> befo
 <p>For comprehensiveness let the type signature of the above function be <code>L</code> and the applied argument <code>R</code>.</p>
 <p>blow the argument <code>R</code> is applied to a function of type <code>L</code>.</p>
 <pre><code class="language-nix"> L R = L -&gt; R -&gt; T
- L R :: (a -&gt; b) -&gt; a -&gt; b 
+ L R :: (a -&gt; b) -&gt; a -&gt; b
 </code></pre>
 <h3 id="----minus-operator"><a class="header" href="#----minus-operator">'-' - minus operator</a></h3>
-<pre><code class="language-nix"> y = x - 1
+<pre><code class="language-hs">(Number -&gt; Number -&gt; Number)
 </code></pre>
-<blockquote>
-<p>(<code>-</code>) is a special case where the <code>RHS</code> is applied first to the function.
-So if the <code>LHS</code> was omitted it gets the value <code>0</code> as type <code>Int</code>.</p>
-</blockquote>
-<pre><code class="language-nix"> L(-)R :: R -&gt; L -&gt; T
- (-) :: ( Int | Float ) -&gt; ( Int | Float | 0 ) -&gt; (Int | Float)
-</code></pre>
-<p>The minus operator is a dependent type
-It depends on the received argument value</p>
-<ul>
-<li>If it receives two <code>Int</code> types it returns <code>Int</code></li>
-<li>but if one or both of its arguments is of type <code>Float</code> it returns type <code>Float</code></li>
-<li>The type signature is correct using the <code>Number</code> type, but it lacks the information about its <code>value dependency</code>.</li>
-</ul>
 <h3 id="---plus-operator"><a class="header" href="#---plus-operator">'+' - plus operator</a></h3>
+<pre><code class="language-hs">let
+Larg :: String | Path;
+Rarg  :: String | Path;
+in
+(Larg -&gt; Rarg -&gt; Larg) | (Number -&gt; Number -&gt; Number)
+</code></pre>
 <h3 id="---has-attribute"><a class="header" href="#---has-attribute">'?' - Has attribute</a></h3>
 <h3 id="---list-concatenation"><a class="header" href="#---list-concatenation">'++' - List concatenation</a></h3>
 <h3 id="----comparison"><a class="header" href="#----comparison">'&lt;' '&gt;' - comparison</a></h3>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Operators - Nix Types - first considerations</title>
+        <title>Operators - Nix Types - Convention considerations</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../getting-started.html"><strong aria-hidden="true">2.</strong> Getting started</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">3.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">4.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">5.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">5.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">5.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">5.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">5.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">5.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html" class="active"><strong aria-hidden="true">6.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">7.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">8.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">8.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">8.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">9.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">10.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">11.</strong> Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../intro.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../specification/formals.html"><strong aria-hidden="true">2.</strong> Formals</a></li><li class="chapter-item expanded "><a href="../specification/grammar.html"><strong aria-hidden="true">3.</strong> Grammar</a></li><li class="chapter-item expanded "><a href="../specification/types.html"><strong aria-hidden="true">4.</strong> Types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/basic.html"><strong aria-hidden="true">4.1.</strong> Primitives</a></li><li class="chapter-item expanded "><a href="../specification/complex.html"><strong aria-hidden="true">4.2.</strong> Complex</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../specification/list.html"><strong aria-hidden="true">4.2.1.</strong> List</a></li><li class="chapter-item expanded "><a href="../specification/attrset.html"><strong aria-hidden="true">4.2.2.</strong> AttrSet</a></li><li class="chapter-item expanded "><a href="../specification/lambda.html"><strong aria-hidden="true">4.2.3.</strong> Lambda</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../specification/operators.html" class="active"><strong aria-hidden="true">5.</strong> Operators</a></li><li class="chapter-item expanded "><a href="../specification/type-variables.html"><strong aria-hidden="true">6.</strong> Type Variables</a></li><li class="chapter-item expanded "><a href="../nix/index.html"><strong aria-hidden="true">7.</strong> Nix primitive types</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix/operations.html"><strong aria-hidden="true">7.1.</strong> Operations</a></li><li class="chapter-item expanded "><a href="../nix/builtins.html"><strong aria-hidden="true">7.2.</strong> Builtins</a></li></ol></li><li class="chapter-item expanded "><a href="../specification/usage.html"><strong aria-hidden="true">8.</strong> Usage</a></li><li class="chapter-item expanded "><a href="../use-case.html"><strong aria-hidden="true">9.</strong> Use-cases</a></li><li class="chapter-item expanded "><a href="../contributors.html"><strong aria-hidden="true">10.</strong> Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -107,7 +107,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Nix Types - first considerations</h1>
+                    <h1 class="menu-title">Nix Types - Convention considerations</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
@@ -145,6 +145,29 @@
 <h2 id="-declares-the-type"><a class="header" href="#-declares-the-type"><code>::</code> declares the type</a></h2>
 <p>The variable name on the LHS is declared to have the <code>type</code> on the RHS</p>
 <p>e.g. <code>name :: String</code></p>
+<p>In attribute set contexts <code>::</code>
+defines both the type of <code>a</code> and <code>b</code> as illustrated below.</p>
+<pre><code class="language-pseudocode">def pair=λa.λb.λf.((f a) b)
+&lt;=&gt;
+{ &quot;foo&quot; = 1; }
+
+typeOf { &quot;foo&quot; = 1; }
+=&gt;
+{ String :: Int; } # Example type conversion may not closely represent the type conversion done by a real type engine.
+
+def first p​=λa.λb.a
+
+first { String :: Int; }
+=&gt;
+String
+
+def second p=λa.λb.b
+
+second { String :: Int; }
+=&gt;
+Int
+
+</code></pre>
 <h2 id="-parenthesis"><a class="header" href="#-parenthesis"><code>()</code> Parenthesis</a></h2>
 <p>Parenthesis to clarify order of type evaluation</p>
 <p>e.g. <code>( a -&gt; b ) | Bool</code></p>
@@ -152,7 +175,7 @@
 <h2 id="-separator-for-subsequent-entries-like-in-attrset"><a class="header" href="#-separator-for-subsequent-entries-like-in-attrset"><code>;</code> Separator for subsequent entries (like in AttrSet)</a></h2>
 <p>e.g. <code>{ foo :: Number; bar :: String }</code></p>
 <blockquote>
-<p>Important: This is a syntax rule!</p>
+<p>Important: This is a required syntax rule! It terminates the type expression.</p>
 <p>Currently this is very inconsistent in nixpkgs.</p>
 </blockquote>
 <h2 id="-syntactic-or"><a class="header" href="#-syntactic-or"><code>|</code> syntactic or</a></h2>
@@ -164,6 +187,13 @@ Then the <code>|</code> operator evaluates to either <code>T</code> or <code>U</
 <p>This is only due to readability and not allowed in the real language</p>
 </blockquote>
 <p>Precedence: 2</p>
+<h3 id="triviality--special-cases"><a class="header" href="#triviality--special-cases">Triviality / special Cases</a></h3>
+<pre><code class="language-hs">Any | a
+</code></pre>
+<p>Is always Any; Because any other type <code>a</code> must already be a subtype of any, due to the definition of <code>Any</code>.</p>
+<pre><code class="language-hs">b | Never
+</code></pre>
+<p>Is always <code>b</code>; Due to the definition of <code>Never</code>; <code>b</code> must be a supertype of <code>Never</code>.</p>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
 <p><code>Float | Int</code></p>
 <p><code>( Number | Bool ) | Int</code></p>
@@ -178,7 +208,7 @@ let
   */
   foo = 1;
   /*
-    Type: 
+    Type:
       bar :: FooBar
   */
   bar = &quot;baz&quot;;
@@ -187,7 +217,16 @@ in
   # ....
 
 </code></pre>
-<h3 id="---arbitrary-input-values"><a class="header" href="#---arbitrary-input-values"><code>...</code> - arbitrary input values</a></h3>
+<h2 id="conjunction-operator"><a class="header" href="#conjunction-operator"><code>&amp;</code> conjunction operator</a></h2>
+<p>TODO</p>
+<h3 id="triviality--special-cases-1"><a class="header" href="#triviality--special-cases-1">Triviality / special Cases</a></h3>
+<pre><code class="language-hs">Any &amp; a
+</code></pre>
+<p>Is always <code>a</code></p>
+<pre><code class="language-hs">b &amp; Never
+</code></pre>
+<p>Is always <code>Never</code></p>
+<h2 id="---arbitrary-input-values"><a class="header" href="#---arbitrary-input-values"><code>...</code> - arbitrary input values</a></h2>
 <p>can only be used within an AttrSet to allow <code>Any</code> more <code>name-value pairs</code>.</p>
 <p><code>...</code> = <code>${rest} :: a</code> within an AttrSet context</p>
 <p>e.g.</p>
