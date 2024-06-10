@@ -41,14 +41,8 @@
                 entry = "${pkgs.nodePackages.cspell}/bin/cspell --words-only";
                 types = [ "markdown" ];
               };
-              nixpkgs-fmt.enable = true;
-              statix.enable = true;
               markdownlint.enable = true;
             };
-            settings = {
-              statix.ignore = inverseInclude [ "flake.nix" ];
-            };
-
           };
         };
         packages = {
@@ -68,8 +62,8 @@
             cargoLock = {
               lockFile = ./parser/Cargo.lock;
               outputHashes = {
-                "arenatree-0.1.1" = "sha256-b3VVbYnWsjSjFMxvkfpJt13u+VC6baOIWD4qm1Gco4Q=";
-                "rnix-0.4.1" = "sha256-C1L/qXk6AimH7COrBlqpUA3giftaOYm/qNxs7rQgETA=";
+                # "arenatree-0.1.1" = "";
+                # "rnix-0.4.1" = "";
               };
             };
             nativeBuildInputs = [ pkgs.pkg-config ];
@@ -84,7 +78,7 @@
               ${self.packages.${system}.nix-types}/bin/nix-types --dir ./lib
             '';
             installPhase = ''
-              cat data.json > $out  
+              cat data.json > $out
             '';
           };
           default = self.packages.${system}.parsed;

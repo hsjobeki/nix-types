@@ -8,6 +8,32 @@ The variable name on the LHS is declared to have the `type` on the RHS
 
 e.g. `name :: String`
 
+In attribute set contexts `::`
+defines both the type of `a` and `b` as illustrated below.
+
+```pseudocode
+def pair=λa.λb.λf.((f a) b)
+<=>
+{ "foo" = 1; }
+
+typeOf { "foo" = 1; }
+=>
+{ String :: Int; } # Example type conversion may not closely represent the type conversion done by a real type engine.
+
+def first p​=λa.λb.a
+
+first { String :: Int; }
+=>
+String
+
+def second p=λa.λb.b
+
+second { String :: Int; }
+=>
+Int
+
+```
+
 ## `()` Parenthesis
 
 Parenthesis to clarify order of type evaluation
@@ -20,7 +46,7 @@ Precedence: (Highest)
 
 e.g. `{ foo :: Number; bar :: String }`
 
-> Important: This is a syntax rule!
+> Important: This is a required syntax rule! It terminates the type expression.
 >
 > Currently this is very inconsistent in nixpkgs.
 
@@ -36,6 +62,20 @@ Then the `|` operator evaluates to either `T` or `U`.
 > This is only due to readability and not allowed in the real language
 
 Precedence: 2
+
+### Triviality / special Cases
+
+```hs
+Any | a
+```
+
+Is always Any; Because any other type `a` must already be a subtype of any, due to the definition of `Any`.
+
+```hs
+b | Never
+```
+
+Is always `b`; Due to the definition of `Never`; `b` must be a supertype of `Never`.
 
 ### Examples
 
@@ -56,7 +96,7 @@ let
   */
   foo = 1;
   /*
-    Type: 
+    Type:
       bar :: FooBar
   */
   bar = "baz";
@@ -66,7 +106,25 @@ in
 
 ```
 
-### `...` - arbitrary input values
+## `&` conjunction operator
+
+TODO
+
+### Triviality / special Cases
+
+```hs
+Any & a
+```
+
+Is always `a`
+
+```hs
+b & Never
+```
+
+Is always `Never`
+
+## `...` - arbitrary input values
 
 can only be used within an AttrSet to allow `Any` more `name-value pairs`.
 

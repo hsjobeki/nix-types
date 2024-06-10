@@ -1,1 +1,1 @@
-map: : a | Bool
+map :: a | Bool

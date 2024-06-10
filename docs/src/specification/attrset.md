@@ -17,8 +17,6 @@ when you reference a specific **name** on an AttrSet; You basically implicitly a
 
 For simplicity this is called a `member name` from now on, if that name exists.
 
-If that name does not exist it is called `non-existing member name`.
-
 ## Redefining some operators
 
 `::`-operator within `AttrSet` contexts
@@ -44,8 +42,8 @@ When there are AttrSets with dynamic members it is possible to declare all those
 Then an AttrSet with list of dynamic members where each member-name `N` references a **value of type** `V` can be written as.
 
 ```nix
-  { 
-    [ N :: T ] :: V 
+  {
+    [ N :: T ] :: V
   }
 ```
 
@@ -54,18 +52,18 @@ Then an AttrSet with list of dynamic members where each member-name `N` referenc
 ```nix
   # member '.foo' references a value of type string
   # all other members `*` are of type string and each member reference value of any variable Type.
-  { 
-    [ name :: String ] :: a, 
-    foo :: String 
+  {
+    [ name :: String ] :: a,
+    foo :: String
   }
 ```
 
 ```nix
-  { foo :: a } 
+  { foo :: a }
 ```
 
 ```nix
-   {} 
+   {}
 ```
 
 where the member names `[ N :: T ] are an empty list.
@@ -81,7 +79,7 @@ That rule allows for intuitive usage of names within type definitions of an Attr
 ```nix
 /*
 type:
-  packageMap :: { 
+  packageMap :: {
     ${pname} :: {
       ${version} :: Derivation
     }

@@ -39,10 +39,3 @@ They are used instead of the `Any` Keyword.
 ## For [Type bindings](./operators.md#type-binding) it is PROHIBITED to choose names from the [reserved list](./types.md)
 
 This will help to keep the code clean. Reduces complexity, resolves for shadowing and namespace conflicts, with global names.
-
-## [Optional] Spaces between Operators are recommended
-
-This follows the nix syntax rules. The symbols and grammar rules of the nix language are adopted.
-
-> Spaces are required where they would be required in valid nix syntax.
-> This will be quite intuitive

@@ -3,7 +3,7 @@ authors = ["@hsjobeki:Johannes Kirschbauer"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Nix Types - first considerations"
+title = "Nix Types - Convention considerations"
 
 [output.html]
 mathjax-support = true

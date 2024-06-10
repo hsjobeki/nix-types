@@ -1,7 +1,6 @@
 # Summary
 
 - [Introduction](./intro.md)
-- [Getting started](./getting-started.md)
 - [Formals](./specification/formals.md)
 - [Grammar](./specification/grammar.md)
 - [Types](./specification/types.md)

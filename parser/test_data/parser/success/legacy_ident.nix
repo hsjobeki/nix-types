@@ -1,1 +1,1 @@
-map: : Int
+map :: Int

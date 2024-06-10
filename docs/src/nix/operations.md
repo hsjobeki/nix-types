@@ -35,14 +35,14 @@ The official documentation about the operators in nix can be found [here](https:
 
 ## Type signatures
 
-From a type perspective those operators can be seen as lambda functions. Every operator takes arguments of one type and returns a type.
+From a type perspective those operators can be seen as lambda functions. Every operator takes (one or more) arguments of a type and returns a type.
 The following list was created to clarify the type signatures.
 
 Some operators take one or two arguments, they can either take them from left or right hand side.
 
 ### Some formals
 
-for simplicity
+for simplicity this document follows these conventions:
 
 - `R` is used as `Right hand side` type.
 - `L` is used as `Left hand side` type.
@@ -51,23 +51,44 @@ for simplicity
 - `a`,`b`,... can be of any type. They are type variables.
 - `x` is a functions input value
 - `y` is a functions return value
+- `f`, `g`, `h` are used to give names to functions.
 
 ### '.' - Attribute selection
 
 Usage of the (`.`) operator:
 
-`L` must be an AttrSet, and `R` must evaluate to type `String`
-
-If R itself contains an expression this is parenthesized with the `${ }` operator.
-This operator tells the parser to evaluate the expression in `R` before passing it to the (`.`) function.
+`L` must be an AttrSet, and `R` must be of type `String`
 
 ```nix
- L(.)R = L.R 
+ L(.)R = L.R
 ```
+
+Since attribute sets are defined as `lists of pairs`. The `.` operation simply finds the matching `first pair` and returns the `second pair` (which is the value).
+If the value doesn't exist it raises an Error in the value world which means it returns type `Never` in the type world.
 
 ```nix
  L(.)R = L -> R -> T
- L(.)R :: { ${name} :: a } -> String -> a
+ L(.)R :: { ${name} :: a } -> String -> a | Never
+```
+
+If `R` itself contains an expression this must be parenthesized with the `( )` operator.
+This operator tells us to evaluate the expression in `R` before passing it to the (`.`) operator.
+
+Examples:
+
+```nix
+ { "car" :: String; "bus" :: Int }.("car" | "bus")
+ # Evaluates to
+ String | Int
+```
+
+#### Attribute selection in conjunction with `or`
+
+The `or` operator simply narrows out the `Never` type and instead returns a fallback value with the type of `b`.
+
+```nix
+ L.R (`or`) b = L.R or b
+ L.R (`or`) b :: { ${name} :: a } -> String -> a | b
 ```
 
 ### Function application
@@ -84,31 +105,24 @@ blow the argument `R` is applied to a function of type `L`.
 
 ```nix
  L R = L -> R -> T
- L R :: (a -> b) -> a -> b 
+ L R :: (a -> b) -> a -> b
 ```
 
 ### '-' - minus operator
 
-```nix
- y = x - 1
+```hs
+(Number -> Number -> Number)
 ```
-
-> (`-`) is a special case where the `RHS` is applied first to the function.
-> So if the `LHS` was omitted it gets the value `0` as type `Int`.
-
-```nix
- L(-)R :: R -> L -> T
- (-) :: ( Int | Float ) -> ( Int | Float | 0 ) -> (Int | Float)
-```
-
-The minus operator is a dependent type
-It depends on the received argument value
-
-- If it receives two `Int` types it returns `Int`
-- but if one or both of its arguments is of type `Float` it returns type `Float`
-- The type signature is correct using the `Number` type, but it lacks the information about its `value dependency`.
 
 ### '+' - plus operator
+
+```hs
+let
+Larg :: String | Path;
+Rarg  :: String | Path;
+in
+(Larg -> Rarg -> Larg) | (Number -> Number -> Number)
+```
 
 ### '?' - Has attribute
 
