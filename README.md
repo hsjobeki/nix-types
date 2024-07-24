@@ -86,19 +86,27 @@ Arbitrary Sets or Lists can be denoted with the `...` operator:
 
 > [!WARNING]
 > The following should be avoided.
-> The confusion arises because we're mixing different types of values in a single structure. It's like having a drawer with both socks and utensils; it's hard to know what you're grabbing without looking.
+> Consider the following interfaces bad - we're mixing different types of values in a single structure -
+> It's like having a drawer with both socks and utensils; it's hard to know what you're grabbing without looking.
 
 ~~~haskell
-
-{
+-- Invalid !
+foo :: {
   ${name} :: Number;
   ${version} :: Derivation;
 }
 -- ↑
--- └── there are multiple dynamic entries. The keys of `version` mapping to a Derivation each.
+-- └── there are dynamic entries with different types.
+-- The keys of `version` contain a Derivation.
+-- The keys of `name` contain a Number.
+-- This is ill advised, when accessing the above structure with `foo.bar` what type does it value have?
+-- Therefore only one dynamic key can exist. Its type is the Union of all dynamic entries.
+foo :: {
+  ${nameOrVersion} :: Number | Derivation;
+}
 ~~~
 
-The above type is demonstrated in a concrete value.
+The above type is now demonstrated in a concrete value.
 
 ~~~nix
 {
@@ -127,7 +135,7 @@ a -> b -> b
 -- e.g. lib.flip
 ~~~
 
-### Further
+### Type driven design with nix -
 
 Sometimes, writing a quick note about what type of information (like a number or text) a part of your code is expecting can be helpful. It's like leaving a little API hint for yourself and others.
 Coming back to a certain piece of code after a while you will be very thankful that you documented the APIs and don't need to rethink your entire program.
