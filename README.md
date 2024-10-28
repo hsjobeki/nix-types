@@ -135,6 +135,40 @@ a -> b -> b
 -- e.g. lib.flip
 ~~~
 
+### ✔️ Good practice: Lambda Fromals (Strutured Attrs) `{_}:`
+
+~~~haskell
+Attrs -> a
+-- becomes
+{ foo :: String, ${others} :: a }: -> a
+-- ↑
+-- └── This function takes an Attribute set. It expects to have a `foo` of type `String`
+--     Any other entries are valid as well.
+~~~
+
+### Optional Lambda Fromals (Strutured Attrs) `{_}:`
+
+
+~~~nix
+# Function with optional attrs
+complicatedThing = {
+  foo # <- Required
+  bar ? 1 <- Optional
+}:
+  #...
+~~~
+
+~~~haskell
+typeof complicatedThing
+-- becomes
+{ 
+  foo :: String
+  bar :: Int ?  
+}: -> a  --  ↑          
+--           └── This attribute is optional. It may or may not exist on the passed attribute set.
+~~~
+
+
 ### Type driven design with nix -
 
 Sometimes, writing a quick note about what type of information (like a number or text) a part of your code is expecting can be helpful. It's like leaving a little API hint for yourself and others.
